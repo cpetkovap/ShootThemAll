@@ -33,74 +33,74 @@ public class UserInfoManager extends HttpServlet {
 
 	}
 	
-//	@Override
-//	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
-//			throws ServletException, IOException {
-//		// TODO Auto-generated method stub
-//		doPost(req, resp);
-//	}
-
-
-	protected void doGet(HttpServletRequest request,
-			HttpServletResponse response) throws ServletException, IOException {
-		// репрезентация на информацията за потребителя
-
-		String line = request.getParameter("userId");
-		// test
-		line = "1";
-
-		JSONObject result = new JSONObject();
-
-		if (line != null) {
-			UserDao ud = new DBUserDao();
-
-//			if (getServletContext().getAttribute("cacheUsers") == null) {
-			if(!ud.hasQuery()){
-
-				result.put("error", "No Users ! Error");
-				response.setStatus(400);
-
-			} else {
-
-				int userId = Integer.parseInt(line);
-
-//				// използваме кеша -> друг вариант е от базата данни
-//				ArrayList<User> list = (ArrayList<User>) getServletConfig()
-//						.getServletContext().getAttribute("cacheUsers");
-//
-//				boolean existUser = false;
-//				for (int i = 0; i < list.size(); i++) {
-//					if (list.get(i).getId() == userId) {
-//						existUser = true;
-//				        result = makeUserJSON(list.get(i));
-//					}
-//				}
-//
-//				if (!existUser) {
-//					result.put("error", "Not existing id");
-//					response.setStatus(400);
-//				}
-//
-				User u = ud.getUser(userId);
-				if(u != null){
-					result = makeUserJSON(u);
-					response.setStatus(200);
-				}else{
-					result.put("error", "Invalid parameter");
-					response.setStatus(400);
-					
-				}
-				
-				
-			}
-
-		} else {
-			result.put("error", "Invalid parameter");
-			response.setStatus(400);
-		}
-
-		response.getWriter().write(result.toJSONString());
+	@Override
+	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
+			throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		doPost(req, resp);
 	}
+
+
+//	protected void doGet(HttpServletRequest request,
+//			HttpServletResponse response) throws ServletException, IOException {
+//		// репрезентация на информацията за потребителя
+//
+//		String line = request.getParameter("userId");
+//		// test
+//		line = "1";
+//
+//		JSONObject result = new JSONObject();
+//
+//		if (line != null) {
+//			UserDao ud = new DBUserDao();
+//
+////			if (getServletContext().getAttribute("cacheUsers") == null) {
+//			if(!ud.hasQuery()){
+//
+//				result.put("error", "No Users ! Error");
+//				response.setStatus(400);
+//
+//			} else {
+//
+//				int userId = Integer.parseInt(line);
+//
+////				// използваме кеша -> друг вариант е от базата данни
+////				ArrayList<User> list = (ArrayList<User>) getServletConfig()
+////						.getServletContext().getAttribute("cacheUsers");
+////
+////				boolean existUser = false;
+////				for (int i = 0; i < list.size(); i++) {
+////					if (list.get(i).getId() == userId) {
+////						existUser = true;
+////				        result = makeUserJSON(list.get(i));
+////					}
+////				}
+////
+////				if (!existUser) {
+////					result.put("error", "Not existing id");
+////					response.setStatus(400);
+////				}
+////
+//				User u = ud.getUser(userId);
+//				if(u != null){
+//					result = makeUserJSON(u);
+//					response.setStatus(200);
+//				}else{
+//					result.put("error", "Invalid parameter");
+//					response.setStatus(400);
+//					
+//				}
+//				
+//				
+//			}
+//
+//		} else {
+//			result.put("error", "Invalid parameter");
+//			response.setStatus(400);
+//		}
+//
+//		response.getWriter().write(result.toJSONString());
+//	}
 
 	
 	protected void doPost(HttpServletRequest request,
@@ -111,7 +111,7 @@ public class UserInfoManager extends HttpServlet {
 
 		// test
 		JSONObject test = new JSONObject();
-		test.put("userId", "1");
+		test.put("userId", "2");
 		//test.put("password", "123");
 		test.put("email", "promqna@aa");
 		//test.put("allowNotification", true);
@@ -176,6 +176,7 @@ public class UserInfoManager extends HttpServlet {
 				try {
 
 					String email = userObj.get("email").toString();
+					System.out.println(email);
 					// update email:
 
 					// - update in database --> to do
