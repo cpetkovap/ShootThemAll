@@ -25,6 +25,10 @@ public class DBWeaponDao implements WeaponDao {
 				int id = resultSet.getInt("id");
 				int damage = resultSet.getInt("damage");
 				int price = resultSet.getInt("price");
+				if(id<0 || damage <0 || price <0){
+					System.out.println("Ivalid data from db");
+					//throw IllegalArgumentException;
+				}
 				Weapon weapon = new Weapon(id, damage, price);
 				list.add(weapon);
 			}
@@ -42,8 +46,12 @@ public class DBWeaponDao implements WeaponDao {
 	public Weapon getWeapon(int weaponId) {
 		PreparedStatement statement;
 		Weapon weapon = null;
+		if( weaponId <=0){
+			System.out.println("ValidationException");
+			//throw IllegalArgumentException;
+			}
 		try {
-			statement = connect.prepareStatement("SELECT DAMAGE, PRICE FROM APP.WEAPONS WHERE ID = ?");
+			statement = connect.prepareStatement("select damage, price from app.weapons where id = ?");
 			statement.setInt(1, weaponId);
 			ResultSet rs = statement.executeQuery();
 			rs.next();
