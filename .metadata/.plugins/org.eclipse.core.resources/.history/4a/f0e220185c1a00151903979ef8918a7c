@@ -15,8 +15,7 @@ import db.DBManager;
 
 public class DBUserDao implements UserDao {
 	private Connection connection = DBManager.getDBManager().getConnection();
-
-	// private Statement st;
+	//private Statement st;
 
 	@Override
 	public List getAllUsers() {
@@ -242,105 +241,23 @@ public class DBUserDao implements UserDao {
 
 	// ...To be continued
 	// Change password update
-	@Override
 	public void updatePassword(String password, int userId) {
-		PreparedStatement pst;
-		try {
-			pst = connection
-					.prepareStatement("update app.users set password = ? where id =?");
-			pst.setString(1, password);
-			pst.setInt(2, userId);
-			pst.executeUpdate();
-		} catch (SQLException e) {
-			System.out.println("Error with updating password!");
-			e.printStackTrace();
-		}
 
 	}
 
 	// update e-mail
-	// update app.users set email = 'email.bg' where id =1;
-	@Override
 	public void updateEmail(String email, int userId) {
-		PreparedStatement pst;
-		try {
-			pst = connection
-					.prepareStatement("update app.users set email = ? where id =?");
-			pst.setString(1, email);
-			pst.setInt(2, userId);
-			pst.executeUpdate();
-		} catch (SQLException e) {
-			System.out.println("Error with updating email!");
-			e.printStackTrace();
-		}
+
 	}
 
 	// Update score
-	// add score to curret
-	@Override
 	public void updateScore(int score, int userId) {
-		PreparedStatement pst;
-		try {
-			pst = connection
-					.prepareStatement("update app.users set score = score + ? where id =?");
-			pst.setInt(1, score);
-			pst.setInt(2, userId);
-			pst.executeUpdate();
-		} catch (SQLException e) {
-			System.out.println("Error with updating score!");
-			e.printStackTrace();
-		}
-	}
 
-	// Update level input levelNo
-	// za preskachane na opredelno nivo - ne poredni
-	@Override
-	public void updateLevel(int level, int userId) {
-		PreparedStatement pst;
-		try {
-			pst = connection
-					.prepareStatement("update app.users set levelNo =  ? where id =?");
-			pst.setInt(1, level);
-			pst.setInt(2, userId);
-			pst.executeUpdate();
-		} catch (SQLException e) {
-			System.out.println("Error with updating level!");
-			e.printStackTrace();
-		}
-	}
-
-	// update level - levelUp
-	@Override
-	public void updateLevelUp(int userId) {
-		PreparedStatement pst;
-		try {
-			pst = connection
-					.prepareStatement("update app.users set levelNo = levelNo +1 where id =?");
-			pst.setInt(1, userId);
-			pst.executeUpdate();
-		} catch (SQLException e) {
-			System.out.println("Error with updating level!");
-			e.printStackTrace();
-		}
 	}
 
 	// Update notification
-	@Override
 	public void updateNotification(boolean noficationAllow, int userId) {
-		PreparedStatement pst;
-		int notificationINT = 0;
-		try {
-			pst = connection
-					.prepareStatement("update app.users set notificationAllow = ? where id =?");
-			if (noficationAllow == true)
-				notificationINT = 1;
-			pst.setInt(1, notificationINT);
-			pst.setInt(2, userId);
-			pst.executeUpdate();
-		} catch (SQLException e) {
-			System.out.println("Error with updating notification!");
-			e.printStackTrace();
-		}
+
 	}
 
 	// update user e razdelen na otdelni update
@@ -359,11 +276,11 @@ public class DBUserDao implements UserDao {
 			pst.setString(1, username);
 			pst.setString(2, password);
 			ResultSet results = pst.executeQuery();
-			if (results != null) {
+			if(results != null){
 				results.next();
-				userId = results.getInt("id");
+				userId = results.getInt("id");				
 			}
-
+			
 		} catch (SQLException e) {
 			System.out.println("error in existUser");
 			e.printStackTrace();
@@ -427,8 +344,8 @@ public class DBUserDao implements UserDao {
 		}
 		return score;
 	}
-
-	public int getUserLevel(int userId) {
+	
+	public int getUserLevel(int userId){
 		int level = 0;
 
 		PreparedStatement pst;
@@ -444,33 +361,34 @@ public class DBUserDao implements UserDao {
 			e.printStackTrace();
 		}
 		return level;
-
+		
 	}
 
-	public boolean hasQuery() {
+	
+	public boolean hasQuery(){
 		boolean result = false;
 		int count = 0;
 		Statement st;
 		try {
 
-			st = connection.createStatement();
+		    st = connection.createStatement();
 			ResultSet results = st
 					.executeQuery("select count(*) from app.users");
 			results.next();
 			count = results.getInt(1);
-		} catch (SQLException e) {
+		}catch(SQLException e){
 			e.printStackTrace();
 		}
-
-		if (count > 0) {
+		
+		if(count > 0){
 			result = true;
 		}
-		System.out.println("num rows in user : " + count);
+		System.out.println("num rows in user : " + count );
 		return result;
-
+		
 	}
-
-	public ArrayList<Integer> getUnlockedWeapons(int userId) {
+	
+	public ArrayList<Integer> getUnlockedWeapons(int userId){
 		ArrayList<Integer> weapon = new ArrayList<Integer>();
 		PreparedStatement pst;
 		try {
@@ -478,7 +396,7 @@ public class DBUserDao implements UserDao {
 			pst = connection.prepareStatement(selectWeapon);
 			pst.setInt(1, userId);
 			ResultSet results = pst.executeQuery();
-			while (results.next()) {
+			while(results.next()){
 				Integer weaponId = results.getInt("weapon_id");
 				System.out.println(weaponId);
 				weapon.add(weaponId);
@@ -487,7 +405,7 @@ public class DBUserDao implements UserDao {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
+		
 		return weapon;
 	}
 }
