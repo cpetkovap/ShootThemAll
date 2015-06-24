@@ -106,9 +106,7 @@ public class LevelManager extends HttpServlet {
 				 * потребители
 				 */
 
-				if(ud.getUserLevel(userId) < SettingsManager.getMaxLevel()){
-					ud.updateLevelUp(userId);
-				}
+				ud.updateLevelUp(userId);
 				
 				User topUserBeforeUpdate = ud.getUserWithMaxScore();
 				//System.out.println(topUserBeforeUpdate.getUsername());
