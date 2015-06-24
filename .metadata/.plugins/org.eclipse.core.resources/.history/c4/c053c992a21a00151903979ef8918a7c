@@ -24,7 +24,8 @@ public interface UserDao {
 	void updateLevelUp(int userId);
 	void updateNotification(boolean noficationAllow, int userId);
 	void updateUserWeapon(int weaponType, int userId);
-	void addUnlockedWeapon(int weaponType, int userId);
+	
+	void updateUser(String type, String value, int userId);
 	int existUser(String username, String password);
 	Weapon getUserWeapon(int userId);
 	int getUserScore(int userId);

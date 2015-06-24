@@ -30,13 +30,6 @@ public class WeaponsStore extends HttpServlet {
 	public WeaponsStore() {
 
 	}
-	
-//	@Override
-//	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
-//			throws ServletException, IOException {
-//		// TODO Auto-generated method stub
-//		doPost(req, resp);
-//	}
 
 	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
@@ -144,15 +137,8 @@ public class WeaponsStore extends HttpServlet {
 				Weapon weapon = wd.getWeapon(weaponType);
 				if(weapon.getPrice() <= userScore){
 					ud.addUnlockedWeapon(weaponType, userId);
-				}else{
-					result.put("error", "Not enought score");
-					response.setStatus(400);
-					return;
-				}			
-			}else{
-				result.put("error", "Thie weapon is already unlocked");
-				response.setStatus(400);
-				return;
+				}
+				
 			}
 			
 			

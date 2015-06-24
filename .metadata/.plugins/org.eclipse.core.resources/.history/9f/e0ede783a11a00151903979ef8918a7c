@@ -74,7 +74,7 @@ public class WeaponManager extends HttpServlet {
 			}
 			
 			if(isUnlocked){
-				ud.updateUserWeapon(weaponType, userId);
+				ud.
 			}
 
 			message = "success";

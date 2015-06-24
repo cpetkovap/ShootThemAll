@@ -349,7 +349,7 @@ public class DBUserDao implements UserDao {
 		try {
 			pst = connection
 					.prepareStatement("update app.users set choosen_weapon_id = ? where id = ?");
-			pst.setInt(1, weaponType);
+			pst.setInt(1, userId);
 			pst.setInt(2, userId);
 			pst.executeUpdate();
 		} catch (SQLException e) {
