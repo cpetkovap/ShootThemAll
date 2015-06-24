@@ -524,7 +524,7 @@ public class DBUserDao implements UserDao {
 				String email = results.getString("email");
 				u = new User(username, password, email);
 				u.setScore(score);
-				//System.out.println(u.getUsername());
+				System.out.println(u.getUsername());
 				
 			}
 		} catch (SQLException e) {

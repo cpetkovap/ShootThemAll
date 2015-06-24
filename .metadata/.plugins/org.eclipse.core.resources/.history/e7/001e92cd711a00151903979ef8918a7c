@@ -107,14 +107,15 @@ public class LevelManager extends HttpServlet {
 				 */
 
 				User topUserBeforeUpdate = ud.getUserWithMaxScore();
-				//System.out.println(topUserBeforeUpdate.getUsername());
+				System.out.println(topUserBeforeUpdate.getUsername());
 				ud.updateScore(score, userId);
 				int userScore = ud.getUserScore(userId);
 				User topUserAfterUpdate = ud.getUserWithMaxScore();
-				//System.out.println(topUserAfterUpdate.getUsername());
+				System.out.println(topUserAfterUpdate.getUsername());
 
 				if (!topUserBeforeUpdate.getUsername().equals(
 						topUserAfterUpdate.getUsername())) {
+					System.out.println("Tuk sme :)");
 					String mailTo = topUserBeforeUpdate.getEmail();
 					// мейл тест
 					sendEmail("shootthemallgame@gmail.com",

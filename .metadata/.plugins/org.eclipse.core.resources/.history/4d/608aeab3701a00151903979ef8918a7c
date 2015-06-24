@@ -82,7 +82,7 @@ public class LevelManager extends HttpServlet {
 		// test
 		JSONObject test = new JSONObject();
 		test.put("userId", 1);
-		test.put("score", 40);
+		test.put("score", 600);
 		line = test.toJSONString();
 
 		String message = null;
@@ -106,16 +106,15 @@ public class LevelManager extends HttpServlet {
 				 * потребители
 				 */
 
-				User topUserBeforeUpdate = ud.getUserWithMaxScore();
-				//System.out.println(topUserBeforeUpdate.getUsername());
+				User topUserBeforeUpdare = ud.getUserWithMaxScore();
 				ud.updateScore(score, userId);
 				int userScore = ud.getUserScore(userId);
 				User topUserAfterUpdate = ud.getUserWithMaxScore();
-				//System.out.println(topUserAfterUpdate.getUsername());
 
-				if (!topUserBeforeUpdate.getUsername().equals(
+				if (!topUserBeforeUpdare.getUsername().equals(
 						topUserAfterUpdate.getUsername())) {
-					String mailTo = topUserBeforeUpdate.getEmail();
+					System.out.println("Tuk sme");
+					String mailTo = topUserBeforeUpdare.getEmail();
 					// мейл тест
 					sendEmail("shootthemallgame@gmail.com",
 							mailTo, "Game massage",

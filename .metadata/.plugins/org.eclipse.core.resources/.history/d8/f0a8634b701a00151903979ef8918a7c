@@ -35,46 +35,48 @@ public class LevelManager extends HttpServlet {
 
 	}
 
-	 @Override
-	 protected void doGet(HttpServletRequest req, HttpServletResponse resp)
-	 throws ServletException, IOException {
-	 // TODO Auto-generated method stub
-	 doPost(req, resp);
-	 }
-//
-//	protected void doGet(HttpServletRequest request,
-//			HttpServletResponse response) throws ServletException, IOException {
-//		String user = request.getParameter("userId");
-//		String userLevel = request.getParameter("level");
-//
-//		// test
-//		user = "1";
-//		userLevel = "2";
-//
-//		JSONObject result = new JSONObject();
-//
-//		if (user != null && userLevel != null) {
-//
-//			int userId = Integer.parseInt(user);
-//			int level = Integer.parseInt(userLevel);
-//
-//			LevelBuilder levelBuilder = new LevelBuilder();
-//			result = levelBuilder.buildLevel(userId, level);
-//
-//			response.setStatus(200);
-//
-//		} else {
-//
-//			response.setStatus(400);
-//			result.put("error", "Invalid parameter");
-//		}
-//
-//		System.out.println(result.toJSONString());
-//		response.getWriter().write(result.toJSONString());
-//	}
+	// @Override
+	// protected void doGet(HttpServletRequest req, HttpServletResponse resp)
+	// throws ServletException, IOException {
+	// // TODO Auto-generated method stub
+	// doPost(req, resp);
+	// }
 
+	protected void doGet(HttpServletRequest request,
+			HttpServletResponse response) throws ServletException, IOException {
+		String user = request.getParameter("userId");
+		String userLevel = request.getParameter("level");
 
-	
+		// test
+		user = "1";
+		userLevel = "2";
+
+		JSONObject result = new JSONObject();
+
+		if (user != null && userLevel != null) {
+
+			int userId = Integer.parseInt(user);
+			int level = Integer.parseInt(userLevel);
+
+			LevelBuilder levelBuilder = new LevelBuilder();
+			result = levelBuilder.buildLevel(userId, level);
+
+			response.setStatus(200);
+
+		} else {
+
+			response.setStatus(400);
+			result.put("error", "Invalid parameter");
+		}
+
+		System.out.println(result.toJSONString());
+		response.getWriter().write(result.toJSONString());
+	}
+
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
+	 *      response)
+	 */
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 		String line = request.getReader().readLine();
@@ -82,7 +84,7 @@ public class LevelManager extends HttpServlet {
 		// test
 		JSONObject test = new JSONObject();
 		test.put("userId", 1);
-		test.put("score", 40);
+		test.put("score", 10);
 		line = test.toJSONString();
 
 		String message = null;
@@ -106,16 +108,14 @@ public class LevelManager extends HttpServlet {
 				 * потребители
 				 */
 
-				User topUserBeforeUpdate = ud.getUserWithMaxScore();
-				//System.out.println(topUserBeforeUpdate.getUsername());
+				User topUserBeforeUpdare = ud.getUserWithMaxScore();
 				ud.updateScore(score, userId);
 				int userScore = ud.getUserScore(userId);
 				User topUserAfterUpdate = ud.getUserWithMaxScore();
-				//System.out.println(topUserAfterUpdate.getUsername());
 
-				if (!topUserBeforeUpdate.getUsername().equals(
+				if (!topUserBeforeUpdare.getUsername().equals(
 						topUserAfterUpdate.getUsername())) {
-					String mailTo = topUserBeforeUpdate.getEmail();
+					String mailTo = topUserBeforeUpdare.getEmail();
 					// мейл тест
 					sendEmail("shootthemallgame@gmail.com",
 							mailTo, "Game massage",
