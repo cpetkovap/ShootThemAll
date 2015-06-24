@@ -40,7 +40,7 @@ public class UserInfoManager extends HttpServlet {
 
 		String line = request.getParameter("userId");
 		// test
-		line = "1";
+		line = "2";
 
 		JSONObject result = new JSONObject();
 
@@ -65,7 +65,20 @@ public class UserInfoManager extends HttpServlet {
 //				for (int i = 0; i < list.size(); i++) {
 //					if (list.get(i).getId() == userId) {
 //						existUser = true;
-//				        result = makeUserJSON(list.get(i));
+//						result.put("userId", list.get(i).getId());
+//						result.put("username", list.get(i).getUsername());
+//						result.put("password", list.get(i).getPassword());
+//						result.put("email", list.get(i).getEmail());
+//						result.put("allowNotification", list.get(i)
+//								.isAllowNotification());
+//						result.put("score", list.get(i).getScore());
+//						result.put("level", list.get(i).getLevel());
+//						JSONObject userWeaponObj = new JSONObject();
+//						userWeaponObj.put("type", list.get(i).getWeapon()
+//								.getType());
+//						userWeaponObj.put("damage", list.get(i).getWeapon()
+//								.getDamage());
+//						result.put("weapon", userWeaponObj);
 //					}
 //				}
 //
@@ -74,17 +87,6 @@ public class UserInfoManager extends HttpServlet {
 //					response.setStatus(400);
 //				}
 //
-				User u = ud.getUser(userId);
-				if(u != null){
-					result = makeUserJSON(u);
-					response.setStatus(200);
-				}else{
-					result.put("error", "Invalid parameter");
-					response.setStatus(400);
-					
-				}
-				
-				
 			}
 
 		} else {
@@ -212,26 +214,7 @@ public class UserInfoManager extends HttpServlet {
 	}
 	
 	
-	public JSONObject makeUserJSON(User u){
-		JSONObject result = new JSONObject();
-		result.put("userId", u.getId());
-		result.put("username", u.getUsername());
-		result.put("password", u.getPassword());
-		result.put("email", u.getEmail());
-		result.put("allowNotification", u
-				.isAllowNotification());
-		result.put("score", u.getScore());
-		result.put("level", u.getLevel());
-		JSONObject userWeaponObj = new JSONObject();
-		userWeaponObj.put("type", u.getWeapon()
-				.getType());
-		userWeaponObj.put("damage", u.getWeapon()
-				.getDamage());
-		result.put("weapon", userWeaponObj);
-		return result;
-		
-		
-	}
+	
 	
 	
 }

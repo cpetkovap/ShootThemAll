@@ -25,6 +25,7 @@ public class User {
 
 	}
 
+	// testing
 	public User(int id, String username, String password, String email,
 			int score, int level, Weapon weapon, boolean allowNotification) {
 		this(username, password, email);
