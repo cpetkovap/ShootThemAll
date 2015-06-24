@@ -155,7 +155,6 @@ public class UserInfoManager extends HttpServlet {
 					list.get(user).setPassword(password);
 					getServletConfig().getServletContext().setAttribute("cacheUsers", list);
 				} catch (NullPointerException e) {
-					e.printStackTrace();
 				}
 
 				try {
@@ -169,7 +168,7 @@ public class UserInfoManager extends HttpServlet {
 					list.get(user).setEmail(email);
 					getServletConfig().getServletContext().setAttribute("cacheUsers", list);
 				} catch (NullPointerException e) {
-					System.out.println("no change email");
+					//System.out.println("no change email");
 				}
 
 				try {
@@ -184,7 +183,6 @@ public class UserInfoManager extends HttpServlet {
 					list.get(user).setAllowNotification(allowNotification);
 					getServletConfig().getServletContext().setAttribute("cacheUsers", list);
 				} catch (NullPointerException e) {
-					System.out.println("no change allowNotification");
 				}
 				
 				response.setStatus(200);
