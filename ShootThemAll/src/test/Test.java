@@ -41,24 +41,31 @@ public class Test extends HttpServlet {
 		
 		WeaponDao wd = new DBWeaponDao();
 		
-		ArrayList<Weapon> list = (ArrayList<Weapon>) wd.getWeapons();
-		StringBuffer sb = new StringBuffer();
-		for(int i =  0 ; i < list.size(); i++){
-			sb.append(list.get(i).getType() + " ");
-		}
-		System.out.println(sb.toString());
-		
-		Weapon w = wd.getWeapon(1);
-		System.out.println("price : " + w.getPrice());
+//		ArrayList<Weapon> list = (ArrayList<Weapon>) wd.getWeapons();
+//		StringBuffer sb = new StringBuffer();
+//		for(int i =  0 ; i < list.size(); i++){
+//			sb.append(list.get(i).getType() + " ");
+//		}
+//		System.out.println(sb.toString());
+//		
+//		Weapon w = wd.getWeapon(1);
+//		System.out.println("price : " + w.getPrice());
 //		
 //		User a = new User("Petkan", "121", "aa@aaa.aa");
 		UserDao ud = new DBUserDao();
 //		ud.addUser(a);
 		
 		System.out.println();
-		User u1 = ud.getUser("Petq");
-		System.out.println(u1.getUsername());
-		System.out.println(ud.hasQuery());
+//		User u1 = ud.getUser("Petq");
+//		System.out.println(u1.getUsername());
+//		System.out.println(ud.hasQuery());
+		
+//		ud.updateScore(3, 1);
+		//User u2 = ud.getUserWithMaxScore();
+		//System.out.println(u2.getUsername() + "  " + u2.getScore());
+		
+		int score = ud.getUserScore(1);
+		System.out.println(score);
 		
 		response.getWriter().write("</html>");
 	}

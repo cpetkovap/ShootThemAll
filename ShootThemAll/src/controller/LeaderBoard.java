@@ -17,6 +17,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import model.User;
+import model.dao.DBUserDao;
+import model.dao.UserDao;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -48,7 +50,7 @@ public class LeaderBoard extends HttpServlet {
 		String line = request.getParameter("userId");
 
 		// test
-		line = "2";
+		line = "1";
 
 		JSONArray result = new JSONArray();
 		JSONObject error = new JSONObject();
@@ -112,63 +114,37 @@ public class LeaderBoard extends HttpServlet {
 	}
 
 	public JSONArray topUsers(int userId) {
-
 		JSONArray result = new JSONArray();
+		
+		UserDao ud = new DBUserDao();
+		
+		int userPosition = ud.getUserPosition(userId);
+		System.out.println(userPosition);
+		
+		User u = ud.getUser(userId);
+		ArrayList<User> topUsers = ud.getTopUsers();
+		topUsers.sort(new UsersComparator());
 
-		Connection connect = DBManager.getDBManager().getConnection();
-		// TreeMap<String, Integer> topUsers = new TreeMap();
-		Statement statement;
-		PreparedStatement preparedStatement;
-		PreparedStatement countUsersStatement;
-		try {
-
-			preparedStatement = connect
-					.prepareStatement("SELECT USERNAME, SCORE FROM APP.USERS WHERE ID = ?");
-			preparedStatement.setInt(1, userId);
-			ResultSet userResult = preparedStatement.executeQuery();
-			userResult.next();
-			String userUsername = userResult.getString("username");
-			int userScore = userResult.getInt("score");
-
-			countUsersStatement = connect
-					.prepareStatement("SELECT COUNT(*) AS COUNT FROM APP.USERS WHERE SCORE > ? ");
-			countUsersStatement.setInt(1, userScore);
-			ResultSet countUsers = countUsersStatement.executeQuery();
-			countUsers.next();
-			int userPosition = countUsers.getInt("count");
-
-			statement = connect.createStatement();
-			statement.setMaxRows(10);
-			ResultSet resultSet = statement
-					.executeQuery("SELECT USERNAME, SCORE FROM APP.USERS ORDER BY SCORE DESC");
-
-			int position = 0;
-			while (resultSet.next()) {
-				String username = resultSet.getString("username");
-				int score = resultSet.getInt("score");
+			for(int i = 0 ; i < topUsers.size(); i++){
 				// topUsers.put(username, score);
-				position++;
 				JSONObject userObj = new JSONObject();
-				userObj.put("position", position);
-				userObj.put("username", username);
-				userObj.put("score", score);
+				userObj.put("position", (i+1));
+				userObj.put("username", topUsers.get(i).getUsername());
+				userObj.put("score", topUsers.get(i).getScore());
 				result.add(userObj);
-			}
+				}
+			
 			if (userPosition > 9) {
 
 				// topUsers.put(userUsername, userScore);
 				JSONObject userObj = new JSONObject();
 				userObj.put("position", (userPosition + 1));
-				userObj.put("username", userUsername);
-				userObj.put("score", userScore);
+				userObj.put("username", u.getUsername());
+				userObj.put("score", u.getScore());
 				result.add(userObj);
 
 			}
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			System.out.println("SQL error");
-		}
+
 
 		return result;
 

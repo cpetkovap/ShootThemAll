@@ -490,4 +490,92 @@ public class DBUserDao implements UserDao {
 
 		return weapon;
 	}
+	
+	public int getMaxScore(){
+		int score = -1; 
+		Statement st;
+		try {
+			st = connection.createStatement();
+			ResultSet results = st
+					.executeQuery("select Max(score) as maxScore from app.users");
+			results.next();
+			score = results.getInt("maxScore");
+		}catch(SQLException e){
+			e.printStackTrace();
+		}
+		return score;
+		
+	}
+
+	public User getUserWithMaxScore() {
+		User u = null;
+		PreparedStatement pst;
+		try {
+			String selectUserWithMaxScore = "select username, password, email from app.users where score = ?";			
+			pst = connection.prepareStatement(selectUserWithMaxScore);
+			int score = getMaxScore();
+			pst.setInt(1, score);
+			pst.setMaxRows(1);
+			ResultSet results = pst
+					.executeQuery();
+			while(results.next()){
+				String username = results.getString("username");
+				String password = results.getString("password");
+				String email = results.getString("email");
+				u = new User(username, password, email);
+				u.setScore(score);
+				System.out.println(u.getUsername());
+				
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return u;
+
+	}
+	
+	
+	public int getUserPosition (int userId){
+		PreparedStatement countUsersStatement;
+		int userPosition = 0;
+		try {
+
+			int userScore = getUserScore(userId);
+
+			countUsersStatement = connection
+					.prepareStatement("SELECT COUNT(*) AS COUNT FROM APP.USERS WHERE SCORE > ? ");
+			countUsersStatement.setInt(1, userScore);
+			ResultSet countUsers = countUsersStatement.executeQuery();
+			countUsers.next();
+			userPosition = countUsers.getInt("count");
+			}catch(SQLException e){
+				e.printStackTrace();
+			}
+		return userPosition;
+	}
+	
+	public ArrayList<User> getTopUsers(){
+		ArrayList<User> topUsers = new ArrayList<User>();
+		
+		Statement statement;
+		
+		try {
+			statement = connection.createStatement();
+			statement.setMaxRows(10);
+			ResultSet resultSet = statement
+					.executeQuery("SELECT USERNAME, SCORE FROM APP.USERS ORDER BY SCORE DESC");
+			while (resultSet.next()) {
+				String username = resultSet.getString("username");
+				int score = resultSet.getInt("score");
+				User u = new User(username, "default");
+				u.setScore(score);
+				topUsers.add(u);
+				
+			}
+			}catch(SQLException e){
+				e.printStackTrace();
+			}
+		
+		return topUsers;
+	}
 }

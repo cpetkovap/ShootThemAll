@@ -10,12 +10,14 @@ import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
-
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import model.dao.DBUserDao;
+import model.dao.UserDao;
 
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -93,6 +95,8 @@ public class LevelManager extends HttpServlet {
 			int userId = Integer.parseInt(scoreObj.get("userId").toString());
 			int score = Integer.parseInt(scoreObj.get("score").toString());
 
+			UserDao ud = new DBUserDao();
+			
 			if (score > 0) {
 				/*
 				 * Тук записваме точките на потребителя с userId в базата данни
@@ -102,6 +106,10 @@ public class LevelManager extends HttpServlet {
 				 * Тук обновяваме освен записа в базата данни, но и кеша с
 				 * потребители
 				 */
+				
+				ud.updateScore(score, userId);
+				
+				int userScore = ud.getUserScore(userId);
 
 				// мейл тест
 				sendEmail("shootthemallgame@gmail.com",

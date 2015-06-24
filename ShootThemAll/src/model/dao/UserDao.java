@@ -30,6 +30,10 @@ public interface UserDao {
 	int getUserScore(int userId);
 	int getUserLevel(int userId);
 	
+	User getUserWithMaxScore();
+	int getUserPosition (int userId);
+	ArrayList<User> getTopUsers();
+	
 	static UserDao getUserDao(String type){
 		if(type.equals(DATASOURCE_DB)){
 			return new DBUserDao();
@@ -39,6 +43,7 @@ public interface UserDao {
 		}
 		
 	}
+	
 	
 
 }
