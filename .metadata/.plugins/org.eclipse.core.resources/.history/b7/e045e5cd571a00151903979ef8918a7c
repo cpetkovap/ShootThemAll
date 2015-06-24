@@ -65,14 +65,14 @@ public class LevelBuilder {
 		
 //		//вариант 2 -> за фиксирано максимум 3 нива
 //		for(int i = 0 ; i < enemies.length; i++){
-//			enemies[i] = EnemyFactory.getEnemy(i+1);
+//			enemies[i] = new EnemyFactory().getEnemy(i+1);
 //		}
-		
+//		
 		
 //		//за сега нямаме добри :)
 //		//damage = 0
 //		int goodEnemyCount = rand.nextInt(level * 4) + 1;
-//		Enemy goodEnemy = EnemyFactory.getEnemy(100);
+//		Enemy goodEnemy = new EnemyFactory().getEnemy(100);
 //		JSONObject goodEnemyObj = new JSONObject();
 //		goodEnemyObj.put("type", goodEnemy.getType());
 //		goodEnemyObj.put("health", goodEnemy.getHealth());

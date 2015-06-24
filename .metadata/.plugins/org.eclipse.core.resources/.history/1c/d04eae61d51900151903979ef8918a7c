@@ -28,9 +28,9 @@ foreign key (user_id) references app.Users (id)
 );
 
 
-insert into app.Weapons (damage, price) values(1,0); 
-insert into app.Weapons (damage, price) values(2,200);
-insert into app.Weapons (damage, price) values(3,500); 
+insert into app.Weapons (damage, price) values(1,1); 
+insert into app.Weapons (damage, price) values(2,2);
+insert into app.Weapons (damage, price) values(3,3); 
 insert into app.Users values(2,'2','1','1',1,1,1,1);
 insert into app.Users (username, password, email, score ) values('Ivan', '123', 'Ivan@gmail.com', 100);
 insert into app.Users (username, password, email, score ) values('Petko', '1234', 'Petko@gmail.com', 10);

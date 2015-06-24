@@ -4,7 +4,7 @@ import model.Enemy;
 
 public class EnemyFactory {
 	
-	public static Enemy getEnemy(int type){
+	public Enemy getEnemy(int type){
 		Enemy result = null;
 		switch(type){
 		case 1 : result = new Enemy(type, 1, 5000, 1); break;
