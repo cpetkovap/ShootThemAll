@@ -1,7 +1,6 @@
 package controller;
 
 import java.io.IOException;
-import java.util.ArrayList;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -10,7 +9,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import model.dao.DBUserDao;
-import model.dao.UserDao;
 
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -49,7 +47,7 @@ public class WeaponManager extends HttpServlet {
 		try {
 			JSONObject userObj = (JSONObject) parser.parse(line);
 			int userId = Integer.parseInt(userObj.get("userId").toString());
-			int weaponType = Integer.parseInt(userObj.get("weaponType")
+			int weponType = Integer.parseInt(userObj.get("weaponType")
 					.toString());
 
 			/*
@@ -64,18 +62,6 @@ public class WeaponManager extends HttpServlet {
 			 */
 			
 			UserDao ud = new DBUserDao();
-			ArrayList<Integer> unlockedWeapons = ud.getUnlockedWeapons(userId);
-			
-			boolean isUnlocked = false;
-			for(int i = 0 ; i < unlockedWeapons.size(); i++){
-				if(unlockedWeapons.get(i) == weaponType){
-					isUnlocked = true;
-				}				
-			}
-			
-			if(isUnlocked){
-				ud.updateUserWeapon(weaponType, userId);
-			}
 
 			message = "success";
 			response.setStatus(200);

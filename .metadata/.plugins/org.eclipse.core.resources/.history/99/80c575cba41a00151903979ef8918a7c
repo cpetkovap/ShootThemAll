@@ -31,72 +31,72 @@ public class WeaponsStore extends HttpServlet {
 
 	}
 	
-//	@Override
-//	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
-//			throws ServletException, IOException {
-//		// TODO Auto-generated method stub
-//		doPost(req, resp);
-//	}
-
-	protected void doGet(HttpServletRequest request,
-			HttpServletResponse response) throws ServletException, IOException {
-		String line = request.getParameter("userId");
-
-		// test
-		line = "1";
-
-		JSONObject result = new JSONObject();
-
-		if (line != null) {
-
-			int userId = Integer.parseInt(line);
-			UserDao ud = new DBUserDao();
-			WeaponDao wd = new DBWeaponDao();
-
-			/*
-			 * select в базата данни по userId за точките които потребителя има,
-			 * за всичките оръжия и за активните за него оръжия
-			 */
-
-			int score = ud.getUserScore(userId);		
-			ArrayList<Weapon> weapons = wd.getWeapons();
-			ArrayList<Integer> unlockedWeapons = ud.getUnlockedWeapons(userId);
-
-
-			result.put("score", score);
-
-			JSONArray weaponsArr = new JSONArray();
-
-			for (int i = 0; i < weapons.size(); i++) {
-				JSONObject weaponsObj = new JSONObject();
-				weaponsObj.put("type", weapons.get(i).getType());
-				weaponsObj.put("damage", weapons.get(i).getDamage());
-				weaponsObj.put("price", weapons.get(i).getPrice());
-				weaponsArr.add(weaponsObj);
-			}
-
-			result.put("weapons", weaponsArr);
-
-			JSONArray unlockedWeaponsArr = new JSONArray();
-
-			for (int i = 0; i < unlockedWeapons.size(); i++) {
-				JSONObject unlockedWeaponsObj = new JSONObject();
-				unlockedWeaponsObj.put("type", unlockedWeapons.get(i));
-				unlockedWeaponsArr.add(unlockedWeaponsObj);
-			}
-
-			response.setStatus(200);
-			result.put("unlockedWeapons", unlockedWeaponsArr);
-
-		} else {
-
-			result.put("error", "Invalid parameter");
-			response.setStatus(400);
-
-		}
-		System.out.println(result.toJSONString());
-		response.getWriter().write(result.toJSONString());
+	@Override
+	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
+			throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		doPost(req, resp);
 	}
+
+//	protected void doGet(HttpServletRequest request,
+//			HttpServletResponse response) throws ServletException, IOException {
+//		String line = request.getParameter("userId");
+//
+//		// test
+//		line = "1";
+//
+//		JSONObject result = new JSONObject();
+//
+//		if (line != null) {
+//
+//			int userId = Integer.parseInt(line);
+//			UserDao ud = new DBUserDao();
+//			WeaponDao wd = new DBWeaponDao();
+//
+//			/*
+//			 * select в базата данни по userId за точките които потребителя има,
+//			 * за всичките оръжия и за активните за него оръжия
+//			 */
+//
+//			int score = ud.getUserScore(userId);		
+//			ArrayList<Weapon> weapons = wd.getWeapons();
+//			ArrayList<Integer> unlockedWeapons = ud.getUnlockedWeapons(userId);
+//
+//
+//			result.put("score", score);
+//
+//			JSONArray weaponsArr = new JSONArray();
+//
+//			for (int i = 0; i < weapons.size(); i++) {
+//				JSONObject weaponsObj = new JSONObject();
+//				weaponsObj.put("type", weapons.get(i).getType());
+//				weaponsObj.put("damage", weapons.get(i).getDamage());
+//				weaponsObj.put("price", weapons.get(i).getPrice());
+//				weaponsArr.add(weaponsObj);
+//			}
+//
+//			result.put("weapons", weaponsArr);
+//
+//			JSONArray unlockedWeaponsArr = new JSONArray();
+//
+//			for (int i = 0; i < unlockedWeapons.size(); i++) {
+//				JSONObject unlockedWeaponsObj = new JSONObject();
+//				unlockedWeaponsObj.put("type", unlockedWeapons.get(i));
+//				unlockedWeaponsArr.add(unlockedWeaponsObj);
+//			}
+//
+//			response.setStatus(200);
+//			result.put("unlockedWeapons", unlockedWeaponsArr);
+//
+//		} else {
+//
+//			result.put("error", "Invalid parameter");
+//			response.setStatus(400);
+//
+//		}
+//		System.out.println(result.toJSONString());
+//		response.getWriter().write(result.toJSONString());
+//	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String line = request.getReader().readLine();
