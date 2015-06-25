@@ -92,7 +92,7 @@ public class LevelBuilder {
 		int randomBullets = rand.nextInt((maxLevel - level) * 3 + 1) + (maxLevel - level) ; 
 		System.out.println("Bonus bullets = " + randomBullets);
 		bullets += randomBullets;
-		System.out.println("buulets = " + bullets);
+		System.out.println("bullets = " + bullets);
 		
 		objLevel.put("bullets", bullets);
 		objLevel.put("weapon", weaponObj);
