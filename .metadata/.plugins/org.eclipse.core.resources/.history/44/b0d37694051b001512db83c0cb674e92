@@ -1,0 +1,20 @@
+package model;
+
+public class LifeBooster extends Booster{
+	private int healtPoints;
+
+	public int getHealtPoints() {
+		return healtPoints;
+	}
+
+	private void setHealtPoints(int healtPoints) {
+		if(healtPoints > 0){
+			this.healtPoints = healtPoints;
+		}else{
+			this.healtPoints = 1;
+		}
+	}
+	
+	
+
+}
