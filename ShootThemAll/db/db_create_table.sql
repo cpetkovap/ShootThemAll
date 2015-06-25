@@ -1,62 +1,49 @@
-
-create table APP.Users(
-id int not null GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1),
-username varchar(45) not null unique,
-password varchar(45) not null,
-email varchar (45) not null,
-notificationAllow  int not null check(notificationAllow>=0 and notificationAllow<=1) default 0,
-levelNo smallint not null default 1,
-score int not null default 0,
-choosen_weapon_id int not null default 1,
-last_activity_on timestamp, 
-primary key(id)
+CREATE TABLE APP.Users(
+id INT NOT NULL GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1),
+username VARCHAR(45) NOT NULL UNIQUE,
+password VARCHAR(45) NOT NULL,
+email VARCHAR (45) NOT NULL,
+notificationAllow  INT NOT NULL CHECK(notificationAllow>=0 AND notificationAllow<=1) DEFAULT 0,
+levelNo SMALLINT NOT NULL DEFAULT 1,
+score INT NOT NULL DEFAULT 0,
+choosen_weapon_id INT NOT NULL DEFAULT 1,
+last_activity_on TIMESTAMP ,
+PRIMARY KEY(id)
 );
 
-create table APP.Weapons(
-id int not null GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1) ,
-damage int not null default 0,
-price int not null default 0,
-primary key (id)
-); 
-
-create table APP.UnlockedWeapons( 
-user_id int not null ,
-weapon_id int not null,
-primary key (user_id, weapon_id),
-foreign key (weapon_id) references app.Weapons (id),
-foreign key (user_id) references app.Users (id)
+CREATE TABLE APP.Weapons(
+id INT NOT NULL GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1) ,
+damage INT NOT NULL DEFAULT 0,
+price INT NOT NULL DEFAULT 0,
+PRIMARY KEY(id)
 );
 
-create table APP.Boosters(
-id int not null GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1),
-duration bigint not null,
-description varchar(255) not null ,
-primary key(id)
+CREATE TABLE APP.UnlockedWeapons( 
+user_id INT NOT NULL ,
+weapon_id INT NOT NULL,
+PRIMARY KEY(user_id, weapon_id),
+FOREIGN KEY(weapon_id) REFERENCES app.Weapons (id) ,
+FOREIGN KEY(user_id) REFERENCES app.Users (id) 
 );
 
+CREATE TABLE APP.Boosters(
+id INT NOT NULL GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1),
+duration BIGINT NOT NULL,
+description VARCHAR(255) NOT NULL,
+PRIMARY KEY(id)
+);
 
-insert into app.Weapons (damage, price) values(1,0); 
-insert into app.Weapons (damage, price) values(2,200);
-insert into app.Weapons (damage, price) values(3,500); 
-insert into app.Users values(2,'2','1','1',1,1,1,1);
-insert into app.Users (username, password, email, score ) values('Ivan', '123', 'Ivan@gmail.com', 100);
-insert into app.Users (username, password, email, score ) values('Petko', '1234', 'Petko@gmail.com', 10);
-insert into app.Users (username, password, email, score ) values('Tanq', 'Tanq', 'Tanq@gmail.com', 200);
-insert into app.Users (username, password, email, score ) values('SIMONA', '444', 'simona@gmail.com', 100);
-insert into app.Users (username, password, email, score ) values('Evgeni', 'Ta333nq', 'evgeni@gmail.com', 200);
-insert into app.Users (username, password, email, score ) values('Tihomit', '222', 'tisho@gmail.com', 300);
-insert into app.Users (username, password, email, score ) values('Vanq', '1111', 'v@gmail.com', 230);
-insert into app.Users (username, password, email, score ) values('Poli', '111d1', 'd@gmail.com', 530);
-insert into app.Users (username, password, email, score ) values('Kirik', 'q1111', 'k@gmail.com', 230);
-insert into app.Users (username, password, email, score ) values('Lolipop', 'popi', 'loly@gmail.com', 60);
-insert into app.Users (username, password, email, score ) values('Zozi', 'zizi', 'zizi@gmail.com', 630);
-insert into app.Users (username, password, email, score ) values('Roni', 'rrrr', 'rrr@gmail.com', 310);
-insert into app.Users (username, password, email, score ) values('Qna', '222', 'qna@gmail.com', 70);
+CREATE TABLE app.Achievements (
+id INT NOT NULL GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1),
+achievement_points INT NOT NULL,
+description VARCHAR(255) NOT NULL,
+PRIMARY KEY(id)
+);
 
-
-
-
-
-drop table app.USERS;
-drop table app.weapons;
-DROP TABLE  app.UnlockedWeapons;
+CREATE TABLE app.UserAchievements(
+user_id INT NOT NULL ,
+achievement_id INT NOT NULL,
+PRIMARY KEY(user_id, achievement_id),
+FOREIGN KEY(achievement_id) REFERENCES app.Achievements (id) ,
+FOREIGN KEY(user_id) REFERENCES app.Users (id)
+);
