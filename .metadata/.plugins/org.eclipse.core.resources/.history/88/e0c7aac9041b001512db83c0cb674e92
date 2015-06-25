@@ -1,0 +1,28 @@
+package model;
+
+public class Bullets extends Booster{
+	private int numBullets;
+	
+
+	public Bullets(int numBullets) {
+		String description = "Add " + numBullets + " bullets";
+		super(1, 2000, description);
+		this.numBullets = numBullets;
+	}
+
+	public int getNumBullets() {
+		return numBullets;
+	}
+
+	private void setNumBullets(int numBullets) {
+		if(numBullets > 0){
+			this.numBullets = numBullets;
+		}else{
+			this.numBullets = 1;
+		}
+	}
+	
+	
+	
+
+}

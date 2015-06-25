@@ -1,0 +1,27 @@
+package model;
+
+public class HealthBooster extends Booster{
+	private int healtPoints;
+	
+	
+
+	public HealthBooster(int healtPoints) {
+		super(2, 2000, "Add " + healtPoints + " health.");
+		setHealtPoints(healtPoints);
+	}
+
+	public int getHealtPoints() {
+		return healtPoints;
+	}
+
+	private void setHealtPoints(int healtPoints) {
+		if(healtPoints > 0){
+			this.healtPoints = healtPoints;
+		}else{
+			this.healtPoints = 1;
+		}
+	}
+	
+	
+
+}

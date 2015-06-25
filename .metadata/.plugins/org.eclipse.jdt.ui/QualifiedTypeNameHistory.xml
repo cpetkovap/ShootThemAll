@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <qualifiedTypeNameHistroy>
-<fullyQualifiedTypeName name="model.Enemy"/>
 <fullyQualifiedTypeName name="controller.LevelFactory"/>
 <fullyQualifiedTypeName name="controller.LevelBuilder"/>
 <fullyQualifiedTypeName name="controller.LevelsMap"/>
@@ -14,12 +13,10 @@
 <fullyQualifiedTypeName name="controller.UserInfoManager"/>
 <fullyQualifiedTypeName name="controller.CompareUsers"/>
 <fullyQualifiedTypeName name="org.json.simple.parser.JSONParser"/>
-<fullyQualifiedTypeName name="org.json.simple.JSONObject"/>
 <fullyQualifiedTypeName name="java.lang.Integer"/>
 <fullyQualifiedTypeName name="java.lang.Boolean"/>
 <fullyQualifiedTypeName name="java.lang.NullPointerException"/>
 <fullyQualifiedTypeName name="cache.ICache"/>
-<fullyQualifiedTypeName name="controller.UsersComparator"/>
 <fullyQualifiedTypeName name="java.security.acl.LastOwnerException"/>
 <fullyQualifiedTypeName name="javax.mail.internet.MimeBodyPart"/>
 <fullyQualifiedTypeName name="javax.mail.internet.MimeMultipart"/>
@@ -27,22 +24,30 @@
 <fullyQualifiedTypeName name="javax.mail.PasswordAuthentication"/>
 <fullyQualifiedTypeName name="cache.Cache"/>
 <fullyQualifiedTypeName name="java.lang.SecurityManager"/>
-<fullyQualifiedTypeName name="controller.SettingsManager"/>
 <fullyQualifiedTypeName name="java.util.Vector"/>
-<fullyQualifiedTypeName name="java.util.ArrayList"/>
 <fullyQualifiedTypeName name="java.util.List"/>
 <fullyQualifiedTypeName name="java.util.Date"/>
-<fullyQualifiedTypeName name="model.dao.UserDao"/>
-<fullyQualifiedTypeName name="model.dao.DBUserDao"/>
 <fullyQualifiedTypeName name="java.lang.Exception"/>
 <fullyQualifiedTypeName name="java.lang.IllegalArgumentException"/>
 <fullyQualifiedTypeName name="java.sql.Connection"/>
+<fullyQualifiedTypeName name="java.beans.Statement"/>
+<fullyQualifiedTypeName name="java.lang.StringBuffer"/>
+<fullyQualifiedTypeName name="java.sql.ResultSet"/>
+<fullyQualifiedTypeName name="org.apache.derby.impl.sql.catalog.SYSPERMSRowFactory"/>
 <fullyQualifiedTypeName name="db.DBManager"/>
 <fullyQualifiedTypeName name="java.sql.PreparedStatement"/>
-<fullyQualifiedTypeName name="java.beans.Statement"/>
-<fullyQualifiedTypeName name="java.sql.ResultSet"/>
+<fullyQualifiedTypeName name="model.Enemy"/>
+<fullyQualifiedTypeName name="controller.EnemyFactory"/>
 <fullyQualifiedTypeName name="model.Weapon"/>
 <fullyQualifiedTypeName name="model.dao.WeaponDao"/>
-<fullyQualifiedTypeName name="model.dao.DBWeaponDao"/>
+<fullyQualifiedTypeName name="java.sql.Statement"/>
+<fullyQualifiedTypeName name="java.sql.SQLException"/>
 <fullyQualifiedTypeName name="model.User"/>
+<fullyQualifiedTypeName name="controller.UsersComparator"/>
+<fullyQualifiedTypeName name="controller.SettingsManager"/>
+<fullyQualifiedTypeName name="org.json.simple.JSONObject"/>
+<fullyQualifiedTypeName name="model.dao.UserDao"/>
+<fullyQualifiedTypeName name="model.dao.DBUserDao"/>
+<fullyQualifiedTypeName name="java.util.ArrayList"/>
+<fullyQualifiedTypeName name="model.dao.DBWeaponDao"/>
 </qualifiedTypeNameHistroy>
