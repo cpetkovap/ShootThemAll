@@ -38,7 +38,7 @@ public class Registration extends HttpServlet {
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 		// test
-		response.setHeader("Access-Control-Allow-Origin", "*");
+		resp.setHeader("Access-Control-Allow-Origin", "*");
 		doPost(req, resp);
 	}
 
