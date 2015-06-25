@@ -27,6 +27,13 @@ foreign key (weapon_id) references app.Weapons (id),
 foreign key (user_id) references app.Users (id)
 );
 
+create table APP.Boosters(
+id int not null GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1),
+duration bigint not null,
+description varchar(255) not null ,
+primary key(id)
+);
+
 
 insert into app.Weapons (damage, price) values(1,0); 
 insert into app.Weapons (damage, price) values(2,200);
