@@ -10,7 +10,7 @@ public class HealthBooster extends Booster{
     private static Booster booster = db.getBooster(2);
 
 	public HealthBooster(int healtPoints) {
-		super(booster.getId(), booster.getDuration(), booster.getDescription());
+		super(2, 2000, "Add health.");
 		setHealtPoints(healtPoints);
 	}
 

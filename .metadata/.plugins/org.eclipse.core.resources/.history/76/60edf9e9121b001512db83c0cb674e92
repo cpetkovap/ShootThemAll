@@ -1,18 +1,14 @@
 package model;
 
-public class Booster {
+public abstract class Booster {
 	private int id;
 	private float duration;
 	private String description;
 	
-	public Booster(float duration, String description) {
+	public Booster(int id, float duration, String description) {
+		setId(id);
 		setDuration(duration);
 		setDescription(description);
-	}
-	
-	public Booster(int id, float duration, String description) {
-		this(duration, description);
-		setId(id);
 	}
 	
 	//get

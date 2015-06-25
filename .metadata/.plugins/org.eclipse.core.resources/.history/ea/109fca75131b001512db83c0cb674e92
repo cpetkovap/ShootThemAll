@@ -7,12 +7,11 @@ import model.dao.DBUserDao;
 public class BulletsBooster extends Booster{
 	private int numBullets;
 	
-	private static BoosterDao db = new DBBoosterDao();
-    private static Booster booster = db.getBooster(1);
-	
+	private BoosterDao db = new DBBoosterDao();
+	Booster booster = db.getBooster(1);
 	
 	public BulletsBooster(int numBullets) {
-		super(booster.getId(), booster.getDuration(), booster.getDescription());
+		super(1, 2000, "Add bullets.");
 		setNumBullets(numBullets);
 	}
 

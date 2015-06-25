@@ -10,7 +10,7 @@ public class PointsBooster extends Booster{
     private static Booster booster = db.getBooster(3);
 
 	public PointsBooster(int points) {
-		super(booster.getId(), booster.getDuration(), booster.getDescription());
+		super(3, 3000, "Add points.");
 		setPoints(points);
 	}
 

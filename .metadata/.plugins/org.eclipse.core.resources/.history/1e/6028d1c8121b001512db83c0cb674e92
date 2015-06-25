@@ -1,18 +1,15 @@
 package model;
 
 import model.dao.BoosterDao;
-import model.dao.DBBoosterDao;
 import model.dao.DBUserDao;
 
 public class BulletsBooster extends Booster{
 	private int numBullets;
 	
-	private static BoosterDao db = new DBBoosterDao();
-    private static Booster booster = db.getBooster(1);
-	
+	BoosterDao db = new DBUserDao();
 	
 	public BulletsBooster(int numBullets) {
-		super(booster.getId(), booster.getDuration(), booster.getDescription());
+		super(1, 2000, "Add bullets.");
 		setNumBullets(numBullets);
 	}
 
