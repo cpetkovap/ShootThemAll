@@ -22,13 +22,16 @@ public class User {
 	public User(String username, String password, String email) {
 		this(username, password);
 		setEmail(email);
-
+	}
+	
+	public User(int id, String username, String password, String email){
+		this(username, password, email);
+		setId(id);
 	}
 
 	public User(int id, String username, String password, String email,
 			int score, int level, Weapon weapon, boolean allowNotification) {
-		this(username, password, email);
-		setId(id);
+		this(id,username, password, email);
 		setScore(score);
 		setLevel(level);
 		setWeapon(weapon);
