@@ -20,9 +20,7 @@ public class LevelBuilder {
 	public JSONObject buildLevel(int userID, int level){
 		Random rand = new Random();
 		JSONObject objLevel = new JSONObject();
-		objLevel.put("userHealth", 3);
-		
-		
+		objLevel.put("userHealth", 3);	
 
 		/*
 		 * проверка за валидно ниво от базата данни : userLevel = нивото до което е стигнал потребителя, но не е минал
@@ -58,7 +56,6 @@ public class LevelBuilder {
 			weapon = new Weapon(1, 1, 0);
 		}
 		
-		
 		JSONObject weaponObj = new JSONObject();
 		weaponObj.put("type", weapon.getType());
 		weaponObj.put("damage", weapon.getDamage());
@@ -78,18 +75,16 @@ public class LevelBuilder {
 		//damage = 0
 		int goodEnemyCount = rand.nextInt(level * 4) + 1;
 		Enemy goodEnemy = EnemyFactory.getEnemy(100);
-		JSONObject goodEnemyObj = new JSONObject();
-		goodEnemyObj.put("type", goodEnemy.getType());
-		goodEnemyObj.put("health", goodEnemy.getHealth());
-		goodEnemyObj.put("duration", goodEnemy.getDuration());
-		goodEnemyObj.put("damage", goodEnemy.getDamage());
-		goodEnemyObj.put("count", goodEnemyCount);
+		JSONObject goodEnemyObj = makeEnemy(goodEnemy, goodEnemyCount);
+		
 		
 		int bullets = 0;
 		for(int i = 0; i < randomNum.length; i++){
-			bullets += randomNum[i] * Math.ceil(enemies[i].getDamage()/weapon.getDamage());
-			
+			bullets += randomNum[i] * Math.ceil((double)enemies[i].getDamage()/(double)weapon.getDamage());	
+			//System.out.println(randomNum[i] * Math.ceil((double)enemies[i].getDamage()/(double)weapon.getDamage()));		
+
 		}
+		
 		
 		System.out.println("level =" + level);
 		System.out.println("max level =" + maxLevel);
@@ -97,6 +92,7 @@ public class LevelBuilder {
 		int randomBullets = rand.nextInt((maxLevel - level) * 3 + 1) + (maxLevel - level) ; 
 		System.out.println("Bonus bullets = " + randomBullets);
 		bullets += randomBullets;
+		System.out.println("buulets = " + bullets);
 		
 		objLevel.put("bullets", bullets);
 		objLevel.put("weapon", weaponObj);
@@ -104,12 +100,7 @@ public class LevelBuilder {
 		
 		JSONArray enemiesArr = new JSONArray();
 		for(int i = 0 ; i < enemies.length; i++){
-			JSONObject enemyObj = new JSONObject();
-			enemyObj.put("type", enemies[i].getType());
-			enemyObj.put("health", enemies[i].getHealth());
-			enemyObj.put("duration", enemies[i].getDuration());
-			enemyObj.put("damage", enemies[i].getDamage());
-			enemyObj.put("count", randomNum[i]);
+			JSONObject enemyObj = makeEnemy(enemies[i], randomNum[i]);			
 			enemiesArr.add(enemyObj);
 		}
 		
@@ -158,6 +149,16 @@ public class LevelBuilder {
 		booster.put("count", count);
 		return booster;
 		
+	}
+	
+	public JSONObject makeEnemy(Enemy e, int num){
+		JSONObject enemyObj = new JSONObject();
+		enemyObj.put("type", e.getType());
+		enemyObj.put("health", e.getHealth());
+		enemyObj.put("duration", e.getDuration());
+		enemyObj.put("damage", e.getDamage());
+		enemyObj.put("count", num);
+		return enemyObj;
 	}
 
 }
