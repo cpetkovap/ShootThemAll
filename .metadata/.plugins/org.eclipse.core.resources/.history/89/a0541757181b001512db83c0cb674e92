@@ -54,7 +54,7 @@ public class LevelManager extends HttpServlet {
 
 		JSONObject result = new JSONObject();
 
-		if (user != null && !user.isEmpty() && userLevel != null && !userLevel.isEmpty()) {
+		if (user != null && userLevel != null) {
 
 			int userId = Integer.parseInt(user);
 			int level = Integer.parseInt(userLevel);
