@@ -95,6 +95,8 @@ public class LevelManager extends HttpServlet {
 			JSONObject scoreObj = (JSONObject) parser.parse(line);
 			int userId = Integer.parseInt(scoreObj.get("userId").toString());
 			int score = Integer.parseInt(scoreObj.get("score").toString());
+			
+			
 
 			UserDao ud = new DBUserDao();
 

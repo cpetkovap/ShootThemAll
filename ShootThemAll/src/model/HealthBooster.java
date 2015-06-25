@@ -5,12 +5,13 @@ import model.dao.DBBoosterDao;
 
 public class HealthBooster extends Booster{
 	private int healtPoints;
+	private static final int ID = 2;
 	
 	private static BoosterDao db = new DBBoosterDao();
-    private static Booster booster = db.getBooster(2);
+    private static Booster booster = db.getBooster(ID);
 
 	public HealthBooster(int healtPoints) {
-		super(booster.getId(), booster.getDuration(), booster.getDescription());
+		super(ID, booster.getDuration(), booster.getDescription());
 		setHealtPoints(healtPoints);
 	}
 

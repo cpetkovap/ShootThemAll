@@ -54,9 +54,12 @@ insert into app.Users (username, password, email, score ) values('Roni', 'rrrr',
 insert into app.Users (username, password, email, score ) values('Qna', '222', 'qna@gmail.com', 70);
 
 
-
+insert into app.boosters (DURATION, DESCRIPTION) values(2000, 'Add bullets.');
+insert into app.boosters(DURATION, DESCRIPTION) values(1000, 'Add health.');
+insert into app.boosters (DURATION, DESCRIPTION) values(3000, 'Add points.');
 
 
 drop table app.USERS;
 drop table app.weapons;
 DROP TABLE  app.UnlockedWeapons;
+drop table app.boosters;

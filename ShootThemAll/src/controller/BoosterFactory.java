@@ -21,6 +21,7 @@ public class BoosterFactory {
 			result = new PointsBooster(bonusCount);
 			break;
 		default:
+			result = new PointsBooster(bonusCount);
 			break;
 		}
 
