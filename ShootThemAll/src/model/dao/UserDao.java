@@ -23,16 +23,17 @@ public interface UserDao {
 	void updateLevel(int level, int userId);
 	void updateLevelUp(int userId);
 	void updateNotification(boolean noficationAllow, int userId);
+	void updateCurrentDate (int userId);
 	void updateUserWeapon(int weaponType, int userId);
 	void addUnlockedWeapon(int weaponType, int userId);
 	int existUser(String username, String password);
 	Weapon getUserWeapon(int userId);
 	int getUserScore(int userId);
 	int getUserLevel(int userId);
-	
-	User getUserWithMaxScore();
-	int getUserPosition (int userId);
-	ArrayList<User> getTopUsers();
+	int getMaxScore();
+	 User getUserWithMaxScore();
+	 int getUserPosition (int userId);
+	 ArrayList<User> getTopUsers();
 	
 	static UserDao getUserDao(String type){
 		if(type.equals(DATASOURCE_DB)){
@@ -43,7 +44,6 @@ public interface UserDao {
 		}
 		
 	}
-	
 	
 
 }
