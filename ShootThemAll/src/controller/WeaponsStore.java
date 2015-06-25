@@ -40,6 +40,7 @@ public class WeaponsStore extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
+		response.setHeader("Access-Control-Allow-Origin", "*");
 		String line = request.getParameter("userId");
 
 		// test
@@ -54,8 +55,8 @@ public class WeaponsStore extends HttpServlet {
 			WeaponDao wd = new DBWeaponDao();
 
 			/*
-			 * select в базата данни по userId за точките които потребителя има,
-			 * за всичките оръжия и за активните за него оръжия
+			 * select РІ Р±Р°Р·Р°С‚Р° РґР°РЅРЅРё РїРѕ userId Р·Р° С‚РѕС‡РєРёС‚Рµ РєРѕРёС‚Рѕ РїРѕС‚СЂРµР±РёС‚РµР»СЏ РёРјР°,
+			 * Р·Р° РІСЃРёС‡РєРёС‚Рµ РѕСЂСЉР¶РёСЏ Рё Р·Р° Р°РєС‚РёРІРЅРёС‚Рµ Р·Р° РЅРµРіРѕ РѕСЂСЉР¶РёСЏ
 			 */
 
 			int score = ud.getUserScore(userId);		
@@ -99,6 +100,7 @@ public class WeaponsStore extends HttpServlet {
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		response.setHeader("Access-Control-Allow-Origin", "*");
 		String line = request.getReader().readLine();
 
 		// test
@@ -117,12 +119,12 @@ public class WeaponsStore extends HttpServlet {
 			int weaponType = Integer.parseInt(userObj.get("weaponType").toString());
 			
 			/*
-			 *  ОТКЛЮЧВАМЕ ОРЪЖИЕ
+			 *  РћРўРљР›Р®Р§Р’РђРњР• РћР РЄР–Р�Р•
 			 * 
-			 *  Проверка в базата данни дали оръжието от този тип е заключено за потребителя с това userId
-			 *  и дали потребителя разполага с достатачно точки, за да го отключи
-			 *  Ако е заключено и потребителя има достатачно точки
-			 *  го записваме за потребителя като отключено оръжие
+			 *  РџСЂРѕРІРµСЂРєР° РІ Р±Р°Р·Р°С‚Р° РґР°РЅРЅРё РґР°Р»Рё РѕСЂСЉР¶РёРµС‚Рѕ РѕС‚ С‚РѕР·Рё С‚РёРї Рµ Р·Р°РєР»СЋС‡РµРЅРѕ Р·Р° РїРѕС‚СЂРµР±РёС‚РµР»СЏ СЃ С‚РѕРІР° userId
+			 *  Рё РґР°Р»Рё РїРѕС‚СЂРµР±РёС‚РµР»СЏ СЂР°Р·РїРѕР»Р°РіР° СЃ РґРѕСЃС‚Р°С‚Р°С‡РЅРѕ С‚РѕС‡РєРё, Р·Р° РґР° РіРѕ РѕС‚РєР»СЋС‡Рё
+			 *  РђРєРѕ Рµ Р·Р°РєР»СЋС‡РµРЅРѕ Рё РїРѕС‚СЂРµР±РёС‚РµР»СЏ РёРјР° РґРѕСЃС‚Р°С‚Р°С‡РЅРѕ С‚РѕС‡РєРё
+			 *  РіРѕ Р·Р°РїРёСЃРІР°РјРµ Р·Р° РїРѕС‚СЂРµР±РёС‚РµР»СЏ РєР°С‚Рѕ РѕС‚РєР»СЋС‡РµРЅРѕ РѕСЂСЉР¶РёРµ
 			 * 
 			 */
 			

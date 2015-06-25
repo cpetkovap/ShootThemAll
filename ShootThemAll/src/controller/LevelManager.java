@@ -44,6 +44,7 @@ public class LevelManager extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
+		response.setHeader("Access-Control-Allow-Origin", "*");
 		String user = request.getParameter("userId");
 		String userLevel = request.getParameter("level");
 
@@ -77,6 +78,7 @@ public class LevelManager extends HttpServlet {
 	
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
+		response.setHeader("Access-Control-Allow-Origin", "*");
 		String line = request.getReader().readLine();
 
 		// test

@@ -46,6 +46,8 @@ public class LeaderBoard extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
+		
+		response.setHeader("Access-Control-Allow-Origin", "*");
 		// репрезентация на класация
 		String line = request.getParameter("userId");
 

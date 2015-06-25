@@ -44,7 +44,7 @@ public class UserInfoManager extends HttpServlet {
 	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 		// репрезентация на информацията за потребителя
-
+		response.setHeader("Access-Control-Allow-Origin", "*");
 		String line = request.getParameter("userId");
 		// test
 		line = "1";
@@ -106,7 +106,7 @@ public class UserInfoManager extends HttpServlet {
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 		// промяна на информацията за потребителя
-
+		response.setHeader("Access-Control-Allow-Origin", "*");
 		String line = request.getReader().readLine();
 
 		// test

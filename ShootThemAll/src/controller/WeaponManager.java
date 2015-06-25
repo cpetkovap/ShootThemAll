@@ -29,11 +29,13 @@ public class WeaponManager extends HttpServlet {
 
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		response.setHeader("Access-Control-Allow-Origin", "*");
 		doPost(request, response);
 	}
 
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
+		response.setHeader("Access-Control-Allow-Origin", "*");
 		String line = request.getReader().readLine();
 
 		// test
@@ -53,13 +55,13 @@ public class WeaponManager extends HttpServlet {
 					.toString());
 
 			/*
-			 * ИЗБИРАМЕ С КОЕ ОРЪЖИЕ ЩЕ ИГРАЕ ПОТРЕБИТЕЛЯ
+			 * Р�Р—Р‘Р�Р РђРњР• РЎ РљРћР• РћР РЄР–Р�Р• Р©Р• Р�Р“Р РђР• РџРћРўР Р•Р‘Р�РўР•Р›РЇ
 			 * 
-			 * проверка в базата данни дали оръжието от този тип е отключено за
-			 * потребителя с това userId ако е отключено го записваме за
-			 * потребителя като избрано оръжие
+			 * РїСЂРѕРІРµСЂРєР° РІ Р±Р°Р·Р°С‚Р° РґР°РЅРЅРё РґР°Р»Рё РѕСЂСЉР¶РёРµС‚Рѕ РѕС‚ С‚РѕР·Рё С‚РёРї Рµ РѕС‚РєР»СЋС‡РµРЅРѕ Р·Р°
+			 * РїРѕС‚СЂРµР±РёС‚РµР»СЏ СЃ С‚РѕРІР° userId Р°РєРѕ Рµ РѕС‚РєР»СЋС‡РµРЅРѕ РіРѕ Р·Р°РїРёСЃРІР°РјРµ Р·Р°
+			 * РїРѕС‚СЂРµР±РёС‚РµР»СЏ РєР°С‚Рѕ РёР·Р±СЂР°РЅРѕ РѕСЂСЉР¶РёРµ
 			 * 
-			 * освен записа в базата данни променяме  оръжието и в кеша
+			 * РѕСЃРІРµРЅ Р·Р°РїРёСЃР° РІ Р±Р°Р·Р°С‚Р° РґР°РЅРЅРё РїСЂРѕРјРµРЅСЏРјРµ  РѕСЂСЉР¶РёРµС‚Рѕ Рё РІ РєРµС€Р°
 			 * 
 			 */
 			
