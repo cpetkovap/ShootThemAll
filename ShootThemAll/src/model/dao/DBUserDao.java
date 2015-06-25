@@ -263,12 +263,19 @@ public class DBUserDao implements UserDao {
 		try {
 				connection.setAutoCommit(false);
 			
-		
+		//delete user - user_id from unlockedWeapons
 			pst = connection
 					.prepareStatement("delete from app.unlockedWeapons where user_id = ?");
 			pst.setInt(1, userId);
 			pst.executeUpdate();
 			
+		//delete user - user_id from userAchievements
+			pst = connection
+					.prepareStatement("delete from app.userAchievements where user_id= = ?");
+			pst.setInt(1, userId);
+			pst.executeUpdate();
+			
+		//delete user from Users
 			pst = connection
 					.prepareStatement("delete from app.users where id = ?");
 			pst.setInt(1, userId);
