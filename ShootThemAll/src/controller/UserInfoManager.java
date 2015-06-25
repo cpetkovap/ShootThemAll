@@ -51,7 +51,7 @@ public class UserInfoManager extends HttpServlet {
 
 		JSONObject result = new JSONObject();
 
-		if (line != null) {
+		if (line != null && !line.isEmpty()) {
 			UserDao ud = new DBUserDao();
 
 //			if (getServletContext().getAttribute("cacheUsers") == null) {

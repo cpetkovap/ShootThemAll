@@ -57,7 +57,7 @@ public class LeaderBoard extends HttpServlet {
 		JSONArray result = new JSONArray();
 		JSONObject error = new JSONObject();
 
-		if (line != null) {
+		if (line != null && !line.isEmpty()) {
 			int userId = Integer.parseInt(line);
 			// int userPosition = -1;
 			//

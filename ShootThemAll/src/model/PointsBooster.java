@@ -4,13 +4,14 @@ import model.dao.BoosterDao;
 import model.dao.DBBoosterDao;
 
 public class PointsBooster extends Booster{
+	private static final int ID = 3;
 	private int points;	
 	
 	private static BoosterDao db = new DBBoosterDao();
-    private static Booster booster = db.getBooster(3);
+    private static Booster booster = db.getBooster(ID);
 
 	public PointsBooster(int points) {
-		super(booster.getId(), booster.getDuration(), booster.getDescription());
+		super(ID, booster.getDuration(), booster.getDescription());
 		setPoints(points);
 	}
 

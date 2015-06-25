@@ -6,13 +6,14 @@ import model.dao.DBUserDao;
 
 public class BulletsBooster extends Booster{
 	private int numBullets;
+	private static final int ID = 1;
 	
 	private static BoosterDao db = new DBBoosterDao();
-    private static Booster booster = db.getBooster(1);
-	
+    private static Booster booster = db.getBooster(ID);
+    
 	
 	public BulletsBooster(int numBullets) {
-		super(booster.getId(), booster.getDuration(), booster.getDescription());
+		super(ID, booster.getDuration(), booster.getDescription());
 		setNumBullets(numBullets);
 	}
 

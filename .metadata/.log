@@ -6274,3 +6274,28 @@ Command-line arguments:  -os macosx -ws cocoa -arch x86_64 -product org.eclipse.
 
 !ENTRY org.eclipse.core.net 1 0 2015-06-25 08:54:56.750
 !MESSAGE System property http.nonProxyHosts has been set to local|*.local|169.254/16|*.169.254/16 by an external source. This value will be overwritten using the values from the preferences
+
+!ENTRY org.eclipse.core.jobs 4 2 2015-06-25 12:08:53.247
+!MESSAGE An internal error occurred during: "SQL Statement Execution".
+!STACK 0
+java.lang.NullPointerException
+	at org.eclipse.datatools.sqltools.result.ResultsViewAPI.saveParentElapseTime(ResultsViewAPI.java:725)
+	at org.eclipse.datatools.sqltools.sqleditor.result.GroupSQLResultRunnable.run(GroupSQLResultRunnable.java:307)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:54)
+
+!ENTRY org.eclipse.datatools.sqltools.editor.core 4 0 2015-06-25 12:12:31.006
+!MESSAGE Editor core plugin internal error
+!STACK 0
+java.sql.SQLFeatureNotSupportedException: Feature not implemented: cancel.
+	at org.apache.derby.impl.jdbc.SQLExceptionFactory.getSQLException(Unknown Source)
+	at org.apache.derby.impl.jdbc.SQLExceptionFactory.getSQLException(Unknown Source)
+	at org.apache.derby.impl.jdbc.Util.generateCsSQLException(Unknown Source)
+	at org.apache.derby.impl.jdbc.Util.generateCsSQLException(Unknown Source)
+	at org.apache.derby.impl.jdbc.Util.notImplemented(Unknown Source)
+	at org.apache.derby.impl.jdbc.EmbedStatement.cancel(Unknown Source)
+	at org.eclipse.datatools.sqltools.editor.core.result.ResultSupportRunnable$1.run(ResultSupportRunnable.java:485)
+	at org.eclipse.datatools.sqltools.result.internal.model.ResultInstance$1.run(ResultInstance.java:188)
+Caused by: ERROR 0A000: Feature not implemented: cancel.
+	at org.apache.derby.iapi.error.StandardException.newException(Unknown Source)
+	at org.apache.derby.impl.jdbc.SQLExceptionFactory.wrapArgsForTransportAcrossDRDA(Unknown Source)
+	... 8 more

@@ -48,7 +48,7 @@ public class WeaponsStore extends HttpServlet {
 
 		JSONObject result = new JSONObject();
 
-		if (line != null) {
+		if (line != null && !line.isEmpty()) {
 
 			int userId = Integer.parseInt(line);
 			UserDao ud = new DBUserDao();

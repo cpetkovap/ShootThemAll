@@ -54,7 +54,7 @@ public class LevelManager extends HttpServlet {
 
 		JSONObject result = new JSONObject();
 
-		if (user != null && userLevel != null) {
+		if (user != null && !user.isEmpty() && userLevel != null && !userLevel.isEmpty()) {
 
 			int userId = Integer.parseInt(user);
 			int level = Integer.parseInt(userLevel);
@@ -95,6 +95,8 @@ public class LevelManager extends HttpServlet {
 			JSONObject scoreObj = (JSONObject) parser.parse(line);
 			int userId = Integer.parseInt(scoreObj.get("userId").toString());
 			int score = Integer.parseInt(scoreObj.get("score").toString());
+			
+			
 
 			UserDao ud = new DBUserDao();
 

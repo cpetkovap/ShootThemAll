@@ -9,6 +9,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import model.BulletsBooster;
+import model.HealthBooster;
+import model.PointsBooster;
 import model.User;
 import model.Weapon;
 import model.dao.DBUserDao;
@@ -64,8 +67,20 @@ public class Test extends HttpServlet {
 		//User u2 = ud.getUserWithMaxScore();
 		//System.out.println(u2.getUsername() + "  " + u2.getScore());
 		
-		int score = ud.getUserScore(1);
-		System.out.println(score);
+//		int score = ud.getUserScore(1);
+//		System.out.println(score);
+		
+//		BulletsBooster bb = new BulletsBooster(10);
+//		
+//		System.out.println(bb.getId() + " " + bb.getDuration() + " " + bb.getDescription() + " " + bb.getNumBullets() );
+//		
+//		
+//		HealthBooster bb2 = new HealthBooster(11);
+//		System.out.println(bb2.getId() + " " + bb2.getDuration() + " " + bb2.getDescription() + " " + bb2.getHealtPoints() );
+//		
+//		PointsBooster pd = new PointsBooster(22);
+//		System.out.println(pd.getId() + " " + pd.getDuration() + " " + pd.getDescription() + " " + pd.getPoints() );
+		
 		
 		response.getWriter().write("</html>");
 	}

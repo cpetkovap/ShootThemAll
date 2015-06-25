@@ -39,7 +39,7 @@ public class LevelsMap extends HttpServlet {
 
 		int numberOfAllLevels = SettingsManager.getMaxLevel();
 
-		if (line != null) {
+		if (line != null && !line.isEmpty()) {
 
 			int userId = Integer.parseInt(line);
 

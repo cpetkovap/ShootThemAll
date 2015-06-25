@@ -1,14 +1,38 @@
 package model.dao;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+import db.DBManager;
 import model.Booster;
+import model.Weapon;
 
 public class DBBoosterDao implements BoosterDao{
 
+	private Connection connect = DBManager.getDBManager().getConnection();
+	
 	@Override
 	public Booster getBooster(int boosterId) {
-		Booster result = null;
+		Booster result = new Booster(3, 1000, "Add points.");;
 		
-		//to do
+		PreparedStatement statement;
+		
+		
+		try {
+			statement = connect.prepareStatement("select duration, description from app.boosters where id = ?");
+			statement.setInt(1, boosterId);
+			ResultSet rs = statement.executeQuery();
+			rs.next();
+			long duration = rs.getLong("duration");
+			String description = rs.getString("description");
+			result = new Booster(boosterId, duration, description);			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+	
 		
 		return result;
 	}
