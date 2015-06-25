@@ -3,10 +3,7 @@ package controller;
 import java.util.Random;
 
 import model.Booster;
-import model.BulletsBooster;
 import model.Enemy;
-import model.HealthBooster;
-import model.PointsBooster;
 import model.Weapon;
 import model.dao.DBUserDao;
 import model.dao.UserDao;
@@ -35,7 +32,6 @@ public class LevelBuilder {
 		int numEnemies = 10 + ( (level - 1) * 7);
 		int randomNum[] = new int[level];
 		Enemy enemies[] = new Enemy[level];
-
 		
 		randomNum[0] = numEnemies;
 		for(int i = randomNum.length - 1; i > 0; i--){
@@ -74,16 +70,16 @@ public class LevelBuilder {
 //		}
 		
 		
-		//за сега нямаме добри :)
-		//damage = 0
-		int goodEnemyCount = rand.nextInt(level * 4) + 1;
-		Enemy goodEnemy = EnemyFactory.getEnemy(100);
-		JSONObject goodEnemyObj = new JSONObject();
-		goodEnemyObj.put("type", goodEnemy.getType());
-		goodEnemyObj.put("health", goodEnemy.getHealth());
-		goodEnemyObj.put("duration", goodEnemy.getDuration());
-		goodEnemyObj.put("damage", goodEnemy.getDamage());
-		goodEnemyObj.put("count", goodEnemyCount);
+//		//за сега нямаме добри :)
+//		//damage = 0
+//		int goodEnemyCount = rand.nextInt(level * 4) + 1;
+//		Enemy goodEnemy = EnemyFactory.getEnemy(100);
+//		JSONObject goodEnemyObj = new JSONObject();
+//		goodEnemyObj.put("type", goodEnemy.getType());
+//		goodEnemyObj.put("health", goodEnemy.getHealth());
+//		goodEnemyObj.put("duration", goodEnemy.getDuration());
+//		goodEnemyObj.put("damage", goodEnemy.getDamage());
+//		goodEnemyObj.put("count", goodEnemyCount);
 		
 		int bullets = 0;
 		for(int i = 0; i < randomNum.length; i++){
@@ -119,42 +115,18 @@ public class LevelBuilder {
 		objLevel.put("enemies", enemiesArr);
 		
 		
-		JSONArray boostersArr = new JSONArray();
-		int countBooster = 1;
-		int countBullets = 1;
-		int countHealth = 1;
-		int countPoints = 1;
-
+	
 		
-		BulletsBooster bulletsBooster = (BulletsBooster) BoosterFactory.getBooster(1, level);
-		HealthBooster healthBooster = (HealthBooster) BoosterFactory.getBooster(2, 1);
-		PointsBooster pointsBooster = (PointsBooster) BoosterFactory.getBooster(3, level * 10);
-		
-		int numBoosters[] = new int[3];
-		JSONObject boosterObj;
-		for(int i = 0 ; i < numBoosters.length; i++){
-			numBoosters[i] = rand.nextInt(2 * level + 1) + 1;;
-		}
-		
-		boosterObj = makeBooster(bulletsBooster, bulletsBooster.getNumBullets(), numBoosters[0]);
-		boostersArr.add(boosterObj);
-		boosterObj = makeBooster(healthBooster, healthBooster.getHealtPoints(), numBoosters[1]);
-		boostersArr.add(boosterObj);
-		boosterObj = makeBooster(pointsBooster, pointsBooster.getPoints(), numBoosters[2]);
-		boostersArr.add(boosterObj);
-		
-		//за сега нямаме boosters
-		//objLevel.put("boosters", boostersArr);
 		
 		return objLevel;
 	}
 	
-	public JSONObject makeBooster(Booster b, int numOfIncrement, int count){
+	public JSONObject makeBooster(Booster b, int count){
 		JSONObject booster = new JSONObject();
 		booster.put("type", b.getId());
 		booster.put("duratin", b.getDuration());
 		booster.put("description", b.getDescription());
-		booster.put("numOfIncrement", numOfIncrement);
+		booster.put("numOfIncrement", 1);
 		booster.put("count", count);
 		return booster;
 		

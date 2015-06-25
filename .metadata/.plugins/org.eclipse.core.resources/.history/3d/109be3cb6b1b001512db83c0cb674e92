@@ -74,16 +74,16 @@ public class LevelBuilder {
 //		}
 		
 		
-		//за сега нямаме добри :)
-		//damage = 0
-		int goodEnemyCount = rand.nextInt(level * 4) + 1;
-		Enemy goodEnemy = EnemyFactory.getEnemy(100);
-		JSONObject goodEnemyObj = new JSONObject();
-		goodEnemyObj.put("type", goodEnemy.getType());
-		goodEnemyObj.put("health", goodEnemy.getHealth());
-		goodEnemyObj.put("duration", goodEnemy.getDuration());
-		goodEnemyObj.put("damage", goodEnemy.getDamage());
-		goodEnemyObj.put("count", goodEnemyCount);
+//		//за сега нямаме добри :)
+//		//damage = 0
+//		int goodEnemyCount = rand.nextInt(level * 4) + 1;
+//		Enemy goodEnemy = EnemyFactory.getEnemy(100);
+//		JSONObject goodEnemyObj = new JSONObject();
+//		goodEnemyObj.put("type", goodEnemy.getType());
+//		goodEnemyObj.put("health", goodEnemy.getHealth());
+//		goodEnemyObj.put("duration", goodEnemy.getDuration());
+//		goodEnemyObj.put("damage", goodEnemy.getDamage());
+//		goodEnemyObj.put("count", goodEnemyCount);
 		
 		int bullets = 0;
 		for(int i = 0; i < randomNum.length; i++){
@@ -126,25 +126,35 @@ public class LevelBuilder {
 		int countPoints = 1;
 
 		
-		BulletsBooster bulletsBooster = (BulletsBooster) BoosterFactory.getBooster(1, level);
-		HealthBooster healthBooster = (HealthBooster) BoosterFactory.getBooster(2, 1);
-		PointsBooster pointsBooster = (PointsBooster) BoosterFactory.getBooster(3, level * 10);
-		
-		int numBoosters[] = new int[3];
-		JSONObject boosterObj;
-		for(int i = 0 ; i < numBoosters.length; i++){
-			numBoosters[i] = rand.nextInt(2 * level + 1) + 1;;
+		for(int i = 0 ; i < boosters.length; i++){
+			boosters[i] = BoosterFactory.getBooster((i + 1), countBooster);
+			JSONObject boosterObj;
+			switch(i + 1){
+				case 1:
+					BulletsBooster bulletsBooster = (BulletsBooster) boosters[i];
+					boosterObj = makeBooster(bulletsBooster, bulletsBooster.getNumBullets(), countBullets);
+					break;
+				case 2:
+					HealthBooster healthBooster = (HealthBooster) boosters[i];
+					boosterObj = makeBooster(healthBooster, healthBooster.getHealtPoints(), countHealth);
+					break;
+				case 3: 
+					PointsBooster pointsBooster = (PointsBooster) boosters[i];
+					boosterObj = makeBooster(pointsBooster, pointsBooster.getPoints(), countPoints);
+					break;
+				
+			}
 		}
 		
-		boosterObj = makeBooster(bulletsBooster, bulletsBooster.getNumBullets(), numBoosters[0]);
-		boostersArr.add(boosterObj);
-		boosterObj = makeBooster(healthBooster, healthBooster.getHealtPoints(), numBoosters[1]);
-		boostersArr.add(boosterObj);
-		boosterObj = makeBooster(pointsBooster, pointsBooster.getPoints(), numBoosters[2]);
-		boostersArr.add(boosterObj);
 		
-		//за сега нямаме boosters
-		//objLevel.put("boosters", boostersArr);
+		
+		
+		
+		
+		
+		
+	
+		
 		
 		return objLevel;
 	}

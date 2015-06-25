@@ -114,7 +114,7 @@ public class LevelBuilder {
 		}
 		
 		//за сега нямаме добри :)
-		//enemiesArr.add(goodEnemyObj);
+		enemiesArr.add(goodEnemyObj);
 		
 		objLevel.put("enemies", enemiesArr);
 		
@@ -143,8 +143,7 @@ public class LevelBuilder {
 		boosterObj = makeBooster(pointsBooster, pointsBooster.getPoints(), numBoosters[2]);
 		boostersArr.add(boosterObj);
 		
-		//за сега нямаме boosters
-		//objLevel.put("boosters", boostersArr);
+		objLevel.put("boosters", boostersArr);
 		
 		return objLevel;
 	}
