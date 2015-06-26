@@ -153,10 +153,6 @@ public class UserInfoManager extends HttpServlet {
 				try {
 
 					String password = userObj.get("password").toString();
-					if(password.isEmpty()){
-						throw new NullPointerException();
-					}
-					
 					
 					//MD5
 					String cryptPass = SettingsManager.cryptMD5(password);
@@ -182,16 +178,16 @@ public class UserInfoManager extends HttpServlet {
 					String email = userObj.get("email").toString();
 					String emailreg = "^[_A-Za-z0-9-]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
 
-					if(email.isEmpty()){
-						throw new NullPointerException();
-
+					if(email == null || email.isEmpty()){
+						result.put("error", "Invalid JSON");
+						response.setStatus(400);
+						return;
 					}
 						
 					Boolean validEmail = email.matches(emailreg);
 					if(!validEmail){
 						result.put("error", "Invalid email");
 						response.setStatus(400);
-						response.getWriter().write(result.toJSONString());
 						return;
 					}
 					

@@ -69,9 +69,14 @@ public class Registration extends HttpServlet {
 
 			String email = userObj.get("email").toString();
 			String emailreg = "^[_A-Za-z0-9-]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
-			Boolean validEmail = email.matches(emailreg);
-			if (!username.isEmpty() && !password.isEmpty() && !email.isEmpty() && validEmail) {
-	
+
+			if (!username.isEmpty() && !password.isEmpty() && !email.isEmpty()) {
+				Boolean validEmail = email.matches(emailreg);
+				if(!validEmail){
+					result.put("error", "Invalid email");
+					response.setStatus(400);
+					return;
+				}
 				
 				/*
 				 * Проверка дали този username e зает Проверкa в базата данни
@@ -172,7 +177,7 @@ public class Registration extends HttpServlet {
 
 			} else {
 
-				result.put("error", "Invalid JSON");
+				result.put("error", "Empty fields");
 				response.setStatus(400);
 
 			}
