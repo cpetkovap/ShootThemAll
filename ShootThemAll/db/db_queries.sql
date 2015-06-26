@@ -21,12 +21,14 @@ insert into app.boosters (DURATION, DESCRIPTION) values(2000, 'Add bullets.');
 insert into app.boosters(DURATION, DESCRIPTION) values(1000, 'Add health.');
 insert into app.boosters (DURATION, DESCRIPTION) values(3000, 'Add points.');
 
-insert into app.achievements (achievement_points, description) values(500, 'firstAchievment')
-insert into app.achievements (achievement_points, description) values(1000, 'secondAchievment')
-insert into app.achievements (achievement_points, description) values(2000, 'thirdAchievment')
-insert into app.achievements (achievement_points, description) values(5000, 'fourthAchievment')
-insert into app.achievements (achievement_points, description) values(10000, 'fifthAchievment')
-insert into app.achievements (achievement_points, description) values(50000, 'sixthAchievment')
+insert into app.achievements (achievement_points, description) values(500, 'firstAchievment');
+insert into app.achievements (achievement_points, description) values(1000, 'secondAchievment');
+insert into app.achievements (achievement_points, description) values(2000, 'thirdAchievment');
+insert into app.achievements (achievement_points, description) values(5000, 'fourthAchievment');
+insert into app.achievements (achievement_points, description) values(10000, 'fifthAchievment');
+insert into app.achievements (achievement_points, description) values(50000, 'sixthAchievment');
+
+select id from app.Achievements where achievement_points <= 1300;
 
 
 drop table app.users;

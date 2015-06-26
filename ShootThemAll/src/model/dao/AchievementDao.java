@@ -10,4 +10,6 @@ public interface AchievementDao {
 	ArrayList<Achievement> getAllAchievements();
 	ArrayList<Achievement> getUserAchievements(int userId);
 	boolean setUserAchievement(int user_id ,int achievementId);
+	ArrayList<Achievement> getRecentAcheivment(int score);
+	boolean existAcheivment(int acheivmentId);
 }

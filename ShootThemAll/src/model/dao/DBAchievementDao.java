@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+
 import model.Achievement;
 import db.DBManager;
 
@@ -107,5 +108,49 @@ public class DBAchievementDao implements AchievementDao{
 			e.printStackTrace();
 		}
 		return isUpdate;	
+	}
+	
+	public ArrayList<Achievement> getRecentAcheivment(int score){
+		ArrayList<Achievement> list = new ArrayList<Achievement>();
+		PreparedStatement statement;
+		Achievement achievement = null;
+		if( score < 0){
+			System.out.println("ValidationException");
+			//throw IllegalArgumentException;
+			}
+		try {
+			statement = connection.prepareStatement("select id from app.Achievements where achievement_points <= ?");
+			statement.setInt(1, score);
+			ResultSet rs = statement.executeQuery();
+			while(rs.next()){
+			 int achievement_id = rs.getInt("id");
+			 achievement = getAchievement(achievement_id);
+		list.add(achievement);
+			}
+		} catch (SQLException e) {
+			System.out.println("error in getUserAchievement");
+			e.printStackTrace();
+		}
+		
+		return list;
+	}
+	
+	public boolean existAcheivment(int acheivmentId){
+		boolean result = false;
+		PreparedStatement statement;
+
+		try {
+			statement = connection.prepareStatement("select user_id from app.userAchievements where achievement_id = ?");
+			statement.setInt(1, acheivmentId);
+			ResultSet executeResult = statement.executeQuery();
+			if(executeResult.next()){
+				result = true;
+			}
+		} catch (SQLException e) {
+			System.out.println("error in setUserAchievement");
+			e.printStackTrace();
+		}
+		
+		return result;
 	}
 }

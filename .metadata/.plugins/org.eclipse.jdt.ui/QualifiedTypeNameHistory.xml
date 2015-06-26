@@ -9,7 +9,6 @@
 <fullyQualifiedTypeName name="java.util.Comparator"/>
 <fullyQualifiedTypeName name="javax.servlet.ServletConfig"/>
 <fullyQualifiedTypeName name="javax.servlet.ServletContext"/>
-<fullyQualifiedTypeName name="org.json.simple.JSONArray"/>
 <fullyQualifiedTypeName name="controller.UserInfoManager"/>
 <fullyQualifiedTypeName name="controller.CompareUsers"/>
 <fullyQualifiedTypeName name="org.json.simple.parser.JSONParser"/>
@@ -45,9 +44,17 @@
 <fullyQualifiedTypeName name="model.User"/>
 <fullyQualifiedTypeName name="controller.UsersComparator"/>
 <fullyQualifiedTypeName name="controller.SettingsManager"/>
-<fullyQualifiedTypeName name="org.json.simple.JSONObject"/>
 <fullyQualifiedTypeName name="model.dao.UserDao"/>
-<fullyQualifiedTypeName name="model.dao.DBUserDao"/>
 <fullyQualifiedTypeName name="java.util.ArrayList"/>
 <fullyQualifiedTypeName name="model.dao.DBWeaponDao"/>
+<fullyQualifiedTypeName name="model.dao.BoosterDao"/>
+<fullyQualifiedTypeName name="model.dao.DBUserDao"/>
+<fullyQualifiedTypeName name="model.dao.DBBoosterDao"/>
+<fullyQualifiedTypeName name="org.json.simple.JSONArray"/>
+<fullyQualifiedTypeName name="model.Booster"/>
+<fullyQualifiedTypeName name="model.BulletsBooster"/>
+<fullyQualifiedTypeName name="model.HealthBooster"/>
+<fullyQualifiedTypeName name="model.PointsBooster"/>
+<fullyQualifiedTypeName name="controller.BoosterFactory"/>
+<fullyQualifiedTypeName name="org.json.simple.JSONObject"/>
 </qualifiedTypeNameHistroy>

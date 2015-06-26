@@ -1,0 +1,13 @@
+package model.dao;
+
+import java.util.ArrayList;
+
+import model.Achievement;
+
+public interface AchievementDao {
+
+	Achievement getAchievement(int achievementId);
+	ArrayList<Achievement> getAllAchievements();
+	ArrayList<Achievement> getUserAchievements(int userId);
+	boolean setUserAchievement(int user_id ,int achievementId);
+}
