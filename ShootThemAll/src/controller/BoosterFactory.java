@@ -2,6 +2,7 @@ package controller;
 
 import model.Booster;
 import model.BulletsBooster;
+import model.FreezNextOneEnemyBooster;
 import model.HealthBooster;
 import model.PointsBooster;
 
@@ -19,6 +20,9 @@ public class BoosterFactory {
 			break;
 		case 3:
 			result = new PointsBooster(bonusCount);
+			break;
+		case 4:
+			result = new FreezNextOneEnemyBooster();
 			break;
 		default:
 			result = new PointsBooster(bonusCount);

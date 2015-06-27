@@ -14,7 +14,11 @@ public class EnemyBooster extends Enemy{
 	}
 
 	private void setBooster(Booster booster) {
-		this.booster = booster;
+		if(booster != null){
+			this.booster = booster;
+		} else {
+			this.booster = new FreezNextOneEnemyBooster();
+		}
 	}
 	
 	

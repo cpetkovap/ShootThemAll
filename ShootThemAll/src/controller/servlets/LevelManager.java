@@ -24,11 +24,11 @@ import model.dao.DBAchievementDao;
 import model.dao.DBUserDao;
 import model.dao.UserDao;
 
-import org.apache.derby.impl.sql.execute.AvgAggregator;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
+import controller.LevelBuilder;
 import controller.SettingsManager;
 
 /**
@@ -42,45 +42,45 @@ public class LevelManager extends HttpServlet {
 
 	}
 
-	 @Override
-	 protected void doGet(HttpServletRequest req, HttpServletResponse resp)
-	 throws ServletException, IOException {
-	 // TODO Auto-generated method stub
-	 doPost(req, resp);
-	 }
+//	 @Override
+//	 protected void doGet(HttpServletRequest req, HttpServletResponse resp)
+//	 throws ServletException, IOException {
+//	 // TODO Auto-generated method stub
+//	 doPost(req, resp);
+//	 }
 
-//	protected void doGet(HttpServletRequest request,
-//			HttpServletResponse response) throws ServletException, IOException {
-//		response.setHeader("Access-Control-Allow-Origin", "*");
-//		String user = request.getParameter("userId");
-//		String userLevel = request.getParameter("level");
-//
-//		// test
-//		user = "1";
-//		userLevel = "2";
-//
-//		JSONObject result = new JSONObject();
-//
-//		if (user != null && !user.isEmpty() && userLevel != null
-//				&& !userLevel.isEmpty()) {
-//
-//			int userId = Integer.parseInt(user);
-//			int level = Integer.parseInt(userLevel);
-//
-//			LevelBuilder levelBuilder = new LevelBuilder();
-//			result = levelBuilder.buildLevel(userId, level);
-//
-//			response.setStatus(200);
-//
-//		} else {
-//
-//			response.setStatus(400);
-//			result.put("error", "Invalid parameter");
-//		}
-//
-//		System.out.println(result.toJSONString());
-//		response.getWriter().write(result.toJSONString());
-//	}
+	protected void doGet(HttpServletRequest request,
+			HttpServletResponse response) throws ServletException, IOException {
+		response.setHeader("Access-Control-Allow-Origin", "*");
+		String user = request.getParameter("userId");
+		String userLevel = request.getParameter("level");
+
+		// test
+		user = "1";
+		userLevel = "2";
+
+		JSONObject result = new JSONObject();
+
+		if (user != null && !user.isEmpty() && userLevel != null
+				&& !userLevel.isEmpty()) {
+
+			int userId = Integer.parseInt(user);
+			int level = Integer.parseInt(userLevel);
+
+			LevelBuilder levelBuilder = new LevelBuilder();
+			result = levelBuilder.buildLevel(userId, level);
+
+			response.setStatus(200);
+
+		} else {
+
+			response.setStatus(400);
+			result.put("error", "Invalid parameter");
+		}
+
+		System.out.println(result.toJSONString());
+		response.getWriter().write(result.toJSONString());
+	}
 
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
