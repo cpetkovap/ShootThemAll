@@ -128,7 +128,6 @@ public class LevelManager extends HttpServlet {
 				User topUserAfterUpdate = ud.getUserWithMaxScore();
 				// System.out.println(topUserAfterUpdate.getUsername());
 
-				System.out.println(topUserBeforeUpdate.getEmail());
 				System.out.println(topUserBeforeUpdate.isAllowNotification());
 				if (!topUserBeforeUpdate.getUsername().equals(
 						topUserAfterUpdate.getUsername()) 

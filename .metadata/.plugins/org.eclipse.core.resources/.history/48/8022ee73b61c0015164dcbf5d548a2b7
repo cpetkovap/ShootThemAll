@@ -31,6 +31,7 @@ public interface UserDao {
 	int getUserScore(int userId);
 	int getUserLevel(int userId);
 	int getMaxScore();
+	boolean getUserNotification();
 	User getUserWithMaxScore();
 	int getUserPosition (int userId);
 	ArrayList<User> getTopUsers();

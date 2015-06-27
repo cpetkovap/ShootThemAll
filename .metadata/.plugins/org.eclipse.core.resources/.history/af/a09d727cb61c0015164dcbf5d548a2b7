@@ -745,5 +745,10 @@ public class DBUserDao implements UserDao {
 		return topUsers;
 	}
 	
-
+	public boolean getUserNotification(){
+		boolean result = false;
+		
+		//to do 
+		return result;
+	}
 }
