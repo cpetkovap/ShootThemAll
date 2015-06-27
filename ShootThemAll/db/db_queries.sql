@@ -20,6 +20,7 @@ insert into app.Users (username, password, email, score ) values('Qna', '222', '
 insert into app.boosters (DURATION, DESCRIPTION) values(2000, 'Add bullets.');
 insert into app.boosters(DURATION, DESCRIPTION) values(1000, 'Add health.');
 insert into app.boosters (DURATION, DESCRIPTION) values(3000, 'Add points.');
+insert into app.boosters (DURATION, DESCRIPTION) values(2000, 'Freez next one enemy.');
 
 insert into app.achievements (achievement_points, description) values(500, 'firstAchievment');
 insert into app.achievements (achievement_points, description) values(1000, 'secondAchievment');
