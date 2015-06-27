@@ -129,7 +129,7 @@ public class LevelManager extends HttpServlet {
 				// System.out.println(topUserAfterUpdate.getUsername());
 
 				if (!topUserBeforeUpdate.getUsername().equals(
-						topUserAfterUpdate.getUsername()) && ud.getUserNotification()) {
+						topUserAfterUpdate.getUsername())) {
 					String mailTo = topUserBeforeUpdate.getEmail();
 					// мейл тест
 					sendEmail("shootthemallgame@gmail.com", mailTo,
