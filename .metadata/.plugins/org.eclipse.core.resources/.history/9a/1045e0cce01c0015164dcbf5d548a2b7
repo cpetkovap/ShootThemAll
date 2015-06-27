@@ -90,7 +90,6 @@ public class LevelManager extends HttpServlet {
 		// test
 		JSONObject test = new JSONObject();
 		test.put("userId", 1);
-		test.put("level", 1);
 		test.put("score", 800);
 		line = test.toJSONString();
 
@@ -101,7 +100,6 @@ public class LevelManager extends HttpServlet {
 		try {
 			JSONObject scoreObj = (JSONObject) parser.parse(line);
 			int userId = Integer.parseInt(scoreObj.get("userId").toString());
-			int level = Integer.parseInt(scoreObj.get("level").toString());
 			int score = Integer.parseInt(scoreObj.get("score").toString());
 
 			UserDao ud = new DBUserDao();
@@ -115,11 +113,9 @@ public class LevelManager extends HttpServlet {
 				 * Тук обновяваме освен записа в базата данни, но и кеша с
 				 * потребители
 				 */
-				int userLevel = ud.getUserLevel(userId);
-				if (userLevel < SettingsManager.getMaxLevel()) {
-					if(userLevel == level){
-						ud.updateLevelUp(userId);
-						}
+
+				if (ud.getUserLevel(userId) < SettingsManager.getMaxLevel()) {
+					ud.updateLevelUp(userId);
 				}
 
 				User topUserBeforeUpdate = ud.getUserWithMaxScore();
