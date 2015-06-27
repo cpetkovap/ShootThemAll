@@ -16,8 +16,7 @@ import db.DBManager;
 
 public class DBUserDao implements UserDao {
 	private Connection connection = DBManager.getDBManager().getConnection();
-	
-
+	//blalal
 	@Override
 	public List getAllUsers() {
 		ArrayList<User> users = new ArrayList<User>();
@@ -40,11 +39,10 @@ public class DBUserDao implements UserDao {
 				int levelNo = results.getInt("levelNo");
 				int score = results.getInt("score");
 				int weapon_id = results.getInt("choosen_weapon_id");
-				Date date = results.getDate("last_activity_on");
-					if(date == null){
-						this.updateCurrentDate(id);
-						date = new Date();
-					}
+//				Date date = results.getDate("last_activity_on");
+//					if(date == null){
+//						date = new Date();
+//					}
 				
 			 pst = connection
 						.prepareStatement("select damage, price from app.weapons where id = ?");
@@ -65,9 +63,8 @@ public class DBUserDao implements UserDao {
 				}
 				User user = new User(id, username, password, email, score,
 						levelNo, new Weapon(weapon_id, damage, price),
-						notificationAllow,date);
+						notificationAllow);
 				users.add(user);
-
 			}
 		} catch (SQLException e) {
 			try {
@@ -88,7 +85,7 @@ public class DBUserDao implements UserDao {
 		User user = null;
 		PreparedStatement pst;
 		if(userId<=0){
-			System.out.println("ValidationException");
+			System.out.println("ValidationException ");
 			//throw IllegalArgumentException;
 		}
 		try {
@@ -108,7 +105,9 @@ public class DBUserDao implements UserDao {
 			int weapon_id = results.getInt("choosen_weapon_id");
 			Date date = results.getDate("last_activity_on");
 			if(date == null){
-				this.updateCurrentDate(userId);
+				//delete this token
+				
+				//this.updateCurrentDate(userId);
 				date = new Date();
 			}
 		
@@ -130,7 +129,6 @@ public class DBUserDao implements UserDao {
 			}
 			user = new User(userId, username, password, email, score, levelNo,
 					new Weapon(weapon_id, damage, price), notificationAllow,date);
-
 		} catch (SQLException e) {
 			try {
 				connection.rollback();
@@ -636,7 +634,6 @@ public class DBUserDao implements UserDao {
 					System.out.println("ValidationException");
 					//throw IllegalArgumentException;
 					}
-				System.out.println(weaponId);
 				weapon.add(weaponId);
 			}
 		} catch (SQLException e) {
@@ -672,7 +669,7 @@ public class DBUserDao implements UserDao {
 		User user = null;
 		PreparedStatement pst;
 		try {
-			String selectUserWithMaxScore = "select id, username, password, email from app.users where score = ?";			
+			String selectUserWithMaxScore = "select id, username, password, email,notificationAllow from app.users where score = ?";			
 			pst = connection.prepareStatement(selectUserWithMaxScore);
 			int score = getMaxScore();
 			pst.setInt(1, score);
@@ -684,15 +681,17 @@ public class DBUserDao implements UserDao {
 				String username = results.getString("username");
 				String password = results.getString("password");
 				String email = results.getString("email");
+				boolean notificationAllow = results.getInt("notificationAllow") == 0 ? false
+						: true;
 				user = new User(id, username, password, email);
 				user.setScore(score);
+				user.setAllowNotification(notificationAllow);
 			}
 		} catch (SQLException e) {
 			System.out.println("error in getUserWithMaxScore");
 			e.printStackTrace();
 		}
 		return user;
-
 	}
 	
 	@Override
