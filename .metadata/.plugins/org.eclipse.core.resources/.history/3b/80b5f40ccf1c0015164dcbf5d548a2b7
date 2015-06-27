@@ -1,0 +1,15 @@
+package cache;
+
+import java.util.HashMap;
+import java.util.Vector;
+import java.util.concurrent.ConcurrentHashMap;
+
+import model.User;
+
+public class Cache {
+	ConcurrentHashMap cache = new ConcurrentHashMap();
+
+	private Cache() {
+		cache = new ConcurrentHashMap();
+	}
+}

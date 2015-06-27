@@ -1,0 +1,10 @@
+package cache;
+
+import java.util.ArrayList;
+import java.util.Vector;
+
+import model.User;
+
+public interface ICache {
+    
+}

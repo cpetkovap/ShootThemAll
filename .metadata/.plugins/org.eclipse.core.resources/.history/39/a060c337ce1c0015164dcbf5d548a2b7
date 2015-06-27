@@ -9,19 +9,12 @@ import model.Weapon;
 import controller.SettingsManager;
 import controller.UsersComparator;
 
-public class UserCache implements ICache , IUserCache{
+public class UserCache implements ICache {
 	private Vector<User> users;
 	private static UserCache userCache;
 
 	private UserCache() {
 		users = new Vector<User>();
-	}
-	
-	public static UserCache getCache() {
-		if (userCache == null) {
-			userCache = new UserCache();
-		}
-		return userCache;
 	}
 
 	@Override
@@ -72,7 +65,12 @@ public class UserCache implements ICache , IUserCache{
 
 	}
 
-
+	public static UserCache getCache() {
+		if (userCache == null) {
+			userCache = new UserCache();
+		}
+		return userCache;
+	}
 
 	@Override
 	public synchronized Vector<User> getAllUsers() {
@@ -139,7 +137,7 @@ public class UserCache implements ICache , IUserCache{
 	}
 
 	@Override
-	public synchronized int getUserId(String username) {
+	public int getUserId(String username) {
 		int result = -1;
 		for (int i = 0; i < users.size(); i++) {
 			if (users.get(i).getUsername().equals(username)) {

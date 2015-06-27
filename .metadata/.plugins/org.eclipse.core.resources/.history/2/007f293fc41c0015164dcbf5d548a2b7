@@ -21,7 +21,7 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 import controller.SettingsManager;
-import cache.UserCache;
+import cache.Cache;
 import db.DBManager;
 
 /**
@@ -31,7 +31,7 @@ import db.DBManager;
 public class Login extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	//private ArrayList<User> cacheUsers;
-	private UserCache cache;
+	private Cache cache;
 	private ServletConfig config;
 	private ServletContext sc;
 
@@ -61,7 +61,7 @@ public class Login extends HttpServlet {
 //		User u3 = new User(3, "Tanq", "Tanq", "Tanq", 14, 0,
 //				new Weapon(1, 1, 0), false);
 
-		cache = UserCache.getCache();
+		cache = Cache.getCache();
 		cache.init();
 		
 		config = getServletConfig();

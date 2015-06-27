@@ -16,13 +16,6 @@ public class UserCache implements ICache , IUserCache{
 	private UserCache() {
 		users = new Vector<User>();
 	}
-	
-	public static UserCache getCache() {
-		if (userCache == null) {
-			userCache = new UserCache();
-		}
-		return userCache;
-	}
 
 	@Override
 	public synchronized User getUser(int userId) {
@@ -72,7 +65,12 @@ public class UserCache implements ICache , IUserCache{
 
 	}
 
-
+	public static UserCache getCache() {
+		if (userCache == null) {
+			userCache = new UserCache();
+		}
+		return userCache;
+	}
 
 	@Override
 	public synchronized Vector<User> getAllUsers() {

@@ -22,7 +22,7 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 import controller.SettingsManager;
-import cache.UserCache;
+import cache.Cache;
 
 /**
  * Servlet implementation class Registration
