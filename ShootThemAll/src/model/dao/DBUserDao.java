@@ -16,16 +16,17 @@ import db.DBManager;
 
 public class DBUserDao implements UserDao {
 	private Connection connection = DBManager.getDBManager().getConnection();
-	//blalal
+	
 	@Override
 	public List getAllUsers() {
 		ArrayList<User> users = new ArrayList<User>();
-		Statement st;
-		PreparedStatement pst;
+		WeaponDao wd = new DBWeaponDao();
+		User user =null;
+		Statement st = null;
+		ResultSet results = null;
 		try {
-			connection.setAutoCommit(false);
 			st = connection.createStatement();
-			ResultSet results = st
+			results = st
 					.executeQuery("select id, username, password, email,"
 							+ " notificationAllow, levelNo, score, "
 							+ "choosen_weapon_id,last_activity_on from app.users");
@@ -39,42 +40,36 @@ public class DBUserDao implements UserDao {
 				int levelNo = results.getInt("levelNo");
 				int score = results.getInt("score");
 				int weapon_id = results.getInt("choosen_weapon_id");
-//				Date date = results.getDate("last_activity_on");
-//					if(date == null){
-//						date = new Date();
-//					}
-				
-			 pst = connection
-						.prepareStatement("select damage, price from app.weapons where id = ?");
-				pst.setInt(1, weapon_id);
-				ResultSet rs = pst.executeQuery();
-				rs.next();
-				int damage = rs.getInt("damage");
-				int price = rs.getInt("price");
-				connection.commit();
-				if(id < 0 || username == null || username == "" || password == null || password == "" || email == null || email == "" || levelNo <0 || score<0 || weapon_id<=0 ){
+				Date date = results.getDate("last_activity_on");
+				Weapon weapon = wd.getWeapon(weapon_id);
+				if(id < 0 || username == null || username == "" || password == null || password == "" || email == null || email == "" || levelNo <0 || score<0 || weapon_id<0 ){
 					System.out.println("Ivalid data from db - user");
 					//throw IllegalArgumentException;
 				}
-				
-				if(damage<=0 || price<=0){
-					System.out.println("Ivalid data from db - weapon");
-					//throw IllegalArgumentException;
-				}
-				User user = new User(id, username, password, email, score,
-						levelNo, new Weapon(weapon_id, damage, price),
-						notificationAllow);
+if(date !=null){
+				 user = new User(id, username, password, email, score,
+				levelNo, weapon,notificationAllow,date);
+}else {
+	user = new User(id, username, password, email, score,
+			levelNo, weapon,notificationAllow);
+}
 				users.add(user);
 			}
 		} catch (SQLException e) {
-			try {
-				connection.rollback();
-			} catch (SQLException e1) {
-				System.out.println("error rollback");
-				e1.printStackTrace();
-			}
-			System.out.println("error in select all users");
+			System.out.println("Error in select all users");
 			e.printStackTrace();
+		}finally{
+			try {
+				if (st != null) {
+					st.close();
+				}
+				if(results != null){
+				results.close();
+			}
+				} catch (SQLException e) {
+			System.out.println("Error in closing.");
+					e.printStackTrace();
+				}
 		}
 		return users;
 	}
@@ -83,17 +78,18 @@ public class DBUserDao implements UserDao {
 	@Override
 	public User getUser(int userId) {
 		User user = null;
-		PreparedStatement pst;
-		if(userId<=0){
+		WeaponDao wd = new DBWeaponDao();
+		PreparedStatement pst = null;
+		ResultSet results = null;
+		if(userId<0){
 			System.out.println("ValidationException ");
 			//throw IllegalArgumentException;
 		}
 		try {
-			connection.setAutoCommit(false);
 			 pst = connection
 					.prepareStatement("select username, password, email, notificationAllow, levelNo, score, choosen_weapon_id,last_activity_on from app.users where id = ?");
 			pst.setInt(1, userId);
-			ResultSet results = pst.executeQuery();
+			results = pst.executeQuery();
 			results.next();
 			String username = results.getString("username");
 			String password = results.getString("password");
@@ -104,120 +100,113 @@ public class DBUserDao implements UserDao {
 			int score = results.getInt("score");
 			int weapon_id = results.getInt("choosen_weapon_id");
 			Date date = results.getDate("last_activity_on");
-			if(date == null){
-				//delete this token
-				
-				//this.updateCurrentDate(userId);
-				date = new Date();
-			}
-		
-			 pst = connection
-					.prepareStatement("select damage, price from app.weapons where id = ?");
-			pst.setInt(1, weapon_id);
-			ResultSet rs = pst.executeQuery();
-			rs.next();
-			int damage = rs.getInt("damage");
-			int price = rs.getInt("price");
-			connection.commit();
-			if(username == null || username == "" || password == null || password == "" || email == null || email == "" || levelNo <=0 || score<=0 || weapon_id<=0  ){
+			Weapon weapon = wd.getWeapon(weapon_id);
+	
+			if(username == null || username == "" || password == null || password == "" || email == null || email == "" || levelNo <0 || score<0 || weapon_id<0  ){
 				System.out.println("Ivalid data from db");
 				//throw IllegalArgumentException;
 			}
-			if(damage<=0 || price<=0){
-				System.out.println("Ivalid data from db");
-				//throw IllegalArgumentException;
+			if(date !=null){
+							 user = new User(userId, username, password, email, score,
+							levelNo, weapon,notificationAllow,date);
+			}else {
+				user = new User(userId, username, password, email, score,
+						levelNo, weapon,notificationAllow);
 			}
-			user = new User(userId, username, password, email, score, levelNo,
-					new Weapon(weapon_id, damage, price), notificationAllow,date);
 		} catch (SQLException e) {
-			try {
-				connection.rollback();
-			} catch (SQLException e1) {
-				System.out.println("error in rollback");
-				e1.printStackTrace();
-			}
 			System.out.println("error in select user by id");
 			e.printStackTrace();
+		}finally{
+			try {
+				if (pst != null) {
+					pst.close();
+				}
+				if(results != null){
+				results.close();
+			}
+				} catch (SQLException e) {
+			System.out.println("Error in closing.");
+					e.printStackTrace();
+				}
 		}
 		return user;
 	}
 
 	@Override
 	public User getUser(String username) {
-		PreparedStatement pst;
 		User user = null;
+		WeaponDao  wd = new DBWeaponDao();
+		PreparedStatement pst = null;
+		ResultSet result = null;
+		
 		if(username == null || username == ""){
 			System.out.println("ValidationException");
 			//throw IllegalArgumentException;
 		}
 		try {
-			connection.setAutoCommit(false);
 			pst = connection
 					.prepareStatement("select id, password, email, notificationAllow, levelNo, score, choosen_weapon_id,last_activity_on from app.users where username = ?");
 			pst.setString(1, username);
-			ResultSet results = pst.executeQuery();
-			if (results != null) {
-				results.next();
-				int id = results.getInt("id");
-				String password = results.getString("password");
-				String email = results.getString("email");
-				boolean notificationAllow = results.getInt("notificationAllow") == 0 ? false
+			result = pst.executeQuery();
+			if (result != null) {
+				result.next();
+				int id = result.getInt("id");
+				String password = result.getString("password");
+				String email = result.getString("email");
+				boolean notificationAllow = result.getInt("notificationAllow") == 0 ? false
 						: true;
-				int levelNo = results.getInt("levelNo");
-				int score = results.getInt("score");
-				int weapon_id = results.getInt("choosen_weapon_id");
-				Date date = results.getDate("last_activity_on");
-				if(date == null){
-					this.updateCurrentDate(id);
-					date = new Date();
-				}
-			
-				 pst = connection
-						.prepareStatement("select damage, price from app.weapons where id = ?");
-				pst.setInt(1, weapon_id);
-				ResultSet rs = pst.executeQuery();
-				rs.next();
-				int damage = rs.getInt("damage");
-				int price = rs.getInt("price");
-				connection.commit();
-				if(id == 0 || username == null || username == "" || password == null || password == "" || email == null || email == "" || levelNo <0 || score<0 || weapon_id<0  ){
+				int levelNo = result.getInt("levelNo");
+				int score = result.getInt("score");
+				int weapon_id = result.getInt("choosen_weapon_id");
+				Date date = result.getDate("last_activity_on");
+				Weapon weapon = wd.getWeapon(weapon_id);
+				if(id < 0 || username == null || username == "" || password == null || password == "" || email == null || email == "" || levelNo <0 || score<0 || weapon_id<0  ){
 					System.out.println("Ivalid data from db");
 					//throw IllegalArgumentException;
 				}
-				if(damage<=0 || price<=0){
-					System.out.println("Ivalid data from db");
-					//throw IllegalArgumentException;
-				}
-				user = new User(id, username, password, email, score, levelNo,
-						new Weapon(weapon_id, damage, price), notificationAllow);
+				if(date !=null){
+					 user = new User(id, username, password, email, score,
+					levelNo, weapon,notificationAllow,date);
+	}else {
+		user = new User(id, username, password, email, score,
+				levelNo, weapon,notificationAllow);
+	}
 			}
-
 		} catch (SQLException e) {
-			try {
-				connection.rollback();
-			} catch (SQLException e1) {
-				e1.printStackTrace();
-			}
 			System.out.println("error in select user by name");
 			e.printStackTrace();
+		}finally{
+			try {
+				if (pst != null) {
+					pst.close();
+				}
+				if(result != null){
+					result.close();
+			}
+				} catch (SQLException e) {
+			System.out.println("Error in closing.");
+					e.printStackTrace();
+				}
 		}
 		return user;
 	}
 
 	@Override
 	public int addUser(User u) {
-		PreparedStatement pst;
+		PreparedStatement pst = null;
+		PreparedStatement pst2 = null;
+		ResultSet result = null;
 		int userId = -1;
 		if(u == null){
 			System.out.println("ValidationException");
 			//throw IllegalArgumentException;
 		}
-		String insertInUser = "insert into app.users (username, password, email, last_activity_on) "
+		String insertIntoUser = "insert into app.users (username, password, email, last_activity_on) "
 				+ " values (?,?,?,?) ";
 		String insertInUnlockWeapon = "insert into app.unlockedWeapons (user_id, weapon_id) values(?, ?)";
 		try {
 			connection.setAutoCommit(false);
-			pst = connection.prepareStatement(insertInUser,
+			pst = connection.prepareStatement(insertIntoUser,
 					PreparedStatement.RETURN_GENERATED_KEYS);
 			pst.setString(1, u.getUsername());
 			pst.setString(2, u.getPassword());
@@ -226,16 +215,16 @@ public class DBUserDao implements UserDao {
 					new SimpleDateFormat ("yyyy-MM-dd hh:mm:ss");
 			pst.setString(4, sdf.format(new Date()));
 			pst.executeUpdate();
-			ResultSet rs = pst.getGeneratedKeys();
-			if (rs != null && rs.next()) {
-				userId = rs.getInt(1);
+			result = pst.getGeneratedKeys();
+			if (result != null && result.next()) {
+				userId = result.getInt(1);
 			}
 
-			pst = connection
+			pst2 = connection
 					.prepareStatement(insertInUnlockWeapon);
-			pst.setInt(1, userId);
-			pst.setInt(2, 1);
-			pst.executeUpdate();
+			pst2.setInt(1, userId);
+			pst2.setInt(2, 1);
+			pst2.executeUpdate();
 			connection.commit();
 		} catch (SQLException e) {
 			try {
@@ -246,6 +235,21 @@ public class DBUserDao implements UserDao {
 			}
 			System.out.println("error insert user");
 			e.printStackTrace();
+		}finally{
+			try {
+				if (pst != null) {
+					pst.close();
+				}
+				if (pst2 != null) {
+					pst2.close();
+				}
+				if(result != null){
+					result.close();
+			}
+				} catch (SQLException e) {
+			System.out.println("Error in closing.");
+					e.printStackTrace();
+				}
 		}
 		return userId;
 
@@ -253,8 +257,10 @@ public class DBUserDao implements UserDao {
 
 	@Override
 	public void deleteUser(int userId) {
-		PreparedStatement pst;
-		if(userId<=0){
+		PreparedStatement pst = null;
+		PreparedStatement pst2 = null;
+		PreparedStatement pst3 = null;
+		if(userId<0){
 			System.out.println("ValidationException");
 			//throw IllegalArgumentException;
 		}
@@ -268,16 +274,16 @@ public class DBUserDao implements UserDao {
 			pst.executeUpdate();
 			
 		//delete user - user_id from userAchievements
-			pst = connection
+			pst2 = connection
 					.prepareStatement("delete from app.userAchievements where user_id= = ?");
-			pst.setInt(1, userId);
-			pst.executeUpdate();
+			pst2.setInt(1, userId);
+			pst2.executeUpdate();
 			
 		//delete user from Users
-			pst = connection
+			pst3 = connection
 					.prepareStatement("delete from app.users where id = ?");
-			pst.setInt(1, userId);
-			pst.executeUpdate();
+			pst3.setInt(1, userId);
+			pst3.executeUpdate();
 			connection.commit();
 		} catch (SQLException e) {
 			try {
@@ -288,15 +294,29 @@ public class DBUserDao implements UserDao {
 			}
 			e.printStackTrace();
 			System.out.println("Error deleting user");
+		}finally{
+			try {
+				if (pst != null) {
+					pst.close();
+				}
+				if (pst2 != null) {
+					pst2.close();
+				}
+				if (pst2 != null) {
+					pst2.close();
+				}
+				} catch (SQLException e) {
+			System.out.println("Error in closing.");
+					e.printStackTrace();
+				}
 		}
-
 	}
 
 	// Change password update
 	@Override
 	public void updatePassword(String password, int userId) {
-		PreparedStatement pst;
-		if(password == null || password == "" || userId <=0){
+		PreparedStatement pst = null;
+		if(password == null || password == "" || userId <0){
 			System.out.println("ValidationException");
 			//throw IllegalArgumentException;
 			}
@@ -311,6 +331,15 @@ public class DBUserDao implements UserDao {
 		} catch (SQLException e) {
 			System.out.println("Error with updating password!");
 			e.printStackTrace();
+		}finally{
+			try {
+				if (pst != null) {
+					pst.close();
+				}
+				} catch (SQLException e) {
+			System.out.println("Error in closing.");
+					e.printStackTrace();
+				}
 		}
 
 	}
@@ -318,8 +347,8 @@ public class DBUserDao implements UserDao {
 	// update e-mail
 	@Override
 	public void updateEmail(String email, int userId) {
-		PreparedStatement pst;
-		if(email == null || email == "" || userId <=0){
+		PreparedStatement pst = null;
+		if(email == null || email == "" || userId <0){
 			System.out.println("ValidationException");
 			//throw IllegalArgumentException;
 			}
@@ -332,14 +361,23 @@ public class DBUserDao implements UserDao {
 		} catch (SQLException e) {
 			System.out.println("Error with updating email!");
 			e.printStackTrace();
+		}finally{
+			try {
+				if (pst != null) {
+					pst.close();
+				}
+				} catch (SQLException e) {
+			System.out.println("Error in closing.");
+					e.printStackTrace();
+				}
 		}
 	}
 
 	// Update score
 	@Override
 	public void updateScore(int score, int userId) {
-		PreparedStatement pst;
-		if(score<0 || userId <=0){
+		PreparedStatement pst = null;
+		if(score<0 || userId <0){
 			System.out.println("ValidationException");
 			//throw IllegalArgumentException;
 			}
@@ -352,14 +390,23 @@ public class DBUserDao implements UserDao {
 		} catch (SQLException e) {
 			System.out.println("Error with updating score!");
 			e.printStackTrace();
+		}finally{
+			try {
+				if (pst != null) {
+					pst.close();
+				}
+				} catch (SQLException e) {
+			System.out.println("Error in closing.");
+					e.printStackTrace();
+				}
 		}
 	}
 
 	// Update level  - input levelNo
 	@Override
 	public void updateLevel(int level, int userId) {
-		PreparedStatement pst;
-		if(level<0 || userId <=0){
+		PreparedStatement pst = null;
+		if(level<0 || userId <0){
 			System.out.println("ValidationException");
 			//throw IllegalArgumentException;
 			}
@@ -372,14 +419,23 @@ public class DBUserDao implements UserDao {
 		} catch (SQLException e) {
 			System.out.println("Error with updating level!");
 			e.printStackTrace();
+		}finally{
+			try {
+				if (pst != null) {
+					pst.close();
+				}
+				} catch (SQLException e) {
+			System.out.println("Error in closing.");
+					e.printStackTrace();
+				}
 		}
 	}
 
 	// update level - levelUp
 	@Override
 	public void updateLevelUp(int userId) {
-		PreparedStatement pst;
-		if(userId <=0){
+		PreparedStatement pst = null;
+		if(userId <0){
 			System.out.println("ValidationException");
 			//throw IllegalArgumentException;
 			}
@@ -391,15 +447,24 @@ public class DBUserDao implements UserDao {
 		} catch (SQLException e) {
 			System.out.println("Error with updating level!");
 			e.printStackTrace();
+		}finally{
+			try {
+				if (pst != null) {
+					pst.close();
+				}
+				} catch (SQLException e) {
+			System.out.println("Error in closing.");
+					e.printStackTrace();
+				}
 		}
 	}
 
 	// Update notification
 	@Override
 	public void updateNotification(boolean noficationAllow, int userId) {
-		PreparedStatement pst;
+		PreparedStatement pst = null;
 		int notificationINT = 0;
-		if( userId <=0){
+		if( userId <0){
 			System.out.println("ValidationException");
 			//throw IllegalArgumentException;
 			}
@@ -414,13 +479,22 @@ public class DBUserDao implements UserDao {
 		} catch (SQLException e) {
 			System.out.println("Error with updating notification!");
 			e.printStackTrace();
+		}finally{
+			try {
+				if (pst != null) {
+					pst.close();
+				}
+				} catch (SQLException e) {
+			System.out.println("Error in closing.");
+					e.printStackTrace();
+				}
 		}
 	}
 
 	 @Override
 		public void updateCurrentDate (int userId){
-	    	PreparedStatement pst;
-			if(  userId <=0){
+	    	PreparedStatement pst = null;
+			if( userId <0){
 				System.out.println("ValidationException");
 				//throw IllegalArgumentException;
 				}
@@ -436,12 +510,25 @@ public class DBUserDao implements UserDao {
 			} catch (SQLException e) {
 				System.out.println("Error with updating data!");
 				e.printStackTrace();
+			}finally{
+				try {
+					if (pst != null) {
+						pst.close();
+					}
+					} catch (SQLException e) {
+				System.out.println("Error in closing.");
+						e.printStackTrace();
+					}
 			}
 		}
 	//updare user weapon
 	 @Override
 		public void updateUserWeapon(int weaponType, int userId){
-			PreparedStatement pst;
+			PreparedStatement pst = null;
+			if(userId <0 || weaponType<0 ){
+				System.out.println("ValidationException");
+				//throw IllegalArgumentException;
+				}
 			try {
 				pst = connection
 						.prepareStatement("update app.users set choosen_weapon_id = ? where id = ?");
@@ -451,17 +538,30 @@ public class DBUserDao implements UserDao {
 			} catch (SQLException e) {
 				System.out.println("Error with updating level!");
 				e.printStackTrace();
-			}
-			
+			}finally{
+				try {
+					if (pst != null) {
+						pst.close();
+					}
+					} catch (SQLException e) {
+				System.out.println("Error in closing.");
+						e.printStackTrace();
+					}
+			}	
 		}
 
 	 @Override
 		public void addUnlockedWeapon(int weaponType, int userId){
+		 PreparedStatement pst = null;
+		 if(userId <0 || weaponType<0 ){
+				System.out.println("ValidationException");
+				//throw IllegalArgumentException;
+				}
 			String insertUnlockedWeapon = "insert into APP.UnlockedWeapons (user_id, weapon_id) "
 					+ " values (?,?) ";
 			try {
 				connection.setAutoCommit(false);
-				PreparedStatement pst = connection.prepareStatement(insertUnlockedWeapon);
+				pst = connection.prepareStatement(insertUnlockedWeapon);
 				pst.setInt(1, userId);
 				pst.setInt(2, weaponType);			
 				pst.executeUpdate();			
@@ -475,12 +575,21 @@ public class DBUserDao implements UserDao {
 				}
 				System.out.println("error insert user");
 				e.printStackTrace();
+			}finally{
+				try {
+					if (pst != null) {
+						pst.close();
+					}
+					} catch (SQLException e) {
+				System.out.println("Error in closing.");
+						e.printStackTrace();
+					}
 			}
 		}
 
 	@Override
 	public int existUser(String username, String password) {
-		PreparedStatement pst;
+		PreparedStatement pst = null;
 		int userId = -1;
 		if(username== null || username == "" || password == null || password == ""){
 			System.out.println("ValidationException");
@@ -500,6 +609,15 @@ public class DBUserDao implements UserDao {
 		} catch (SQLException e) {
 			System.out.println("error in existUser");
 			e.printStackTrace();
+		}finally{
+			try {
+				if (pst != null) {
+					pst.close();
+				}
+				} catch (SQLException e) {
+			System.out.println("Error in closing.");
+					e.printStackTrace();
+				}
 		}
 		return userId;
 	}
@@ -507,9 +625,13 @@ public class DBUserDao implements UserDao {
 	
 	@Override
 	public Weapon getUserWeapon(int userId) {
-		PreparedStatement pst;
+		PreparedStatement pst= null;
+		PreparedStatement pst2= null;
+		ResultSet result =null;
+		ResultSet result2 =null;
+		
 		Weapon weapon = null;
-		if(userId <=0){
+		if(userId <0){
 			System.out.println("ValidationException");
 			//throw IllegalArgumentException;
 			}
@@ -518,18 +640,18 @@ public class DBUserDao implements UserDao {
 			String selectWeaponId = "select choosen_weapon_id from app.users where id = ?";
 			pst = connection.prepareStatement(selectWeaponId);
 			pst.setInt(1, userId);
-			ResultSet results = pst.executeQuery();
+			result = pst.executeQuery();
 
-			results.next();
-			int weapon_id = results.getInt("choosen_weapon_id");
+			result.next();
+			int weapon_id = result.getInt("choosen_weapon_id");
 
-			pst = connection
+			pst2 = connection
 					.prepareStatement("select damage, price from app.weapons where id = ?");
-			pst.setInt(1, weapon_id);
-			ResultSet rs = pst.executeQuery();
-			rs.next();
-			int damage = rs.getInt("damage");
-			int price = rs.getInt("price");
+			pst2.setInt(1, weapon_id);
+			result2 = pst2.executeQuery();
+			result2.next();
+			int damage = result2.getInt("damage");
+			int price = result2.getInt("price");
 			if(damage<=0 || price<=0){
 				System.out.println("Ivalid data from db");
 				//throw IllegalArgumentException;
@@ -544,15 +666,34 @@ public class DBUserDao implements UserDao {
 			}
 			System.out.println("error in getting user`s weapon");
 			e.printStackTrace();
+		}finally{
+			try {
+				if (pst != null) {
+					pst.close();
+				}
+				if (pst2 != null) {
+					pst2.close();
+				}
+				if (result != null) {
+					result.close();
+				}
+				if (result2 != null) {
+					result2.close();
+				}
+				} catch (SQLException e) {
+			System.out.println("Error in closing.");
+					e.printStackTrace();
+				}
 		}
 		return weapon;
 	}
 
 	@Override
 	public int getUserScore(int userId) {
+		PreparedStatement pst = null;
+		ResultSet result = null;
 		int score = 0;
-		PreparedStatement pst;
-		if( userId <=0){
+		if( userId <0){
 			System.out.println("ValidationException");
 			//throw IllegalArgumentException;
 			}
@@ -561,12 +702,24 @@ public class DBUserDao implements UserDao {
 			pst = connection.prepareStatement(selectScore);
 
 			pst.setInt(1, userId);
-			ResultSet results = pst.executeQuery();
-			results.next();
-			score = results.getInt("score");
+			result = pst.executeQuery();
+			result.next();
+			score = result.getInt("score");
 		} catch (SQLException e) {
 			System.out.println("Error in getting user`s score.");
 			e.printStackTrace();
+		}finally{
+			try {
+				if (pst != null) {
+					pst.close();
+				}
+				if (result != null) {
+					result.close();
+				}
+				} catch (SQLException e) {
+			System.out.println("Error in closing.");
+					e.printStackTrace();
+				}
 		}
 		return score;
 	}
@@ -574,8 +727,9 @@ public class DBUserDao implements UserDao {
 @Override
 	public int getUserLevel(int userId) {
 		int level = 0;
-		PreparedStatement pst;
-		if( userId <=0){
+		PreparedStatement pst = null;
+		ResultSet result = null;
+		if( userId <0){
 			System.out.println("ValidationException");
 			//throw IllegalArgumentException;
 			}
@@ -583,12 +737,24 @@ public class DBUserDao implements UserDao {
 			String selectScore = "select levelNo from APP.USERS where id = ?";
 			pst = connection.prepareStatement(selectScore);
 			pst.setInt(1, userId);
-			ResultSet results = pst.executeQuery();
-			results.next();
-			level = results.getInt("levelNo");
+			result = pst.executeQuery();
+			result.next();
+			level = result.getInt("levelNo");
 		} catch (SQLException e) {
 			System.out.println("Error in getUserLevel.");
 			e.printStackTrace();
+		}finally{
+			try {
+				if (pst != null) {
+					pst.close();
+				}
+				if (result != null) {
+					result.close();
+				}
+				} catch (SQLException e) {
+			System.out.println("Error in closing.");
+					e.printStackTrace();
+				}
 		}
 		return level;
 
@@ -597,17 +763,29 @@ public class DBUserDao implements UserDao {
 	public boolean hasQuery() {
 		boolean result = false;
 		int count = 0;
-		Statement st;
+		Statement st = null;
+		ResultSet results  = null;
 		try {
 			st = connection.createStatement();
-			ResultSet results = st
+			results = st
 					.executeQuery("select count(*) from app.users");
 			results.next();
 			count = results.getInt(1);
 		} catch (SQLException e) {
 			e.printStackTrace();
+		}finally{
+			try {
+				if (st != null) {
+					st.close();
+				}
+				if (results != null) {
+					results.close();
+				}
+				} catch (SQLException e) {
+			System.out.println("Error in closing.");
+					e.printStackTrace();
+				}
 		}
-
 		if (count > 0) {
 			result = true;
 		}
@@ -618,8 +796,9 @@ public class DBUserDao implements UserDao {
 @Override
 	public ArrayList<Integer> getUnlockedWeapons(int userId) {
 		ArrayList<Integer> weapon = new ArrayList<Integer>();
-		PreparedStatement pst;
-		if( userId <=0){
+		PreparedStatement pst = null;
+		ResultSet results = null;
+		if( userId <0){
 			System.out.println("ValidationException");
 			//throw IllegalArgumentException;
 			}
@@ -627,7 +806,7 @@ public class DBUserDao implements UserDao {
 			String selectWeapon = "select weapon_id from APP.UnlockedWeapons where user_id  = ?";
 			pst = connection.prepareStatement(selectWeapon);
 			pst.setInt(1, userId);
-			ResultSet results = pst.executeQuery();
+			results = pst.executeQuery();
 			while (results.next()) {
 				Integer weaponId = results.getInt("weapon_id");
 				if(weaponId == null || weaponId <0 ){
@@ -639,6 +818,18 @@ public class DBUserDao implements UserDao {
 		} catch (SQLException e) {
 		System.out.println("Error in getUnlockedWeapons");
 			e.printStackTrace();
+		}finally{
+			try {
+				if (pst != null) {
+					pst.close();
+				}
+				if (results != null) {
+					results.close();
+				}
+				} catch (SQLException e) {
+			System.out.println("Error in closing.");
+					e.printStackTrace();
+				}
 		}
 
 		return weapon;
@@ -646,10 +837,11 @@ public class DBUserDao implements UserDao {
 	
 	public int getMaxScore(){
 		int score = -1; 
-		Statement st;
+		Statement st = null;
+		ResultSet results = null;
 		try {
 			st = connection.createStatement();
-			ResultSet results = st
+		 results = st
 					.executeQuery("select max(score) as maxScore from app.users");
 			results.next();
 			score = results.getInt("maxScore");
@@ -660,6 +852,18 @@ public class DBUserDao implements UserDao {
 		}catch(SQLException e){
 			System.out.println("Error in getMaxScore");
 			e.printStackTrace();
+		}finally{
+			try {
+				if (st != null) {
+					st.close();
+				}
+				if (results != null) {
+					results.close();
+				}
+				} catch (SQLException e) {
+			System.out.println("Error in closing.");
+					e.printStackTrace();
+				}
 		}
 		return score;
 		
@@ -667,14 +871,15 @@ public class DBUserDao implements UserDao {
 
 	public User getUserWithMaxScore() {
 		User user = null;
-		PreparedStatement pst;
+		PreparedStatement pst = null;
+		ResultSet results = null;
 		try {
 			String selectUserWithMaxScore = "select id, username, password, email,notificationAllow from app.users where score = ?";			
 			pst = connection.prepareStatement(selectUserWithMaxScore);
 			int score = getMaxScore();
 			pst.setInt(1, score);
 			pst.setMaxRows(1);
-			ResultSet results = pst
+			results = pst
 					.executeQuery();
 			while(results.next()){
 				int id = results.getInt("id");
@@ -690,15 +895,28 @@ public class DBUserDao implements UserDao {
 		} catch (SQLException e) {
 			System.out.println("error in getUserWithMaxScore");
 			e.printStackTrace();
+		}finally{
+			try {
+				if (pst != null) {
+					pst.close();
+				}
+				if (results != null) {
+					results.close();
+				}
+				} catch (SQLException e) {
+			System.out.println("Error in closing.");
+					e.printStackTrace();
+				}
 		}
 		return user;
 	}
 	
 	@Override
 	public int getUserPosition (int userId){
-		PreparedStatement pst;
+		PreparedStatement pst = null;
+		ResultSet countUsers = null;
 		int userPosition = 0;
-		if( userId <=0){
+		if( userId <0){
 			System.out.println("ValidationException");
 			//throw IllegalArgumentException;
 			}
@@ -707,27 +925,40 @@ public class DBUserDao implements UserDao {
 			pst = connection
 					.prepareStatement("select count(*) as count from app.users where score > ? ");
 			pst.setInt(1, userScore);
-			ResultSet countUsers = pst.executeQuery();
+			countUsers = pst.executeQuery();
 			countUsers.next();
 			userPosition = countUsers.getInt("count");
 			}catch(SQLException e){
 				e.printStackTrace();
+			}finally{
+				try {
+					if (pst != null) {
+						pst.close();
+					}
+					if (countUsers != null) {
+						countUsers.close();
+					}
+					} catch (SQLException e) {
+				System.out.println("Error in closing.");
+						e.printStackTrace();
+					}
 			}
 		return userPosition;
 	}
 	
 	public ArrayList<User> getTopUsers(){
 		ArrayList<User> topUsers = new ArrayList<User>();
-		Statement statement;
+		Statement st = null;
+		ResultSet results = null;
 		try {
-			statement = connection.createStatement();
-			statement.setMaxRows(10);
-			ResultSet resultSet = statement
+			st = connection.createStatement();
+			st.setMaxRows(10);
+			results = st
 					.executeQuery("select id, username, score from app.users order by score desc");
-			while (resultSet.next()) {
-				int id = resultSet.getInt("id");
-				String username = resultSet.getString("username");
-				int score = resultSet.getInt("score");
+			while (results.next()) {
+				int id = results.getInt("id");
+				String username = results.getString("username");
+				int score = results.getInt("score");
 				if(username == null || username == ""){
 					System.out.println("Error output from db");
 					//throw IllegalArgumentException;
@@ -740,6 +971,18 @@ public class DBUserDao implements UserDao {
 			}catch(SQLException e){
 				System.out.println("Error in getTopUsers");
 				e.printStackTrace();
+			}finally{
+				try {
+					if (st != null) {
+						st.close();
+					}
+					if (results != null) {
+						results.close();
+					}
+					} catch (SQLException e) {
+				System.out.println("Error in closing.");
+						e.printStackTrace();
+					}
 			}
 		return topUsers;
 	}
