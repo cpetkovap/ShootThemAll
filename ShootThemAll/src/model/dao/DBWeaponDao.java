@@ -17,51 +17,78 @@ public class DBWeaponDao implements WeaponDao {
 	public ArrayList<Weapon> getWeapons() {
 		ArrayList<Weapon> list = new ArrayList<Weapon>();
 
-		Statement statement;
+		Statement st = null;
+		ResultSet results = null;
 		try {
-			statement = connect.createStatement();
-			ResultSet resultSet = statement.executeQuery("SELECT ID, DAMAGE, PRICE FROM APP.WEAPONS");
-			while(resultSet.next()){
-				int id = resultSet.getInt("id");
-				int damage = resultSet.getInt("damage");
-				int price = resultSet.getInt("price");
-				if(id<0 || damage <0 || price <0){
+			st = connect.createStatement();
+			results = st
+					.executeQuery("SELECT ID, DAMAGE, PRICE FROM APP.WEAPONS");
+			while (results.next()) {
+				int id = results.getInt("id");
+				int damage = results.getInt("damage");
+				int price = results.getInt("price");
+				if (id < 0 || damage < 0 || price < 0) {
 					System.out.println("Ivalid data from db");
-					//throw IllegalArgumentException;
+					// throw IllegalArgumentException;
 				}
 				Weapon weapon = new Weapon(id, damage, price);
 				list.add(weapon);
 			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+			System.out.println("Error in get all weapons.");
 			e.printStackTrace();
 			System.out.println("1");
+		} finally {
+			try {
+				if (st != null) {
+					st.close();
+				}
+				if (results != null) {
+					results.close();
+				}
+			} catch (SQLException e) {
+				System.out.println("Error in closing.");
+				e.printStackTrace();
+			}
 		}
-		
-
 		return list;
 	}
 
 	@Override
 	public Weapon getWeapon(int weaponId) {
-		PreparedStatement statement;
+		PreparedStatement pst = null;
+		ResultSet results = null;
 		Weapon weapon = null;
-		if( weaponId <=0){
+		if (weaponId < 0) {
 			System.out.println("ValidationException");
-			//throw IllegalArgumentException;
-			}
+			// throw IllegalArgumentException;
+		}
 		try {
-			statement = connect.prepareStatement("select damage, price from app.weapons where id = ?");
-			statement.setInt(1, weaponId);
-			ResultSet rs = statement.executeQuery();
-			rs.next();
-			weapon = new Weapon(weaponId, rs.getInt("damage"), rs.getInt("price"));
+			pst = connect
+					.prepareStatement("select damage, price from app.weapons where id = ?");
+			pst.setInt(1, weaponId);
+			results = pst.executeQuery();
+			results.next();
+			weapon = new Weapon(weaponId, results.getInt("damage"),
+					results.getInt("price"));
 			System.out.println(weapon.getPrice());
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+			System.out.println("Error in get weapon.");
 			e.printStackTrace();
+		} finally {
+			try {
+				if (pst != null) {
+					pst.close();
+				}
+				if (results != null) {
+					results.close();
+				}
+			} catch (SQLException e) {
+				System.out.println("Error in closing.");
+				e.printStackTrace();
+			}
 		}
-		
+
 		return weapon;
 	}
 

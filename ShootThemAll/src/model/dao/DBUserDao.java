@@ -16,20 +16,19 @@ import db.DBManager;
 
 public class DBUserDao implements UserDao {
 	private Connection connection = DBManager.getDBManager().getConnection();
-	
+
 	@Override
 	public List getAllUsers() {
 		ArrayList<User> users = new ArrayList<User>();
 		WeaponDao wd = new DBWeaponDao();
-		User user =null;
+		User user = null;
 		Statement st = null;
 		ResultSet results = null;
 		try {
 			st = connection.createStatement();
-			results = st
-					.executeQuery("select id, username, password, email,"
-							+ " notificationAllow, levelNo, score, "
-							+ "choosen_weapon_id,last_activity_on from app.users");
+			results = st.executeQuery("select id, username, password, email,"
+					+ " notificationAllow, levelNo, score, "
+					+ "choosen_weapon_id,last_activity_on from app.users");
 			while (results.next()) {
 				int id = results.getInt("id");
 				String username = results.getString("username");
@@ -42,51 +41,53 @@ public class DBUserDao implements UserDao {
 				int weapon_id = results.getInt("choosen_weapon_id");
 				Date date = results.getDate("last_activity_on");
 				Weapon weapon = wd.getWeapon(weapon_id);
-				if(id < 0 || username == null || username == "" || password == null || password == "" || email == null || email == "" || levelNo <0 || score<0 || weapon_id<0 ){
+				if (id < 0 || username == null || username == ""
+						|| password == null || password == "" || email == null
+						|| email == "" || levelNo < 0 || score < 0
+						|| weapon_id < 0) {
 					System.out.println("Ivalid data from db - user");
-					//throw IllegalArgumentException;
+					// throw IllegalArgumentException;
 				}
-if(date !=null){
-				 user = new User(id, username, password, email, score,
-				levelNo, weapon,notificationAllow,date);
-}else {
-	user = new User(id, username, password, email, score,
-			levelNo, weapon,notificationAllow);
-}
+				if (date != null) {
+					user = new User(id, username, password, email, score,
+							levelNo, weapon, notificationAllow, date);
+				} else {
+					user = new User(id, username, password, email, score,
+							levelNo, weapon, notificationAllow);
+				}
 				users.add(user);
 			}
 		} catch (SQLException e) {
 			System.out.println("Error in select all users");
 			e.printStackTrace();
-		}finally{
+		} finally {
 			try {
 				if (st != null) {
 					st.close();
 				}
-				if(results != null){
-				results.close();
-			}
-				} catch (SQLException e) {
-			System.out.println("Error in closing.");
-					e.printStackTrace();
+				if (results != null) {
+					results.close();
 				}
+			} catch (SQLException e) {
+				System.out.println("Error in closing.");
+				e.printStackTrace();
+			}
 		}
 		return users;
 	}
-  
-    
+
 	@Override
 	public User getUser(int userId) {
 		User user = null;
 		WeaponDao wd = new DBWeaponDao();
 		PreparedStatement pst = null;
 		ResultSet results = null;
-		if(userId<0){
+		if (userId < 0) {
 			System.out.println("ValidationException ");
-			//throw IllegalArgumentException;
+			// throw IllegalArgumentException;
 		}
 		try {
-			 pst = connection
+			pst = connection
 					.prepareStatement("select username, password, email, notificationAllow, levelNo, score, choosen_weapon_id,last_activity_on from app.users where id = ?");
 			pst.setInt(1, userId);
 			results = pst.executeQuery();
@@ -101,33 +102,35 @@ if(date !=null){
 			int weapon_id = results.getInt("choosen_weapon_id");
 			Date date = results.getDate("last_activity_on");
 			Weapon weapon = wd.getWeapon(weapon_id);
-	
-			if(username == null || username == "" || password == null || password == "" || email == null || email == "" || levelNo <0 || score<0 || weapon_id<0  ){
+
+			if (username == null || username == "" || password == null
+					|| password == "" || email == null || email == ""
+					|| levelNo < 0 || score < 0 || weapon_id < 0) {
 				System.out.println("Ivalid data from db");
-				//throw IllegalArgumentException;
+				// throw IllegalArgumentException;
 			}
-			if(date !=null){
-							 user = new User(userId, username, password, email, score,
-							levelNo, weapon,notificationAllow,date);
-			}else {
+			if (date != null) {
 				user = new User(userId, username, password, email, score,
-						levelNo, weapon,notificationAllow);
+						levelNo, weapon, notificationAllow, date);
+			} else {
+				user = new User(userId, username, password, email, score,
+						levelNo, weapon, notificationAllow);
 			}
 		} catch (SQLException e) {
 			System.out.println("error in select user by id");
 			e.printStackTrace();
-		}finally{
+		} finally {
 			try {
 				if (pst != null) {
 					pst.close();
 				}
-				if(results != null){
-				results.close();
-			}
-				} catch (SQLException e) {
-			System.out.println("Error in closing.");
-					e.printStackTrace();
+				if (results != null) {
+					results.close();
 				}
+			} catch (SQLException e) {
+				System.out.println("Error in closing.");
+				e.printStackTrace();
+			}
 		}
 		return user;
 	}
@@ -135,13 +138,13 @@ if(date !=null){
 	@Override
 	public User getUser(String username) {
 		User user = null;
-		WeaponDao  wd = new DBWeaponDao();
+		WeaponDao wd = new DBWeaponDao();
 		PreparedStatement pst = null;
 		ResultSet result = null;
-		
-		if(username == null || username == ""){
+
+		if (username == null || username == "") {
 			System.out.println("ValidationException");
-			//throw IllegalArgumentException;
+			// throw IllegalArgumentException;
 		}
 		try {
 			pst = connection
@@ -160,33 +163,36 @@ if(date !=null){
 				int weapon_id = result.getInt("choosen_weapon_id");
 				Date date = result.getDate("last_activity_on");
 				Weapon weapon = wd.getWeapon(weapon_id);
-				if(id < 0 || username == null || username == "" || password == null || password == "" || email == null || email == "" || levelNo <0 || score<0 || weapon_id<0  ){
+				if (id < 0 || username == null || username == ""
+						|| password == null || password == "" || email == null
+						|| email == "" || levelNo < 0 || score < 0
+						|| weapon_id < 0) {
 					System.out.println("Ivalid data from db");
-					//throw IllegalArgumentException;
+					// throw IllegalArgumentException;
 				}
-				if(date !=null){
-					 user = new User(id, username, password, email, score,
-					levelNo, weapon,notificationAllow,date);
-	}else {
-		user = new User(id, username, password, email, score,
-				levelNo, weapon,notificationAllow);
-	}
+				if (date != null) {
+					user = new User(id, username, password, email, score,
+							levelNo, weapon, notificationAllow, date);
+				} else {
+					user = new User(id, username, password, email, score,
+							levelNo, weapon, notificationAllow);
+				}
 			}
 		} catch (SQLException e) {
 			System.out.println("error in select user by name");
 			e.printStackTrace();
-		}finally{
+		} finally {
 			try {
 				if (pst != null) {
 					pst.close();
 				}
-				if(result != null){
+				if (result != null) {
 					result.close();
-			}
-				} catch (SQLException e) {
-			System.out.println("Error in closing.");
-					e.printStackTrace();
 				}
+			} catch (SQLException e) {
+				System.out.println("Error in closing.");
+				e.printStackTrace();
+			}
 		}
 		return user;
 	}
@@ -197,9 +203,9 @@ if(date !=null){
 		PreparedStatement pst2 = null;
 		ResultSet result = null;
 		int userId = -1;
-		if(u == null){
+		if (u == null) {
 			System.out.println("ValidationException");
-			//throw IllegalArgumentException;
+			// throw IllegalArgumentException;
 		}
 		String insertIntoUser = "insert into app.users (username, password, email, last_activity_on) "
 				+ " values (?,?,?,?) ";
@@ -211,8 +217,7 @@ if(date !=null){
 			pst.setString(1, u.getUsername());
 			pst.setString(2, u.getPassword());
 			pst.setString(3, u.getEmail());
-			SimpleDateFormat sdf = 
-					new SimpleDateFormat ("yyyy-MM-dd hh:mm:ss");
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 			pst.setString(4, sdf.format(new Date()));
 			pst.executeUpdate();
 			result = pst.getGeneratedKeys();
@@ -220,8 +225,7 @@ if(date !=null){
 				userId = result.getInt(1);
 			}
 
-			pst2 = connection
-					.prepareStatement(insertInUnlockWeapon);
+			pst2 = connection.prepareStatement(insertInUnlockWeapon);
 			pst2.setInt(1, userId);
 			pst2.setInt(2, 1);
 			pst2.executeUpdate();
@@ -235,7 +239,7 @@ if(date !=null){
 			}
 			System.out.println("error insert user");
 			e.printStackTrace();
-		}finally{
+		} finally {
 			try {
 				if (pst != null) {
 					pst.close();
@@ -243,13 +247,13 @@ if(date !=null){
 				if (pst2 != null) {
 					pst2.close();
 				}
-				if(result != null){
+				if (result != null) {
 					result.close();
-			}
-				} catch (SQLException e) {
-			System.out.println("Error in closing.");
-					e.printStackTrace();
 				}
+			} catch (SQLException e) {
+				System.out.println("Error in closing.");
+				e.printStackTrace();
+			}
 		}
 		return userId;
 
@@ -260,26 +264,26 @@ if(date !=null){
 		PreparedStatement pst = null;
 		PreparedStatement pst2 = null;
 		PreparedStatement pst3 = null;
-		if(userId<0){
+		if (userId < 0) {
 			System.out.println("ValidationException");
-			//throw IllegalArgumentException;
+			// throw IllegalArgumentException;
 		}
 		try {
-				connection.setAutoCommit(false);
-			
-		//delete user - user_id from unlockedWeapons
+			connection.setAutoCommit(false);
+
+			// delete user - user_id from unlockedWeapons
 			pst = connection
 					.prepareStatement("delete from app.unlockedWeapons where user_id = ?");
 			pst.setInt(1, userId);
 			pst.executeUpdate();
-			
-		//delete user - user_id from userAchievements
+
+			// delete user - user_id from userAchievements
 			pst2 = connection
 					.prepareStatement("delete from app.userAchievements where user_id= = ?");
 			pst2.setInt(1, userId);
 			pst2.executeUpdate();
-			
-		//delete user from Users
+
+			// delete user from Users
 			pst3 = connection
 					.prepareStatement("delete from app.users where id = ?");
 			pst3.setInt(1, userId);
@@ -294,7 +298,7 @@ if(date !=null){
 			}
 			e.printStackTrace();
 			System.out.println("Error deleting user");
-		}finally{
+		} finally {
 			try {
 				if (pst != null) {
 					pst.close();
@@ -305,10 +309,10 @@ if(date !=null){
 				if (pst2 != null) {
 					pst2.close();
 				}
-				} catch (SQLException e) {
-			System.out.println("Error in closing.");
-					e.printStackTrace();
-				}
+			} catch (SQLException e) {
+				System.out.println("Error in closing.");
+				e.printStackTrace();
+			}
 		}
 	}
 
@@ -316,30 +320,30 @@ if(date !=null){
 	@Override
 	public void updatePassword(String password, int userId) {
 		PreparedStatement pst = null;
-		if(password == null || password == "" || userId <0){
+		if (password == null || password == "" || userId < 0) {
 			System.out.println("ValidationException");
-			//throw IllegalArgumentException;
-			}
+			// throw IllegalArgumentException;
+		}
 		try {
-			
+
 			pst = connection
 					.prepareStatement("update app.users set password = ? where id =?");
 			pst.setString(1, password);
 			pst.setInt(2, userId);
 			pst.executeUpdate();
-		
+
 		} catch (SQLException e) {
 			System.out.println("Error with updating password!");
 			e.printStackTrace();
-		}finally{
+		} finally {
 			try {
 				if (pst != null) {
 					pst.close();
 				}
-				} catch (SQLException e) {
-			System.out.println("Error in closing.");
-					e.printStackTrace();
-				}
+			} catch (SQLException e) {
+				System.out.println("Error in closing.");
+				e.printStackTrace();
+			}
 		}
 
 	}
@@ -348,10 +352,10 @@ if(date !=null){
 	@Override
 	public void updateEmail(String email, int userId) {
 		PreparedStatement pst = null;
-		if(email == null || email == "" || userId <0){
+		if (email == null || email == "" || userId < 0) {
 			System.out.println("ValidationException");
-			//throw IllegalArgumentException;
-			}
+			// throw IllegalArgumentException;
+		}
 		try {
 			pst = connection
 					.prepareStatement("update app.users set email = ? where id =?");
@@ -361,15 +365,15 @@ if(date !=null){
 		} catch (SQLException e) {
 			System.out.println("Error with updating email!");
 			e.printStackTrace();
-		}finally{
+		} finally {
 			try {
 				if (pst != null) {
 					pst.close();
 				}
-				} catch (SQLException e) {
-			System.out.println("Error in closing.");
-					e.printStackTrace();
-				}
+			} catch (SQLException e) {
+				System.out.println("Error in closing.");
+				e.printStackTrace();
+			}
 		}
 	}
 
@@ -377,10 +381,10 @@ if(date !=null){
 	@Override
 	public void updateScore(int score, int userId) {
 		PreparedStatement pst = null;
-		if(score<0 || userId <0){
+		if (score < 0 || userId < 0) {
 			System.out.println("ValidationException");
-			//throw IllegalArgumentException;
-			}
+			// throw IllegalArgumentException;
+		}
 		try {
 			pst = connection
 					.prepareStatement("update app.users set score = score + ? where id =?");
@@ -390,26 +394,26 @@ if(date !=null){
 		} catch (SQLException e) {
 			System.out.println("Error with updating score!");
 			e.printStackTrace();
-		}finally{
+		} finally {
 			try {
 				if (pst != null) {
 					pst.close();
 				}
-				} catch (SQLException e) {
-			System.out.println("Error in closing.");
-					e.printStackTrace();
-				}
+			} catch (SQLException e) {
+				System.out.println("Error in closing.");
+				e.printStackTrace();
+			}
 		}
 	}
 
-	// Update level  - input levelNo
+	// Update level - input levelNo
 	@Override
 	public void updateLevel(int level, int userId) {
 		PreparedStatement pst = null;
-		if(level<0 || userId <0){
+		if (level < 0 || userId < 0) {
 			System.out.println("ValidationException");
-			//throw IllegalArgumentException;
-			}
+			// throw IllegalArgumentException;
+		}
 		try {
 			pst = connection
 					.prepareStatement("update app.users set levelNo =  ? where id =?");
@@ -419,15 +423,15 @@ if(date !=null){
 		} catch (SQLException e) {
 			System.out.println("Error with updating level!");
 			e.printStackTrace();
-		}finally{
+		} finally {
 			try {
 				if (pst != null) {
 					pst.close();
 				}
-				} catch (SQLException e) {
-			System.out.println("Error in closing.");
-					e.printStackTrace();
-				}
+			} catch (SQLException e) {
+				System.out.println("Error in closing.");
+				e.printStackTrace();
+			}
 		}
 	}
 
@@ -435,10 +439,10 @@ if(date !=null){
 	@Override
 	public void updateLevelUp(int userId) {
 		PreparedStatement pst = null;
-		if(userId <0){
+		if (userId < 0) {
 			System.out.println("ValidationException");
-			//throw IllegalArgumentException;
-			}
+			// throw IllegalArgumentException;
+		}
 		try {
 			pst = connection
 					.prepareStatement("update app.users set levelNo = levelNo +1 where id =?");
@@ -447,15 +451,15 @@ if(date !=null){
 		} catch (SQLException e) {
 			System.out.println("Error with updating level!");
 			e.printStackTrace();
-		}finally{
+		} finally {
 			try {
 				if (pst != null) {
 					pst.close();
 				}
-				} catch (SQLException e) {
-			System.out.println("Error in closing.");
-					e.printStackTrace();
-				}
+			} catch (SQLException e) {
+				System.out.println("Error in closing.");
+				e.printStackTrace();
+			}
 		}
 	}
 
@@ -464,10 +468,10 @@ if(date !=null){
 	public void updateNotification(boolean noficationAllow, int userId) {
 		PreparedStatement pst = null;
 		int notificationINT = 0;
-		if( userId <0){
+		if (userId < 0) {
 			System.out.println("ValidationException");
-			//throw IllegalArgumentException;
-			}
+			// throw IllegalArgumentException;
+		}
 		try {
 			pst = connection
 					.prepareStatement("update app.users set notificationAllow = ? where id =?");
@@ -479,122 +483,123 @@ if(date !=null){
 		} catch (SQLException e) {
 			System.out.println("Error with updating notification!");
 			e.printStackTrace();
-		}finally{
+		} finally {
 			try {
 				if (pst != null) {
 					pst.close();
 				}
-				} catch (SQLException e) {
-			System.out.println("Error in closing.");
-					e.printStackTrace();
-				}
+			} catch (SQLException e) {
+				System.out.println("Error in closing.");
+				e.printStackTrace();
+			}
 		}
 	}
 
-	 @Override
-		public void updateCurrentDate (int userId){
-	    	PreparedStatement pst = null;
-			if( userId <0){
-				System.out.println("ValidationException");
-				//throw IllegalArgumentException;
-				}
-			try {
-				SimpleDateFormat sdf = 
-						new SimpleDateFormat ("yyyy-MM-dd hh:mm:ss");
-				pst = connection
-						.prepareStatement("update app.users set last_activity_on = ? where id =?");
-				pst.setString(1, sdf.format(new Date()));
-				pst.setInt(2, userId);
-				pst.executeUpdate();
-			
-			} catch (SQLException e) {
-				System.out.println("Error with updating data!");
-				e.printStackTrace();
-			}finally{
-				try {
-					if (pst != null) {
-						pst.close();
-					}
-					} catch (SQLException e) {
-				System.out.println("Error in closing.");
-						e.printStackTrace();
-					}
-			}
+	@Override
+	public void updateCurrentDate(int userId) {
+		PreparedStatement pst = null;
+		if (userId < 0) {
+			System.out.println("ValidationException");
+			// throw IllegalArgumentException;
 		}
-	//updare user weapon
-	 @Override
-		public void updateUserWeapon(int weaponType, int userId){
-			PreparedStatement pst = null;
-			if(userId <0 || weaponType<0 ){
-				System.out.println("ValidationException");
-				//throw IllegalArgumentException;
-				}
-			try {
-				pst = connection
-						.prepareStatement("update app.users set choosen_weapon_id = ? where id = ?");
-				pst.setInt(1, weaponType);
-				pst.setInt(2, userId);
-				pst.executeUpdate();
-			} catch (SQLException e) {
-				System.out.println("Error with updating level!");
-				e.printStackTrace();
-			}finally{
-				try {
-					if (pst != null) {
-						pst.close();
-					}
-					} catch (SQLException e) {
-				System.out.println("Error in closing.");
-						e.printStackTrace();
-					}
-			}	
-		}
+		try {
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+			pst = connection
+					.prepareStatement("update app.users set last_activity_on = ? where id =?");
+			pst.setString(1, sdf.format(new Date()));
+			pst.setInt(2, userId);
+			pst.executeUpdate();
 
-	 @Override
-		public void addUnlockedWeapon(int weaponType, int userId){
-		 PreparedStatement pst = null;
-		 if(userId <0 || weaponType<0 ){
-				System.out.println("ValidationException");
-				//throw IllegalArgumentException;
-				}
-			String insertUnlockedWeapon = "insert into APP.UnlockedWeapons (user_id, weapon_id) "
-					+ " values (?,?) ";
+		} catch (SQLException e) {
+			System.out.println("Error with updating data!");
+			e.printStackTrace();
+		} finally {
 			try {
-				connection.setAutoCommit(false);
-				pst = connection.prepareStatement(insertUnlockedWeapon);
-				pst.setInt(1, userId);
-				pst.setInt(2, weaponType);			
-				pst.executeUpdate();			
-				connection.commit();
-			} catch (SQLException e) {
-				try {
-					connection.rollback();
-				} catch (SQLException e1) {
-					System.out.println("Error rollback");
-					e1.printStackTrace();
+				if (pst != null) {
+					pst.close();
 				}
-				System.out.println("error insert user");
-				e.printStackTrace();
-			}finally{
-				try {
-					if (pst != null) {
-						pst.close();
-					}
-					} catch (SQLException e) {
+			} catch (SQLException e) {
 				System.out.println("Error in closing.");
-						e.printStackTrace();
-					}
+				e.printStackTrace();
 			}
 		}
+	}
+
+	// updare user weapon
+	@Override
+	public void updateUserWeapon(int weaponType, int userId) {
+		PreparedStatement pst = null;
+		if (userId < 0 || weaponType < 0) {
+			System.out.println("ValidationException");
+			// throw IllegalArgumentException;
+		}
+		try {
+			pst = connection
+					.prepareStatement("update app.users set choosen_weapon_id = ? where id = ?");
+			pst.setInt(1, weaponType);
+			pst.setInt(2, userId);
+			pst.executeUpdate();
+		} catch (SQLException e) {
+			System.out.println("Error with updating level!");
+			e.printStackTrace();
+		} finally {
+			try {
+				if (pst != null) {
+					pst.close();
+				}
+			} catch (SQLException e) {
+				System.out.println("Error in closing.");
+				e.printStackTrace();
+			}
+		}
+	}
+
+	@Override
+	public void addUnlockedWeapon(int weaponType, int userId) {
+		PreparedStatement pst = null;
+		if (userId < 0 || weaponType < 0) {
+			System.out.println("ValidationException");
+			// throw IllegalArgumentException;
+		}
+		String insertUnlockedWeapon = "insert into APP.UnlockedWeapons (user_id, weapon_id) "
+				+ " values (?,?) ";
+		try {
+			connection.setAutoCommit(false);
+			pst = connection.prepareStatement(insertUnlockedWeapon);
+			pst.setInt(1, userId);
+			pst.setInt(2, weaponType);
+			pst.executeUpdate();
+			connection.commit();
+		} catch (SQLException e) {
+			try {
+				connection.rollback();
+			} catch (SQLException e1) {
+				System.out.println("Error rollback");
+				e1.printStackTrace();
+			}
+			System.out.println("error insert user");
+			e.printStackTrace();
+		} finally {
+			try {
+				if (pst != null) {
+					pst.close();
+				}
+			} catch (SQLException e) {
+				System.out.println("Error in closing.");
+				e.printStackTrace();
+			}
+		}
+	}
 
 	@Override
 	public int existUser(String username, String password) {
 		PreparedStatement pst = null;
 		int userId = -1;
-		if(username== null || username == "" || password == null || password == ""){
+		if (username == null || username == "" || password == null
+				|| password == "") {
 			System.out.println("ValidationException");
-			//throw IllegalArgumentException;
-			}
+			// throw IllegalArgumentException;
+		}
 		try {
 			String selecQuery = "select id, username , password from app.users where username = ? and password = ?";
 			pst = connection.prepareStatement(selecQuery);
@@ -609,32 +614,31 @@ if(date !=null){
 		} catch (SQLException e) {
 			System.out.println("error in existUser");
 			e.printStackTrace();
-		}finally{
+		} finally {
 			try {
 				if (pst != null) {
 					pst.close();
 				}
-				} catch (SQLException e) {
-			System.out.println("Error in closing.");
-					e.printStackTrace();
-				}
+			} catch (SQLException e) {
+				System.out.println("Error in closing.");
+				e.printStackTrace();
+			}
 		}
 		return userId;
 	}
 
-	
 	@Override
 	public Weapon getUserWeapon(int userId) {
-		PreparedStatement pst= null;
-		PreparedStatement pst2= null;
-		ResultSet result =null;
-		ResultSet result2 =null;
-		
+		PreparedStatement pst = null;
+		PreparedStatement pst2 = null;
+		ResultSet result = null;
+		ResultSet result2 = null;
+
 		Weapon weapon = null;
-		if(userId <0){
+		if (userId < 0) {
 			System.out.println("ValidationException");
-			//throw IllegalArgumentException;
-			}
+			// throw IllegalArgumentException;
+		}
 		try {
 			connection.setAutoCommit(false);
 			String selectWeaponId = "select choosen_weapon_id from app.users where id = ?";
@@ -652,10 +656,10 @@ if(date !=null){
 			result2.next();
 			int damage = result2.getInt("damage");
 			int price = result2.getInt("price");
-			if(damage<=0 || price<=0){
+			if (damage <= 0 || price <= 0) {
 				System.out.println("Ivalid data from db");
-				//throw IllegalArgumentException;
-				}
+				// throw IllegalArgumentException;
+			}
 			weapon = new Weapon(weapon_id, damage, price);
 			connection.commit();
 		} catch (SQLException e) {
@@ -666,7 +670,7 @@ if(date !=null){
 			}
 			System.out.println("error in getting user`s weapon");
 			e.printStackTrace();
-		}finally{
+		} finally {
 			try {
 				if (pst != null) {
 					pst.close();
@@ -680,10 +684,10 @@ if(date !=null){
 				if (result2 != null) {
 					result2.close();
 				}
-				} catch (SQLException e) {
-			System.out.println("Error in closing.");
-					e.printStackTrace();
-				}
+			} catch (SQLException e) {
+				System.out.println("Error in closing.");
+				e.printStackTrace();
+			}
 		}
 		return weapon;
 	}
@@ -693,10 +697,10 @@ if(date !=null){
 		PreparedStatement pst = null;
 		ResultSet result = null;
 		int score = 0;
-		if( userId <0){
+		if (userId < 0) {
 			System.out.println("ValidationException");
-			//throw IllegalArgumentException;
-			}
+			// throw IllegalArgumentException;
+		}
 		try {
 			String selectScore = "select score from APP.USERS where id = ?";
 			pst = connection.prepareStatement(selectScore);
@@ -708,7 +712,7 @@ if(date !=null){
 		} catch (SQLException e) {
 			System.out.println("Error in getting user`s score.");
 			e.printStackTrace();
-		}finally{
+		} finally {
 			try {
 				if (pst != null) {
 					pst.close();
@@ -716,23 +720,23 @@ if(date !=null){
 				if (result != null) {
 					result.close();
 				}
-				} catch (SQLException e) {
-			System.out.println("Error in closing.");
-					e.printStackTrace();
-				}
+			} catch (SQLException e) {
+				System.out.println("Error in closing.");
+				e.printStackTrace();
+			}
 		}
 		return score;
 	}
-	
-@Override
+
+	@Override
 	public int getUserLevel(int userId) {
 		int level = 0;
 		PreparedStatement pst = null;
 		ResultSet result = null;
-		if( userId <0){
+		if (userId < 0) {
 			System.out.println("ValidationException");
-			//throw IllegalArgumentException;
-			}
+			// throw IllegalArgumentException;
+		}
 		try {
 			String selectScore = "select levelNo from APP.USERS where id = ?";
 			pst = connection.prepareStatement(selectScore);
@@ -743,7 +747,7 @@ if(date !=null){
 		} catch (SQLException e) {
 			System.out.println("Error in getUserLevel.");
 			e.printStackTrace();
-		}finally{
+		} finally {
 			try {
 				if (pst != null) {
 					pst.close();
@@ -751,29 +755,29 @@ if(date !=null){
 				if (result != null) {
 					result.close();
 				}
-				} catch (SQLException e) {
-			System.out.println("Error in closing.");
-					e.printStackTrace();
-				}
+			} catch (SQLException e) {
+				System.out.println("Error in closing.");
+				e.printStackTrace();
+			}
 		}
 		return level;
 
 	}
-@Override
+
+	@Override
 	public boolean hasQuery() {
 		boolean result = false;
 		int count = 0;
 		Statement st = null;
-		ResultSet results  = null;
+		ResultSet results = null;
 		try {
 			st = connection.createStatement();
-			results = st
-					.executeQuery("select count(*) from app.users");
+			results = st.executeQuery("select count(*) from app.users");
 			results.next();
 			count = results.getInt(1);
 		} catch (SQLException e) {
 			e.printStackTrace();
-		}finally{
+		} finally {
 			try {
 				if (st != null) {
 					st.close();
@@ -781,10 +785,10 @@ if(date !=null){
 				if (results != null) {
 					results.close();
 				}
-				} catch (SQLException e) {
-			System.out.println("Error in closing.");
-					e.printStackTrace();
-				}
+			} catch (SQLException e) {
+				System.out.println("Error in closing.");
+				e.printStackTrace();
+			}
 		}
 		if (count > 0) {
 			result = true;
@@ -793,15 +797,16 @@ if(date !=null){
 		return result;
 
 	}
-@Override
+
+	@Override
 	public ArrayList<Integer> getUnlockedWeapons(int userId) {
 		ArrayList<Integer> weapon = new ArrayList<Integer>();
 		PreparedStatement pst = null;
 		ResultSet results = null;
-		if( userId <0){
+		if (userId < 0) {
 			System.out.println("ValidationException");
-			//throw IllegalArgumentException;
-			}
+			// throw IllegalArgumentException;
+		}
 		try {
 			String selectWeapon = "select weapon_id from APP.UnlockedWeapons where user_id  = ?";
 			pst = connection.prepareStatement(selectWeapon);
@@ -809,16 +814,16 @@ if(date !=null){
 			results = pst.executeQuery();
 			while (results.next()) {
 				Integer weaponId = results.getInt("weapon_id");
-				if(weaponId == null || weaponId <0 ){
+				if (weaponId == null || weaponId < 0) {
 					System.out.println("ValidationException");
-					//throw IllegalArgumentException;
-					}
+					// throw IllegalArgumentException;
+				}
 				weapon.add(weaponId);
 			}
 		} catch (SQLException e) {
-		System.out.println("Error in getUnlockedWeapons");
+			System.out.println("Error in getUnlockedWeapons");
 			e.printStackTrace();
-		}finally{
+		} finally {
 			try {
 				if (pst != null) {
 					pst.close();
@@ -826,33 +831,33 @@ if(date !=null){
 				if (results != null) {
 					results.close();
 				}
-				} catch (SQLException e) {
-			System.out.println("Error in closing.");
-					e.printStackTrace();
-				}
+			} catch (SQLException e) {
+				System.out.println("Error in closing.");
+				e.printStackTrace();
+			}
 		}
 
 		return weapon;
 	}
-	
-	public int getMaxScore(){
-		int score = -1; 
+
+	public int getMaxScore() {
+		int score = -1;
 		Statement st = null;
 		ResultSet results = null;
 		try {
 			st = connection.createStatement();
-		 results = st
+			results = st
 					.executeQuery("select max(score) as maxScore from app.users");
 			results.next();
 			score = results.getInt("maxScore");
-			if(score<0){
+			if (score < 0) {
 				System.out.println("Error output from db");
-				//throw IllegalArgumentException;
-				}
-		}catch(SQLException e){
+				// throw IllegalArgumentException;
+			}
+		} catch (SQLException e) {
 			System.out.println("Error in getMaxScore");
 			e.printStackTrace();
-		}finally{
+		} finally {
 			try {
 				if (st != null) {
 					st.close();
@@ -860,13 +865,13 @@ if(date !=null){
 				if (results != null) {
 					results.close();
 				}
-				} catch (SQLException e) {
-			System.out.println("Error in closing.");
-					e.printStackTrace();
-				}
+			} catch (SQLException e) {
+				System.out.println("Error in closing.");
+				e.printStackTrace();
+			}
 		}
 		return score;
-		
+
 	}
 
 	public User getUserWithMaxScore() {
@@ -874,14 +879,13 @@ if(date !=null){
 		PreparedStatement pst = null;
 		ResultSet results = null;
 		try {
-			String selectUserWithMaxScore = "select id, username, password, email,notificationAllow from app.users where score = ?";			
+			String selectUserWithMaxScore = "select id, username, password, email,notificationAllow from app.users where score = ?";
 			pst = connection.prepareStatement(selectUserWithMaxScore);
 			int score = getMaxScore();
 			pst.setInt(1, score);
 			pst.setMaxRows(1);
-			results = pst
-					.executeQuery();
-			while(results.next()){
+			results = pst.executeQuery();
+			while (results.next()) {
 				int id = results.getInt("id");
 				String username = results.getString("username");
 				String password = results.getString("password");
@@ -895,7 +899,7 @@ if(date !=null){
 		} catch (SQLException e) {
 			System.out.println("error in getUserWithMaxScore");
 			e.printStackTrace();
-		}finally{
+		} finally {
 			try {
 				if (pst != null) {
 					pst.close();
@@ -903,23 +907,23 @@ if(date !=null){
 				if (results != null) {
 					results.close();
 				}
-				} catch (SQLException e) {
-			System.out.println("Error in closing.");
-					e.printStackTrace();
-				}
+			} catch (SQLException e) {
+				System.out.println("Error in closing.");
+				e.printStackTrace();
+			}
 		}
 		return user;
 	}
-	
+
 	@Override
-	public int getUserPosition (int userId){
+	public int getUserPosition(int userId) {
 		PreparedStatement pst = null;
 		ResultSet countUsers = null;
 		int userPosition = 0;
-		if( userId <0){
+		if (userId < 0) {
 			System.out.println("ValidationException");
-			//throw IllegalArgumentException;
-			}
+			// throw IllegalArgumentException;
+		}
 		try {
 			int userScore = getUserScore(userId);
 			pst = connection
@@ -928,25 +932,25 @@ if(date !=null){
 			countUsers = pst.executeQuery();
 			countUsers.next();
 			userPosition = countUsers.getInt("count");
-			}catch(SQLException e){
-				e.printStackTrace();
-			}finally{
-				try {
-					if (pst != null) {
-						pst.close();
-					}
-					if (countUsers != null) {
-						countUsers.close();
-					}
-					} catch (SQLException e) {
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (pst != null) {
+					pst.close();
+				}
+				if (countUsers != null) {
+					countUsers.close();
+				}
+			} catch (SQLException e) {
 				System.out.println("Error in closing.");
-						e.printStackTrace();
-					}
+				e.printStackTrace();
 			}
+		}
 		return userPosition;
 	}
-	
-	public ArrayList<User> getTopUsers(){
+
+	public ArrayList<User> getTopUsers() {
 		ArrayList<User> topUsers = new ArrayList<User>();
 		Statement st = null;
 		ResultSet results = null;
@@ -959,33 +963,32 @@ if(date !=null){
 				int id = results.getInt("id");
 				String username = results.getString("username");
 				int score = results.getInt("score");
-				if(username == null || username == ""){
+				if (username == null || username == "") {
 					System.out.println("Error output from db");
-					//throw IllegalArgumentException;
-			}
+					// throw IllegalArgumentException;
+				}
 				User u = new User(username, "default");
-				
+
 				u.setScore(score);
 				topUsers.add(u);
 			}
-			}catch(SQLException e){
-				System.out.println("Error in getTopUsers");
-				e.printStackTrace();
-			}finally{
-				try {
-					if (st != null) {
-						st.close();
-					}
-					if (results != null) {
-						results.close();
-					}
-					} catch (SQLException e) {
+		} catch (SQLException e) {
+			System.out.println("Error in getTopUsers");
+			e.printStackTrace();
+		} finally {
+			try {
+				if (st != null) {
+					st.close();
+				}
+				if (results != null) {
+					results.close();
+				}
+			} catch (SQLException e) {
 				System.out.println("Error in closing.");
-						e.printStackTrace();
-					}
+				e.printStackTrace();
 			}
+		}
 		return topUsers;
 	}
-	
 
 }
