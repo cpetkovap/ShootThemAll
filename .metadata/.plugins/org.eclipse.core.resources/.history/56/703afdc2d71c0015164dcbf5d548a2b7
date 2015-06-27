@@ -2,7 +2,6 @@ package controller.servlets;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Date;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
@@ -165,16 +164,14 @@ public class Login extends HttpServlet {
 //						response.setStatus(400);
 //					}
 					
-					
-					//Използваме нашият си кеш
-					existUser = users.existUser(username, password);				
+					existUser = users.existUser(username, password);
+					System.out.println(existUser);
 					userId = users.getUserId(username);
+					System.out.println(userId);
 					
+					
+
 					if (existUser) {
-						//update last activity
-						ud.updateCurrentDate(userId);
-					    users.getUser(userId).setDate(ud.getUser(userId).getDate());
-					    
 						result.put("userId", userId);
 						response.setStatus(200);
 						//System.out.println(Cache.getCache().getUser(userId).getDate());
@@ -183,15 +180,12 @@ public class Login extends HttpServlet {
 						// Тук проверяваме в базата данни дали съществува този потребител
 						
 						int existInDB = ud.existUser(username, password);
+						System.out.println(existInDB);
 						if(existInDB > 0){
 							
 							//potrebitel ot selekta v bazata danni -> testov
 							User user = ud.getUser(existInDB);
 							//update na datata v bazata danni za tozi potrebitel
-							
-							//update last activity
-							ud.updateCurrentDate(existInDB);
-						    user.setDate(ud.getUser(existInDB).getDate());
 							
 							users.addUser(user);
 							

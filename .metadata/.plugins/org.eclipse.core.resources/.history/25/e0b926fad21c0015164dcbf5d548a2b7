@@ -2,7 +2,6 @@ package controller.servlets;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Date;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
@@ -108,8 +107,8 @@ public class Login extends HttpServlet {
 
 		// test
 		JSONObject test = new JSONObject();
-		test.put("username", "Shoshi");
-		test.put("password", "123");
+		test.put("username", "Tanqa");
+		test.put("password", "Tanq");
 		line = test.toJSONString();
 
 		JSONObject result = new JSONObject();
@@ -128,8 +127,8 @@ public class Login extends HttpServlet {
 			UserDao ud = new DBUserDao();
 			
 			//	if (getServletContext().getAttribute("cacheUsers") == null) {
-			//if (users.isEmpty()) {
-			if(!ud.hasQuery()){		
+			if (users.isEmpty()) {
+			//if(!ud.hasQuery()){		
 				result.put("error", "Invalid username or password");
 				response.setStatus(400);
 
@@ -145,7 +144,7 @@ public class Login extends HttpServlet {
 					
 					boolean existUser = false;
 					
-//					//използваме вграденият кеша -> друг вариант е от базата данни или нашият кеш
+//					//използваме кеша -> друг вариант е от базата данни
 //					ArrayList<User> list = (ArrayList<User>) getServletConfig()
 //							.getServletContext().getAttribute("cacheUsers");
 //
@@ -165,16 +164,12 @@ public class Login extends HttpServlet {
 //						response.setStatus(400);
 //					}
 					
-					
-					//Използваме нашият си кеш
-					existUser = users.existUser(username, password);				
+					existUser = users.existUser(username, password);
 					userId = users.getUserId(username);
 					
+					
+
 					if (existUser) {
-						//update last activity
-						ud.updateCurrentDate(userId);
-					    users.getUser(userId).setDate(ud.getUser(userId).getDate());
-					    
 						result.put("userId", userId);
 						response.setStatus(200);
 						//System.out.println(Cache.getCache().getUser(userId).getDate());
@@ -189,15 +184,8 @@ public class Login extends HttpServlet {
 							User user = ud.getUser(existInDB);
 							//update na datata v bazata danni za tozi potrebitel
 							
-							//update last activity
-							ud.updateCurrentDate(existInDB);
-						    user.setDate(ud.getUser(existInDB).getDate());
-							
 							users.addUser(user);
-							
-							//users.printNames();
-							
-							result.put("userId", existInDB);
+							result.put("userId", userId);
 							response.setStatus(200);
 						}else{
 							result.put("error", "Invalid username or password");
@@ -207,8 +195,6 @@ public class Login extends HttpServlet {
 						
 					}
 					
-					
-					//  only DB 
 //					userId = ud.existUser(username, password);
 //					if(userId > 0){
 //						result.put("userId", userId);

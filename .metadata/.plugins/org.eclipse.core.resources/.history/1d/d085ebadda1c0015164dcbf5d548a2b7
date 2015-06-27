@@ -183,6 +183,7 @@ public class Login extends HttpServlet {
 						// Тук проверяваме в базата данни дали съществува този потребител
 						
 						int existInDB = ud.existUser(username, password);
+						System.out.println(existInDB);
 						if(existInDB > 0){
 							
 							//potrebitel ot selekta v bazata danni -> testov

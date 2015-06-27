@@ -124,7 +124,7 @@ public class User {
 		this.allowNotification = allowNotification;
 	}
 
-	public void setDate(Date date) {
+	private void setDate(Date date) {
 		if (!date.equals(null)) {
 			this.date = date;
 		} else {

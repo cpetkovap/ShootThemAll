@@ -37,7 +37,7 @@ public class UserCache implements ICache , IUserCache{
 
 	@Override
 	public synchronized void addUser(User user) {
-		if(users.size() < 20){
+		if(users.size() < 3){
 			users.add(user);
 		}else{
 			User index = getUser(getLastActiveUserId());

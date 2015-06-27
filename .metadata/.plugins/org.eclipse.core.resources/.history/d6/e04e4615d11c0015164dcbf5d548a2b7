@@ -17,7 +17,7 @@ public class UserCache implements ICache , IUserCache{
 		users = new Vector<User>();
 	}
 	
-	public static UserCache getUserCache() {
+	public static UserCache getCache() {
 		if (userCache == null) {
 			userCache = new UserCache();
 		}
@@ -188,11 +188,5 @@ public class UserCache implements ICache , IUserCache{
 			}
 		}
 		return result;
-	}
-	
-	public void printNames(){
-		for (int i = 0; i < users.size(); i++) {
-			System.out.println(users.get(i).getUsername());
-		}
 	}
 }

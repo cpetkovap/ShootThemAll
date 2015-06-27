@@ -31,7 +31,7 @@ public class User {
 
 	public User(int id, String username, String password, String email,
 			int score, int level, Weapon weapon, boolean allowNotification) {
-		this(id, username, password, email);
+		this(id,username, password, email);
 		setScore(score);
 		setLevel(level);
 		setWeapon(weapon);
@@ -43,7 +43,7 @@ public class User {
 	public User(int id, String username, String password, String email,
 			int score, int level, Weapon weapon, boolean allowNotification,
 			Date date) {
-		this(id, username, password, email);
+		this(username, password, email);
 		setScore(score);
 		setLevel(level);
 		setWeapon(weapon);
@@ -124,7 +124,7 @@ public class User {
 		this.allowNotification = allowNotification;
 	}
 
-	public void setDate(Date date) {
+	private void setDate(Date date) {
 		if (!date.equals(null)) {
 			this.date = date;
 		} else {
