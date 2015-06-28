@@ -1,0 +1,53 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Insert title here</title>
+<script src="jquery-2.1.4.min.js"></script>
+<script type="text/javascript">
+	function chechPass() {
+		if(document.getElementById("pass").value == document.getElementById("pass1").value){
+			return true;
+		}else{
+			return false;
+		}
+	}
+	
+	function checkEmpty() {
+		if(document.getElementById("username").value == "" || document.getElementById("pass").value == "" || document.getElementById("pass1").value == ""){
+			return false;
+		}else{
+			return true;
+		}
+	}
+	
+	function send() {
+		if(checkEmpty() && chechPass()){
+			var username = document.getElementById("username").value;
+			var password = document.getElementById("pass").value;
+			$.post("Registration", JSON.stringify({username : username, password : password}), function(data) {
+				if(data == "add"){	
+					alert(data);
+					window.location = "http://localhost:8080/TestWebSkills2/login.jsp";
+				}else if(data == "exist user"){
+					alert(data);
+				}else{
+					alert(data);
+				}
+			});
+		}else{
+			alert("Empty fields or Diffrent pass")
+		}
+	}
+</script>
+</head>
+<body>
+<h1>Register</h1>
+Name <input type = "text" name = "username" id = "username"/> <br/>
+Pass <input type = "password" id = "pass" name  = "pass" /><br/>
+<button onclick="send()">Register</button>
+
+</body>
+</html>

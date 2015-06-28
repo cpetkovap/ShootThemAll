@@ -59,7 +59,7 @@ public class DBUserDao implements UserDao {
 			}
 		} catch (SQLException e) {
 			System.out.println("Error in select all users");
-			e.printStackTrace();
+			//e.printStackTrace();
 		} finally {
 			try {
 				if (st != null) {
@@ -70,7 +70,7 @@ public class DBUserDao implements UserDao {
 				}
 			} catch (SQLException e) {
 				System.out.println("Error in closing.");
-				e.printStackTrace();
+				//e.printStackTrace();
 			}
 		}
 		return users;
@@ -118,7 +118,7 @@ public class DBUserDao implements UserDao {
 			}
 		} catch (SQLException e) {
 			System.out.println("error in select user by id");
-			e.printStackTrace();
+			//e.printStackTrace();
 		} finally {
 			try {
 				if (pst != null) {
@@ -129,7 +129,7 @@ public class DBUserDao implements UserDao {
 				}
 			} catch (SQLException e) {
 				System.out.println("Error in closing.");
-				e.printStackTrace();
+				//e.printStackTrace();
 			}
 		}
 		return user;
@@ -180,7 +180,7 @@ public class DBUserDao implements UserDao {
 			}
 		} catch (SQLException e) {
 			System.out.println("error in select user by name");
-			e.printStackTrace();
+			//e.printStackTrace();
 		} finally {
 			try {
 				if (pst != null) {
@@ -191,7 +191,7 @@ public class DBUserDao implements UserDao {
 				}
 			} catch (SQLException e) {
 				System.out.println("Error in closing.");
-				e.printStackTrace();
+				//e.printStackTrace();
 			}
 		}
 		return user;
@@ -235,10 +235,10 @@ public class DBUserDao implements UserDao {
 				connection.rollback();
 			} catch (SQLException e1) {
 				System.out.println("Error rollback");
-				e1.printStackTrace();
+				//e1.printStackTrace();
 			}
 			System.out.println("error insert user");
-			e.printStackTrace();
+			//e.printStackTrace();
 		} finally {
 			try {
 				if (pst != null) {
@@ -252,7 +252,7 @@ public class DBUserDao implements UserDao {
 				}
 			} catch (SQLException e) {
 				System.out.println("Error in closing.");
-				e.printStackTrace();
+				//e.printStackTrace();
 			}
 		}
 		return userId;
@@ -294,9 +294,9 @@ public class DBUserDao implements UserDao {
 				connection.rollback();
 			} catch (SQLException e1) {
 				System.out.println("Error rollback");
-				e1.printStackTrace();
+				//e1.printStackTrace();
 			}
-			e.printStackTrace();
+			//e.printStackTrace();
 			System.out.println("Error deleting user");
 		} finally {
 			try {
@@ -311,7 +311,7 @@ public class DBUserDao implements UserDao {
 				}
 			} catch (SQLException e) {
 				System.out.println("Error in closing.");
-				e.printStackTrace();
+				//e.printStackTrace();
 			}
 		}
 	}
@@ -334,7 +334,7 @@ public class DBUserDao implements UserDao {
 
 		} catch (SQLException e) {
 			System.out.println("Error with updating password!");
-			e.printStackTrace();
+			//e.printStackTrace();
 		} finally {
 			try {
 				if (pst != null) {
@@ -342,7 +342,7 @@ public class DBUserDao implements UserDao {
 				}
 			} catch (SQLException e) {
 				System.out.println("Error in closing.");
-				e.printStackTrace();
+				//e.printStackTrace();
 			}
 		}
 
@@ -364,7 +364,7 @@ public class DBUserDao implements UserDao {
 			pst.executeUpdate();
 		} catch (SQLException e) {
 			System.out.println("Error with updating email!");
-			e.printStackTrace();
+			//e.printStackTrace();
 		} finally {
 			try {
 				if (pst != null) {
@@ -372,7 +372,7 @@ public class DBUserDao implements UserDao {
 				}
 			} catch (SQLException e) {
 				System.out.println("Error in closing.");
-				e.printStackTrace();
+				//e.printStackTrace();
 			}
 		}
 	}
@@ -393,7 +393,7 @@ public class DBUserDao implements UserDao {
 			pst.executeUpdate();
 		} catch (SQLException e) {
 			System.out.println("Error with updating score!");
-			e.printStackTrace();
+			//e.printStackTrace();
 		} finally {
 			try {
 				if (pst != null) {
@@ -401,7 +401,7 @@ public class DBUserDao implements UserDao {
 				}
 			} catch (SQLException e) {
 				System.out.println("Error in closing.");
-				e.printStackTrace();
+				//e.printStackTrace();
 			}
 		}
 	}
@@ -422,7 +422,7 @@ public class DBUserDao implements UserDao {
 			pst.executeUpdate();
 		} catch (SQLException e) {
 			System.out.println("Error with updating level!");
-			e.printStackTrace();
+			//e.printStackTrace();
 		} finally {
 			try {
 				if (pst != null) {
@@ -430,7 +430,7 @@ public class DBUserDao implements UserDao {
 				}
 			} catch (SQLException e) {
 				System.out.println("Error in closing.");
-				e.printStackTrace();
+				//e.printStackTrace();
 			}
 		}
 	}
@@ -450,7 +450,7 @@ public class DBUserDao implements UserDao {
 			pst.executeUpdate();
 		} catch (SQLException e) {
 			System.out.println("Error with updating level!");
-			e.printStackTrace();
+			//e.printStackTrace();
 		} finally {
 			try {
 				if (pst != null) {
@@ -458,7 +458,7 @@ public class DBUserDao implements UserDao {
 				}
 			} catch (SQLException e) {
 				System.out.println("Error in closing.");
-				e.printStackTrace();
+				//e.printStackTrace();
 			}
 		}
 	}
@@ -482,7 +482,7 @@ public class DBUserDao implements UserDao {
 			pst.executeUpdate();
 		} catch (SQLException e) {
 			System.out.println("Error with updating notification!");
-			e.printStackTrace();
+			//e.printStackTrace();
 		} finally {
 			try {
 				if (pst != null) {
@@ -490,7 +490,7 @@ public class DBUserDao implements UserDao {
 				}
 			} catch (SQLException e) {
 				System.out.println("Error in closing.");
-				e.printStackTrace();
+				//e.printStackTrace();
 			}
 		}
 	}
@@ -512,7 +512,7 @@ public class DBUserDao implements UserDao {
 
 		} catch (SQLException e) {
 			System.out.println("Error with updating data!");
-			e.printStackTrace();
+			//e.printStackTrace();
 		} finally {
 			try {
 				if (pst != null) {
@@ -520,7 +520,7 @@ public class DBUserDao implements UserDao {
 				}
 			} catch (SQLException e) {
 				System.out.println("Error in closing.");
-				e.printStackTrace();
+				//e.printStackTrace();
 			}
 		}
 	}
@@ -541,7 +541,7 @@ public class DBUserDao implements UserDao {
 			pst.executeUpdate();
 		} catch (SQLException e) {
 			System.out.println("Error with updating level!");
-			e.printStackTrace();
+			//e.printStackTrace();
 		} finally {
 			try {
 				if (pst != null) {
@@ -549,7 +549,7 @@ public class DBUserDao implements UserDao {
 				}
 			} catch (SQLException e) {
 				System.out.println("Error in closing.");
-				e.printStackTrace();
+				//e.printStackTrace();
 			}
 		}
 	}
@@ -575,10 +575,10 @@ public class DBUserDao implements UserDao {
 				connection.rollback();
 			} catch (SQLException e1) {
 				System.out.println("Error rollback");
-				e1.printStackTrace();
+				//e1.printStackTrace();
 			}
 			System.out.println("error insert user");
-			e.printStackTrace();
+			//e.printStackTrace();
 		} finally {
 			try {
 				if (pst != null) {
@@ -586,7 +586,7 @@ public class DBUserDao implements UserDao {
 				}
 			} catch (SQLException e) {
 				System.out.println("Error in closing.");
-				e.printStackTrace();
+				//e.printStackTrace();
 			}
 		}
 	}
@@ -613,7 +613,7 @@ public class DBUserDao implements UserDao {
 
 		} catch (SQLException e) {
 			System.out.println("error in existUser");
-			e.printStackTrace();
+			//e.printStackTrace();
 		} finally {
 			try {
 				if (pst != null) {
@@ -621,7 +621,7 @@ public class DBUserDao implements UserDao {
 				}
 			} catch (SQLException e) {
 				System.out.println("Error in closing.");
-				e.printStackTrace();
+				//e.printStackTrace();
 			}
 		}
 		return userId;
@@ -666,10 +666,10 @@ public class DBUserDao implements UserDao {
 			try {
 				connection.rollback();
 			} catch (SQLException e1) {
-				e1.printStackTrace();
+				//e1.printStackTrace();
 			}
 			System.out.println("error in getting user`s weapon");
-			e.printStackTrace();
+			//e.printStackTrace();
 		} finally {
 			try {
 				if (pst != null) {
@@ -686,7 +686,7 @@ public class DBUserDao implements UserDao {
 				}
 			} catch (SQLException e) {
 				System.out.println("Error in closing.");
-				e.printStackTrace();
+				//e.printStackTrace();
 			}
 		}
 		return weapon;
@@ -711,7 +711,7 @@ public class DBUserDao implements UserDao {
 			score = result.getInt("score");
 		} catch (SQLException e) {
 			System.out.println("Error in getting user`s score.");
-			e.printStackTrace();
+			//e.printStackTrace();
 		} finally {
 			try {
 				if (pst != null) {
@@ -722,7 +722,7 @@ public class DBUserDao implements UserDao {
 				}
 			} catch (SQLException e) {
 				System.out.println("Error in closing.");
-				e.printStackTrace();
+				//e.printStackTrace();
 			}
 		}
 		return score;
@@ -746,7 +746,7 @@ public class DBUserDao implements UserDao {
 			level = result.getInt("levelNo");
 		} catch (SQLException e) {
 			System.out.println("Error in getUserLevel.");
-			e.printStackTrace();
+			//e.printStackTrace();
 		} finally {
 			try {
 				if (pst != null) {
@@ -757,7 +757,7 @@ public class DBUserDao implements UserDao {
 				}
 			} catch (SQLException e) {
 				System.out.println("Error in closing.");
-				e.printStackTrace();
+				//e.printStackTrace();
 			}
 		}
 		return level;
@@ -776,7 +776,7 @@ public class DBUserDao implements UserDao {
 			results.next();
 			count = results.getInt(1);
 		} catch (SQLException e) {
-			e.printStackTrace();
+			//e.printStackTrace();
 		} finally {
 			try {
 				if (st != null) {
@@ -787,7 +787,7 @@ public class DBUserDao implements UserDao {
 				}
 			} catch (SQLException e) {
 				System.out.println("Error in closing.");
-				e.printStackTrace();
+				//e.printStackTrace();
 			}
 		}
 		if (count > 0) {
@@ -822,7 +822,7 @@ public class DBUserDao implements UserDao {
 			}
 		} catch (SQLException e) {
 			System.out.println("Error in getUnlockedWeapons");
-			e.printStackTrace();
+			//e.printStackTrace();
 		} finally {
 			try {
 				if (pst != null) {
@@ -833,7 +833,7 @@ public class DBUserDao implements UserDao {
 				}
 			} catch (SQLException e) {
 				System.out.println("Error in closing.");
-				e.printStackTrace();
+				//e.printStackTrace();
 			}
 		}
 
@@ -856,7 +856,7 @@ public class DBUserDao implements UserDao {
 			}
 		} catch (SQLException e) {
 			System.out.println("Error in getMaxScore");
-			e.printStackTrace();
+			//e.printStackTrace();
 		} finally {
 			try {
 				if (st != null) {
@@ -867,7 +867,7 @@ public class DBUserDao implements UserDao {
 				}
 			} catch (SQLException e) {
 				System.out.println("Error in closing.");
-				e.printStackTrace();
+				//e.printStackTrace();
 			}
 		}
 		return score;
@@ -898,7 +898,7 @@ public class DBUserDao implements UserDao {
 			}
 		} catch (SQLException e) {
 			System.out.println("error in getUserWithMaxScore");
-			e.printStackTrace();
+			//e.printStackTrace();
 		} finally {
 			try {
 				if (pst != null) {
@@ -909,7 +909,7 @@ public class DBUserDao implements UserDao {
 				}
 			} catch (SQLException e) {
 				System.out.println("Error in closing.");
-				e.printStackTrace();
+				//e.printStackTrace();
 			}
 		}
 		return user;
@@ -933,7 +933,7 @@ public class DBUserDao implements UserDao {
 			countUsers.next();
 			userPosition = countUsers.getInt("count");
 		} catch (SQLException e) {
-			e.printStackTrace();
+			//e.printStackTrace();
 		} finally {
 			try {
 				if (pst != null) {
@@ -944,7 +944,7 @@ public class DBUserDao implements UserDao {
 				}
 			} catch (SQLException e) {
 				System.out.println("Error in closing.");
-				e.printStackTrace();
+				//e.printStackTrace();
 			}
 		}
 		return userPosition;
@@ -974,7 +974,7 @@ public class DBUserDao implements UserDao {
 			}
 		} catch (SQLException e) {
 			System.out.println("Error in getTopUsers");
-			e.printStackTrace();
+			//e.printStackTrace();
 		} finally {
 			try {
 				if (st != null) {
@@ -985,7 +985,7 @@ public class DBUserDao implements UserDao {
 				}
 			} catch (SQLException e) {
 				System.out.println("Error in closing.");
-				e.printStackTrace();
+				//e.printStackTrace();
 			}
 		}
 		return topUsers;

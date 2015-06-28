@@ -128,7 +128,7 @@ public class Login extends HttpServlet {
 		JSONObject test = new JSONObject();
 		test.put("username", "Shoshi");
 		test.put("password", "123");
-		inputText = test.toJSONString();
+		//inputText = test.toJSONString();
 
 
 		JSONParser parser = new JSONParser();

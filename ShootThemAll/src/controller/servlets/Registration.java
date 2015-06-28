@@ -70,7 +70,7 @@ public class Registration extends HttpServlet {
 		test.put("username", "Shoshi");
 		test.put("password", "123");
 		test.put("email", "abv@abv.bg");
-		inputText = test.toJSONString();
+		//inputText = test.toJSONString();
 
 		
 
