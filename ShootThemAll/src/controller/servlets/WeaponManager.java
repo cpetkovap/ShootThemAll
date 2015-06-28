@@ -32,10 +32,10 @@ public class WeaponManager extends HttpServlet {
     }
 
 	
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		response.setHeader("Access-Control-Allow-Origin", "*");
-		doPost(request, response);
-	}
+//	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+//		response.setHeader("Access-Control-Allow-Origin", "*");
+//		doPost(request, response);
+//	}
 
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
@@ -117,7 +117,7 @@ public class WeaponManager extends HttpServlet {
 				response.setStatus(200);
 				result.put("message", message);
 			}else{
-				result.put("error", "Not unlocked weapon !");
+				result.put("error", "Not allowed weapon !");
 				response.setStatus(400);
 			}
 

@@ -158,6 +158,10 @@ public class WeaponsStore extends HttpServlet {
 			 * 
 			 */
 			
+			if(weaponType <= 0 || weaponType > 3){
+				throw new ParseException(1);
+			}
+			
 			UserDao ud = new DBUserDao();
 			WeaponDao wd = new DBWeaponDao();
 			

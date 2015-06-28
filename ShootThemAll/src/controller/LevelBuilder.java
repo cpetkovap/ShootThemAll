@@ -53,8 +53,8 @@ public class LevelBuilder {
 		}
 
 		
-		if (level > maxLevel) {
-			level = maxLevel;
+		if (level < 0 || level > maxLevel) {
+			throw new IllegalArgumentException();
 		}
 		
 		if(level > userLevel){

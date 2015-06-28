@@ -137,6 +137,8 @@ public class Login extends HttpServlet {
 			String username = userObj.get("username").toString();
 			String password = userObj.get("password").toString();
 			
+			
+			
 			//MD5
 			String cryptPass = SettingsManager.cryptMD5(password);
 			password = cryptPass;
@@ -183,11 +185,11 @@ public class Login extends HttpServlet {
 					
 					//Използваме нашият си нашият кеш
 		
-					
-					
+									
 					if (users != null) {
 						existUser = users.existUser(username, password);				
 						userId = users.getUserId(username);
+						
 					}
 					
 					if (existUser) {
@@ -203,6 +205,7 @@ public class Login extends HttpServlet {
 						// Тук проверяваме в базата данни дали съществува този потребител
 						
 						int existInDB = ud.existUser(username, password);
+						
 						if(existInDB > 0){
 							
 							//potrebitel ot selekta v bazata danni -> testov
@@ -219,7 +222,7 @@ public class Login extends HttpServlet {
 							
 							result.put("userId", existInDB);
 							response.setStatus(200);
-						}else{
+						}else{							
 							result.put("error", "Invalid username or password");
 							response.setStatus(400);							
 						}
@@ -247,15 +250,10 @@ public class Login extends HttpServlet {
 			response.setStatus(400);
 		}
 
+		System.out.println(result.toJSONString());
 		response.getWriter().write(result.toJSONString());
 	}
 
-	@Override
-	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
-			throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		resp.setHeader("Access-Control-Allow-Origin", "*");
-		doPost(req, resp);
-	}
+
 
 }

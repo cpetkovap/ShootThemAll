@@ -41,18 +41,17 @@ import controller.SettingsManager;
 @WebServlet("/levelManager")
 public class LevelManager extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	
 
 	public LevelManager() {
 
 	}
 
-//	 @Override
-//	 protected void doGet(HttpServletRequest req, HttpServletResponse resp)
-//	 throws ServletException, IOException {
-//	 // TODO Auto-generated method stub
-//	 doPost(req, resp);
-//	 }
+	// @Override
+	// protected void doGet(HttpServletRequest req, HttpServletResponse resp)
+	// throws ServletException, IOException {
+	// // TODO Auto-generated method stub
+	// doPost(req, resp);
+	// }
 
 	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
@@ -61,8 +60,8 @@ public class LevelManager extends HttpServlet {
 		String userLevel = request.getParameter("level");
 
 		// test
-		user = "1";
-		userLevel = "2";
+		// user = "1";
+		// userLevel = "2";
 
 		JSONObject result = new JSONObject();
 
@@ -72,16 +71,23 @@ public class LevelManager extends HttpServlet {
 			int userId = Integer.parseInt(user);
 			int level = Integer.parseInt(userLevel);
 
-			LevelBuilder levelBuilder = new LevelBuilder();
+			UserDao ud = new DBUserDao();
+			if (ud.getUser(userId) != null) {
 
-			try {
-				result = levelBuilder.buildLevel(userId, level);
-			} catch (IllegalArgumentException e) {
+				LevelBuilder levelBuilder = new LevelBuilder();
+
+				try {
+					result = levelBuilder.buildLevel(userId, level);
+				} catch (IllegalArgumentException e) {
+					response.setStatus(400);
+					result.put("error", "Invalid level");
+				}
+
+				response.setStatus(200);
+			} else {
 				response.setStatus(400);
-				result.put("error", "Invalid level");
+				result.put("error", "Invalid parameter");
 			}
-
-			response.setStatus(200);
 
 		} else {
 
@@ -96,7 +102,7 @@ public class LevelManager extends HttpServlet {
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 		response.setHeader("Access-Control-Allow-Origin", "*");
-		
+
 		Cache cache = Cache.getCache();
 		UserCache users = (UserCache) cache.getCacheItems().get("users");
 
@@ -123,18 +129,35 @@ public class LevelManager extends HttpServlet {
 		test.put("userId", 1);
 		test.put("level", 1);
 		test.put("score", 800);
-		inputText = test.toJSONString();
+		//inputText = test.toJSONString();
 
 		JSONParser parser = new JSONParser();
 		try {
 			JSONObject scoreObj = (JSONObject) parser.parse(inputText);
-			int userId = Integer.parseInt(scoreObj.get("userId").toString());
-			int level = Integer.parseInt(scoreObj.get("level").toString());
-			int score = Integer.parseInt(scoreObj.get("score").toString());
+			int userId ;
+			int level ;
+			int score ;
+			
+			try{
+				userId = Integer.parseInt(scoreObj.get("userId").toString());
+				level = Integer.parseInt(scoreObj.get("level").toString());
+				score = Integer.parseInt(scoreObj.get("score").toString());
+			}catch(NumberFormatException e){
+				throw new ParseException(1);
+			}
 
 			UserDao ud = new DBUserDao();
+			
+			if(users.getUser(userId) == null){
+				throw new ParseException(1);
+			}
 
-			if (score > 0) {
+			
+			if(ud.getUserLevel(userId) < level || level < 0 ){
+				throw new ParseException(1);
+			}
+
+			if (score > 0 ) {
 				/*
 				 * Тук записваме точките на потребителя с userId в базата данни
 				 * Правим проверка дали потребителя е минал нечии точки и
@@ -143,20 +166,21 @@ public class LevelManager extends HttpServlet {
 				 * Тук обновяваме освен записа в базата данни, но и кеша с
 				 * потребители
 				 */
-
+				
+				
 				int userLevel = 0;
 				if (users.getAllUsers() != null) {
 					User u = users.getUser(userId);
-					if(u != null){
+					if (u != null) {
 						userLevel = u.getLevel();
 					}
 				} else {
 					userLevel = ud.getUserLevel(userId);
-					if(userLevel > 0){
+					if (userLevel > 0) {
 						users.addUser(ud.getUser(userId));
 					}
 				}
-				
+
 				if (userLevel < SettingsManager.getMaxLevel()) {
 					if (userLevel == level) {
 						ud.updateLevelUp(userId);
@@ -166,8 +190,8 @@ public class LevelManager extends HttpServlet {
 
 				User topUserBeforeUpdate = ud.getUserWithMaxScore();
 				// System.out.println(topUserBeforeUpdate.getUsername());
-				ud.updateScore(score , userId);
-				users.updateScore(score , userId);
+				ud.updateScore(score, userId);
+				users.updateScore(score, userId);
 
 				addAchievment(userId, ud.getUserScore(userId));
 
@@ -180,9 +204,10 @@ public class LevelManager extends HttpServlet {
 						&& topUserBeforeUpdate.isAllowNotification()) {
 					String mailTo = topUserBeforeUpdate.getEmail();
 					// мейл тест
-					
-					String mailMessage = "Hi " + topUserAfterUpdate.getUsername() + ",\n" 
-							+ "You are no longer with the best score !!! \n " 
+
+					String mailMessage = "Hi "
+							+ topUserAfterUpdate.getUsername() + ",\n"
+							+ "You are no longer with the best score !!! \n "
 							+ "Be the first! Play again !";
 					sendEmail("shootthemallgame@gmail.com", mailTo,
 							"Game massage", mailMessage);
