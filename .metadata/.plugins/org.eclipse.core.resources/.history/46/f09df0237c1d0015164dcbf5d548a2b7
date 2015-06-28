@@ -134,7 +134,7 @@ public class UserInfoManager extends HttpServlet {
 		//test.put("password", "123");
 		test.put("email", "promqna@aa");
 		//test.put("allowNotification", true);
-		inputText = test.toJSONString();
+		line = test.toJSONString();
 
 
 		if (getServletContext().getAttribute("cacheUsers") == null) {
@@ -147,7 +147,7 @@ public class UserInfoManager extends HttpServlet {
 			JSONParser parser = new JSONParser();
 			try {
 
-				JSONObject userObj = (JSONObject) parser.parse(inputText);
+				JSONObject userObj = (JSONObject) parser.parse(line);
 
 				int userId = Integer.parseInt(userObj.get("userId").toString());
 				

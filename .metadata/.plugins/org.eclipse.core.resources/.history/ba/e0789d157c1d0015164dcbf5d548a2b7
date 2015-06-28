@@ -1,6 +1,5 @@
 package controller.servlets;
 
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -110,23 +109,7 @@ public class UserInfoManager extends HttpServlet {
 			HttpServletResponse response) throws ServletException, IOException {
 		// промяна на информацията за потребителя
 		response.setHeader("Access-Control-Allow-Origin", "*");
-		
-		JSONObject result = new JSONObject();
-		
-		StringBuffer jb = new StringBuffer();
-		String line = null;
-		try {
-			BufferedReader reader = request.getReader();
-			while ((line = reader.readLine()) != null)
-				jb.append(line);
-		} catch (Exception e) { 			
-			System.out.println("Invalid input");
-			result.put("error", "Invalid input");
-			response.setStatus(400);
-		}		
-
-		String inputText = jb.toString();
-		
+		String line = request.getReader().readLine();
 
 		// test
 		JSONObject test = new JSONObject();
@@ -134,8 +117,9 @@ public class UserInfoManager extends HttpServlet {
 		//test.put("password", "123");
 		test.put("email", "promqna@aa");
 		//test.put("allowNotification", true);
-		inputText = test.toJSONString();
+		line = test.toJSONString();
 
+		JSONObject result = new JSONObject();
 
 		if (getServletContext().getAttribute("cacheUsers") == null) {
 
@@ -147,7 +131,7 @@ public class UserInfoManager extends HttpServlet {
 			JSONParser parser = new JSONParser();
 			try {
 
-				JSONObject userObj = (JSONObject) parser.parse(inputText);
+				JSONObject userObj = (JSONObject) parser.parse(line);
 
 				int userId = Integer.parseInt(userObj.get("userId").toString());
 				

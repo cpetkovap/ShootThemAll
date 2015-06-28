@@ -1,6 +1,5 @@
 package controller.servlets;
 
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -37,33 +36,20 @@ public class WeaponManager extends HttpServlet {
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 		response.setHeader("Access-Control-Allow-Origin", "*");
-		
-		JSONObject result = new JSONObject();
-		String message = null;
-		
-		StringBuffer jb = new StringBuffer();
-		String line = null;
-		try {
-			BufferedReader reader = request.getReader();
-			while ((line = reader.readLine()) != null)
-				jb.append(line);
-		} catch (Exception e) { 			
-			System.out.println("Invalid input");
-			result.put("error", "Invalid input");
-			response.setStatus(400);
-		}		
-
-		String inputText = jb.toString();
+		String line = request.getReader().readLine();
 
 		// test
 		JSONObject test = new JSONObject();
 		test.put("userId", 1);
 		test.put("weaponType", 2);
-		inputText = test.toJSONString();
+		line = test.toJSONString();
+
+		JSONObject result = new JSONObject();
+		String message = null;
 
 		JSONParser parser = new JSONParser();
 		try {
-			JSONObject userObj = (JSONObject) parser.parse(inputText);
+			JSONObject userObj = (JSONObject) parser.parse(line);
 			int userId = Integer.parseInt(userObj.get("userId").toString());
 			int weaponType = Integer.parseInt(userObj.get("weaponType")
 					.toString());

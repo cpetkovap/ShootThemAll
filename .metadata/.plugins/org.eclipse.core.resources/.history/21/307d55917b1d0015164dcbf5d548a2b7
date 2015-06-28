@@ -1,6 +1,5 @@
 package controller.servlets;
 
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Properties;
@@ -43,12 +42,12 @@ public class LevelManager extends HttpServlet {
 
 	}
 
-	// @Override
-	// protected void doGet(HttpServletRequest req, HttpServletResponse resp)
-	// throws ServletException, IOException {
-	// // TODO Auto-generated method stub
-	// doPost(req, resp);
-	// }
+//	 @Override
+//	 protected void doGet(HttpServletRequest req, HttpServletResponse resp)
+//	 throws ServletException, IOException {
+//	 // TODO Auto-generated method stub
+//	 doPost(req, resp);
+//	 }
 
 	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
@@ -86,36 +85,21 @@ public class LevelManager extends HttpServlet {
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 		response.setHeader("Access-Control-Allow-Origin", "*");
-
-		String message = null;
-		JSONObject result = new JSONObject();
-		
-		StringBuffer jb = new StringBuffer();
-		String line = null;
-		try {
-			BufferedReader reader = request.getReader();
-			while ((line = reader.readLine()) != null)
-				jb.append(line);
-		} catch (Exception e) { 			
-			System.out.println("Invalid input");
-			result.put("error", "Invalid input");
-			response.setStatus(400);
-		}		
-
-		String inputText = jb.toString();
+		String line = request.getReader().readLine();
 
 		// test
 		JSONObject test = new JSONObject();
 		test.put("userId", 1);
 		test.put("level", 1);
 		test.put("score", 800);
-		inputText = test.toJSONString();
+		line = test.toJSONString();
 
-		
+		String message = null;
+		JSONObject result = new JSONObject();
 
 		JSONParser parser = new JSONParser();
 		try {
-			JSONObject scoreObj = (JSONObject) parser.parse(inputText);
+			JSONObject scoreObj = (JSONObject) parser.parse(line);
 			int userId = Integer.parseInt(scoreObj.get("userId").toString());
 			int level = Integer.parseInt(scoreObj.get("level").toString());
 			int score = Integer.parseInt(scoreObj.get("score").toString());
@@ -133,17 +117,17 @@ public class LevelManager extends HttpServlet {
 				 */
 				int userLevel = ud.getUserLevel(userId);
 				if (userLevel < SettingsManager.getMaxLevel()) {
-					if (userLevel == level) {
+					if(userLevel == level){
 						ud.updateLevelUp(userId);
-					}
+						}
 				}
 
 				User topUserBeforeUpdate = ud.getUserWithMaxScore();
 				// System.out.println(topUserBeforeUpdate.getUsername());
 				ud.updateScore(score, userId);
-
+				
 				addAchievment(userId, ud.getUserScore(userId));
-
+				
 				int userScore = ud.getUserScore(userId);
 				User topUserAfterUpdate = ud.getUserWithMaxScore();
 				// System.out.println(topUserAfterUpdate.getUsername());
@@ -151,7 +135,7 @@ public class LevelManager extends HttpServlet {
 				System.out.println(topUserBeforeUpdate.getEmail());
 				System.out.println(topUserBeforeUpdate.isAllowNotification());
 				if (!topUserBeforeUpdate.getUsername().equals(
-						topUserAfterUpdate.getUsername())
+						topUserAfterUpdate.getUsername()) 
 						&& topUserBeforeUpdate.isAllowNotification()) {
 					System.out.println("fggg");
 					String mailTo = topUserBeforeUpdate.getEmail();
@@ -216,6 +200,7 @@ public class LevelManager extends HttpServlet {
 		ArrayList<Achievement> userAcheivment = ad.getUserAchievements(userId);
 		ArrayList<Achievement> acheivment = ad.getRecentAcheivment(score);
 
+
 		if (userAcheivment.isEmpty()) {
 			if (!acheivment.isEmpty()) {
 				for (int i = 0; i < acheivment.size(); i++) {
@@ -227,16 +212,17 @@ public class LevelManager extends HttpServlet {
 			if (!acheivment.isEmpty()) {
 				boolean exist = false;
 				for (int i = 0; i < acheivment.size(); i++) {
-					// if(!userAcheivment.contains(acheivment.get(i))){
-					// ad.setUserAchievement(userId, acheivment.get(i).getId());
-					// }
-					if (!ad.existAcheivment(acheivment.get(i).getId())) {
+//					if(!userAcheivment.contains(acheivment.get(i))){
+//						ad.setUserAchievement(userId, acheivment.get(i).getId());
+//					}
+					if(!ad.existAcheivment(acheivment.get(i).getId())){
 						ad.setUserAchievement(userId, acheivment.get(i).getId());
 					}
 				}
-
+				
 			}
-
+			
+			
 		}
 
 	}

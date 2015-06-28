@@ -98,7 +98,7 @@ public class LevelManager extends HttpServlet {
 				jb.append(line);
 		} catch (Exception e) { 			
 			System.out.println("Invalid input");
-			result.put("error", "Invalid input");
+			result.put("error", "Invalid JSON");
 			response.setStatus(400);
 		}		
 

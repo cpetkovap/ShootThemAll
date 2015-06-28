@@ -1,6 +1,5 @@
 package controller.servlets;
 
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -47,36 +46,21 @@ public class Registration extends HttpServlet {
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 		response.setHeader("Access-Control-Allow-Origin", "*");
-		
-		JSONObject result = new JSONObject();
-		
-		StringBuffer jb = new StringBuffer();
-		String line = null;
-		try {
-			BufferedReader reader = request.getReader();
-			while ((line = reader.readLine()) != null)
-				jb.append(line);
-		} catch (Exception e) { 			
-			System.out.println("Invalid input");
-			result.put("error", "Invalid input");
-			response.setStatus(400);
-		}		
-
-		String inputText = jb.toString();
+		String line = request.getReader().readLine();
 
 		// test
 		JSONObject test = new JSONObject();
 		test.put("username", "Shoshi");
 		test.put("password", "123");
 		test.put("email", "abv@abv.bg");
-		inputText = test.toJSONString();
+		line = test.toJSONString();
 
-		
+		JSONObject result = new JSONObject();
 
 		JSONParser parser = new JSONParser();
 		try {
 
-			JSONObject userObj = (JSONObject) parser.parse(inputText);
+			JSONObject userObj = (JSONObject) parser.parse(line);
 			String username = userObj.get("username").toString();
 			String password = userObj.get("password").toString();
 

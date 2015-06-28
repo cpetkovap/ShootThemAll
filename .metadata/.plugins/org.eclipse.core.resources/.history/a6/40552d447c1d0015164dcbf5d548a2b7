@@ -59,11 +59,11 @@ public class WeaponManager extends HttpServlet {
 		JSONObject test = new JSONObject();
 		test.put("userId", 1);
 		test.put("weaponType", 2);
-		inputText = test.toJSONString();
+		line = test.toJSONString();
 
 		JSONParser parser = new JSONParser();
 		try {
-			JSONObject userObj = (JSONObject) parser.parse(inputText);
+			JSONObject userObj = (JSONObject) parser.parse(line);
 			int userId = Integer.parseInt(userObj.get("userId").toString());
 			int weaponType = Integer.parseInt(userObj.get("weaponType")
 					.toString());
