@@ -66,14 +66,25 @@ public class WeaponManager extends HttpServlet {
 		JSONObject test = new JSONObject();
 		test.put("userId", 1);
 		test.put("weaponType", 1);
-		inputText = test.toJSONString();
+		//inputText = test.toJSONString();
 
 		JSONParser parser = new JSONParser();
 		try {
+		
 			JSONObject userObj = (JSONObject) parser.parse(inputText);
-			int userId = Integer.parseInt(userObj.get("userId").toString());
-			int weaponType = Integer.parseInt(userObj.get("weaponType")
+			int userId;
+			int weaponType;
+			try{
+				userId = Integer.parseInt(userObj.get("userId").toString());
+		     	weaponType = Integer.parseInt(userObj.get("weaponType")
 					.toString());
+		     }catch(NumberFormatException e){
+		    	 throw new ParseException(1);
+		     }
+			
+			if(ud.getUser(userId) == null){
+				throw new ParseException(1);
+			}
 
 			/*
 			 * Р�Р—Р‘Р�Р РђРњР• РЎ РљРћР• РћР РЄР–Р�Р• Р©Р• Р�Р“Р РђР• РџРћРўР Р•Р‘Р�РўР•Р›РЇ
@@ -98,13 +109,19 @@ public class WeaponManager extends HttpServlet {
 			if(isUnlocked){
 				ud.updateUserWeapon(weaponType, userId);
 				if(users.existUser(userId)){
-					users.updateUserWeapon(weaponType, userId);					
+					users.updateUserWeapon(weaponType, userId);	
+					
 				}
+				
+				message = "success";
+				response.setStatus(200);
+				result.put("message", message);
+			}else{
+				result.put("error", "Not unlocked weapon !");
+				response.setStatus(400);
 			}
 
-			message = "success";
-			response.setStatus(200);
-			result.put("message", message);
+			
 
 		} catch (ParseException e) {
 

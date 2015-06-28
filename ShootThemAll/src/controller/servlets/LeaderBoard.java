@@ -50,16 +50,30 @@ public class LeaderBoard extends HttpServlet {
 		
 		response.setHeader("Access-Control-Allow-Origin", "*");
 		// репрезентация на класация
-		String line = request.getParameter("userId");
+		String line = null;
+		try{
+			line = request.getParameter("userId");
+		}catch(NullPointerException e){
+			System.out.println("Invalid input");
+		}
 
 		// test
-		line = "1";
+		//line = "1";
 
 		JSONArray result = new JSONArray();
 		JSONObject error = new JSONObject();
 
 		if (line != null && !line.isEmpty()) {
 			int userId = Integer.parseInt(line);
+			
+			UserDao ud = new DBUserDao();
+			if(ud.getUser(userId) == null){
+				response.setStatus(400);
+				error.put("error", "Invalid parameter");
+				response.getWriter().write(error.toJSONString());
+				return;
+			}
+			
 			// int userPosition = -1;
 			//
 			// int count = 10;

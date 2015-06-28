@@ -54,9 +54,14 @@ public class UserInfoManager extends HttpServlet {
 		Cache cache = Cache.getCache();
 		UserCache users = (UserCache) cache.getCacheItems().get("users");
 
-		String line = request.getParameter("userId");
+		String line = null;
+		try {
+			line = request.getParameter("userId");
+		} catch (NullPointerException e) {
+			System.out.println("Invalid input");
+		}
 		// test
-		line = "1";
+		// line = "1";
 
 		JSONObject result = new JSONObject();
 
@@ -94,12 +99,12 @@ public class UserInfoManager extends HttpServlet {
 				if (users != null) {
 					u = users.getUser(userId);
 				} else {
-					u = ud.getUser(userId);	
+					u = ud.getUser(userId);
 					if (u != null) {
 						users.addUser(ud.getUser(userId));
 					}
 				}
-				
+
 				if (u != null) {
 					result = makeUserJSON(u);
 					response.setStatus(200);
@@ -123,7 +128,7 @@ public class UserInfoManager extends HttpServlet {
 			HttpServletResponse response) throws ServletException, IOException {
 		// промяна на информацията за потребителя
 		response.setHeader("Access-Control-Allow-Origin", "*");
-		
+
 		UserDao ud = new DBUserDao();
 		Cache cache = Cache.getCache();
 		UserCache users = (UserCache) cache.getCacheItems().get("users");
@@ -151,28 +156,33 @@ public class UserInfoManager extends HttpServlet {
 		// test.put("password", "123");
 		test.put("email", "promqna@aa");
 		// test.put("allowNotification", true);
-		inputText = test.toJSONString();
+		// inputText = test.toJSONString();
 
-		//if (getServletContext().getAttribute("cacheUsers") == null) {
-		if(!ud.hasQuery()){
+		// if (getServletContext().getAttribute("cacheUsers") == null) {
+		if (!ud.hasQuery()) {
 			result.put("error", "No users");
 			response.setStatus(400);
 
 		} else {
 
 			JSONParser parser = new JSONParser();
+			int userId = -1;
 			try {
 
 				JSONObject userObj = (JSONObject) parser.parse(inputText);
-
-				int userId = Integer.parseInt(userObj.get("userId").toString());
+				try{
+					userId = Integer.parseInt(userObj.get("userId").toString());
+				}catch(NumberFormatException e){
+					throw new ParseException(1);
+				}
 
 				/*
 				 * Промяна на информацията за потребителя в базата данни и в
 				 * кеша
 				 */
 
-				// //използваме вграденият кеш -> друг вариант е от базата данни или нашият кеп
+				// //използваме вграденият кеш -> друг вариант е от базата данни
+				// или нашият кеп
 				// ArrayList<User> list = (ArrayList<User>) getServletConfig()
 				// .getServletContext().getAttribute("cacheUsers");
 				// int user = -1;
@@ -181,19 +191,19 @@ public class UserInfoManager extends HttpServlet {
 				// user = list.get(i).getId();
 				// }
 				// }
-				
+
 				User u = null;
 				if (users != null) {
 					u = users.getUser(userId);
 				} else {
-					u = ud.getUser(userId);	
+					u = ud.getUser(userId);
 					if (u != null) {
 						users.addUser(ud.getUser(userId));
 					}
 				}
-				
-				if(u == null){
-					throw new ParseException(userId);
+
+				if (u == null) {
+					throw new ParseException(1);
 				}
 
 				try {
@@ -234,24 +244,22 @@ public class UserInfoManager extends HttpServlet {
 					}
 
 					Boolean validEmail = email.matches(emailreg);
-					if (!validEmail) {
-						result.put("error", "Invalid email");
-						response.setStatus(400);
-						response.getWriter().write(result.toJSONString());
-						return;
+					if (validEmail) {
+
+						// update email:
+
+						// - update in database --> to do
+
+						ud.updateEmail(email, userId);
+
+						// - update in cache
+						users.update("email", email, userId);
+						// list.get(user).setEmail(email);
+						// getServletConfig().getServletContext().setAttribute("cacheUsers",
+						// list);
+					}else{
+						throw new NullPointerException();
 					}
-
-					// update email:
-
-					// - update in database --> to do
-
-					ud.updateEmail(email, userId);
-
-					// - update in cache
-					users.update("email", email, userId);
-					// list.get(user).setEmail(email);
-					// getServletConfig().getServletContext().setAttribute("cacheUsers",
-					// list);
 				} catch (NullPointerException e) {
 					System.out.println("no change email");
 				}
@@ -266,7 +274,8 @@ public class UserInfoManager extends HttpServlet {
 					ud.updateNotification(allowNotification, userId);
 
 					// - update in cache
-					users.update("allowNotification", String.valueOf(allowNotification), userId);
+					users.update("allowNotification",
+							String.valueOf(allowNotification), userId);
 					// list.get(user).setAllowNotification(allowNotification);
 					// getServletConfig().getServletContext().setAttribute("cacheUsers",
 					// list);

@@ -49,6 +49,63 @@
 			});
 		}
 	}
+	
+	function checkEmprty(id) {
+		if(id.value == "" ){
+			alert("Empty field")
+			return false;
+		
+		}else{
+			return true;
+		}		
+	}
+	
+	function sendUserInfoToEdit(){	
+		var userId = document.getElementById("userIdToEdit").value;
+		var password = document.getElementById("passwordToEdit").value;
+		var email = document.getElementById("emailToEdit").value;
+		var notification = document.getElementsByName('notificationToEdit');
+		var notification_value;
+		for(var i = 0; i < notification.length; i++){
+		    if(notification[i].checked){
+		    	notification_value = notification[i].value;
+		    }
+		}
+		var allowNotification = false; 
+		if(notification_value == "Yes"){
+			allowNotification = true;
+		}
+		
+		$.post("userInfoManager",
+				JSON.stringify({userId: userId, password: password, email: email, allowNotification: allowNotification}),
+				function(data){				
+					alert(data);
+		});
+	}
+	
+	function sendToGetWeapon() {
+		var userId = document.getElementById("userIdToGetWeapon").value;
+		var weaponType = document.getElementById("weaponToGet").value;
+		
+		$.post("weaponManager",
+				JSON.stringify({userId: userId, weaponType: weaponType }),
+				function(data){				
+					alert(data);
+		});
+		
+	}
+	
+	function sendToUnlockWeapon() {
+		var userId = document.getElementById("userIdToUnlockWeapon").value;
+		var weaponType = document.getElementById("weaponToUnlock").value;
+		
+		$.post("weaponsStore",
+				JSON.stringify({userId: userId, weaponType: weaponType }),
+				function(data){				
+					alert(data);
+		});
+		
+	}
 </script>
 </head>
 <body>
@@ -63,6 +120,56 @@ Email <input type = "text" id = "email" name  = "email" />
 Name <input type = "text" name = "usernameLogin" id = "usernameLogin"/> 
 Pass <input type = "password" id = "passLogin" name  = "passLogin" />
 <button onclick="sendLogin()">Login</button>
+<hr/>
+
+<h3>Leader Board</h3>
+<form action="leaderBoard" method = "Get">
+userId <input type = "text" name = "userId" id = "userId"/>
+<input type="submit" value = "Leader Board" />
+</form>
+<hr/>
+
+<h3>Levels Map</h3>
+<form action="levelsMap" method = "Get">
+userId <input type = "text" name = "userId" id = "userId"/>
+<input type="submit" value = "Levels Map" />
+</form>
+<hr/>
+
+<h3>User Info</h3>
+<form action="userInfoManager" method = "Get">
+userId <input type = "text" name = "userId" id = "userId"/>
+<input type="submit" value = "Get Info" />
+</form>
+<hr/>
+
+<h3>Update User Info</h3>
+userId <input type = "text" name = "userIdToEdit" id = "userIdToEdit"/>
+Pass <input type = "password" id = "passwordToEdit" name  = "passwordToEdit" />
+Email <input type = "text" name = "emailToEdit" id = "emailToEdit"/> 
+Send notification :
+<input type="radio" name="notificationToEdit" value="Yes"> Yes
+<input type="radio" name="notificationToEdit" value="No" checked> No
+<button onclick=" sendUserInfoToEdit()" >Edit</button>
+<hr/>
+
+<h3>Update User Weapon</h3>
+userId <input type = "text" name = "userIdToGetWeapon" id = "userIdToGetWeapon"/>
+Weapon Type <input type = "text" name = "weaponToGet" id = "weaponToGet"/> 
+<button onclick=" sendToGetWeapon()" >Edit</button>
+<hr/>
+
+<h3>Weapons Store</h3>
+<form action="weaponsStore" method = "Get">
+userId <input type = "text" name = "userId" id = "userId"/>
+<input type="submit" value = "Get Strore Info" />
+</form>
+<hr/>
+
+<h3>Unlock Weapon</h3>
+userId <input type = "text" name = "userIdToUnlockWeapon" id = "userIdToUnlockWeapon"/>
+Weapon Type <input type = "text" name = "weaponToUnlock" id = "weaponToUnlock"/> 
+<button onclick=" sendToUnlockWeapon()" > Unlock </button>
 <hr/>
 
 </body>

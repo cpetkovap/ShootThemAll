@@ -1,0 +1,127 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Insert title here</title>
+<script src="jquery-2.1.4.min.js"></script>
+<script type="text/javascript">
+	
+	function checkEmptyRegistration() {
+		if(document.getElementById("username").value == "" || document.getElementById("pass").value == "" || document.getElementById("email").value == ""){
+			return false;
+		}else{
+			return true;
+		}
+	}
+	
+	function sendRegistration() {
+		if(checkEmptyRegistration() ){
+			var username = document.getElementById("username").value;
+			var password = document.getElementById("pass").value;
+			var email = document.getElementById("email").value;
+			$.post("registration", JSON.stringify({username : username, password : password, email : email}), function(data) {
+					alert(data);
+			});
+		}else{
+			alert("Empty fields")
+		}
+	}
+	
+	function checkEmprtyLogin() {
+		if(document.getElementById("usernameLogin").value == "" || document.getElementById("passLogin").value == "" ){
+			alert("Empty fields")
+			return false;
+		
+		}else{
+			return true;
+		}
+		
+	}
+
+	function sendLogin() {
+		if(checkEmprtyLogin()){
+			var username = document.getElementById("usernameLogin").value;
+			var password = document.getElementById("passLogin").value;
+			$.post("login", JSON.stringify({username: username, password: password}),function(data){				
+					alert(data);
+			});
+		}
+	}
+	
+	function checkEmprty(id) {
+		if(id.value == "" ){
+			alert("Empty field")
+			return false;
+		
+		}else{
+			return true;
+		}		
+	}
+	
+	function sendUserInfoToEdit(){
+		var userId = document.getElementById("userIdToEdit").value;
+		var password = document.getElementById("passwordToEdit").value;
+		var email = document.getElementById("emailToEdit").value;
+		var notification = document.getElementById("notificationToEdit").value;
+		var allowNotification = false; 
+		if(notification = "Yes"){
+			allowNotification = true;
+		}
+		alert(userId + " " + allowNotification)
+		$.post("userInfoManager",
+				JSON.stringify({userId: userId, password: password, email: email, allowNotification: allowNotification}),
+				function(data){				
+					alert(data);
+		});
+	}
+</script>
+</head>
+<body>
+<h3>Registration</h3>
+Name <input type = "text" name = "username" id = "username"/> 
+Pass <input type = "password" id = "pass" name  = "pass" />
+Email <input type = "text" id = "email" name  = "email" />
+<button onclick="sendRegistration()">Register</button>
+<hr/>
+
+<h3>Login</h3>
+Name <input type = "text" name = "usernameLogin" id = "usernameLogin"/> 
+Pass <input type = "password" id = "passLogin" name  = "passLogin" />
+<button onclick="sendLogin()">Login</button>
+<hr/>
+
+<h3>Leader Board</h3>
+<form action="leaderBoard" method = "Get">
+userId <input type = "text" name = "userId" id = "userId"/>
+<input type="submit" value = "Leader Board" />
+</form>
+<hr/>
+
+<h3>Levels Map</h3>
+<form action="levelsMap" method = "Get">
+userId <input type = "text" name = "userId" id = "userId"/>
+<input type="submit" value = "Levels Map" />
+</form>
+<hr/>
+
+<h3>User Info</h3>
+<form action="userInfoManager" method = "Get">
+userId <input type = "text" name = "userId" id = "userId"/>
+<input type="submit" value = "Get Info" />
+</form>
+<hr/>
+
+<h3>Update User Info</h3>
+userId <input type = "text" name = "userIdToEdit" id = "userIdToEdit"/>
+Pass <input type = "password" id = "passwordToEdit" name  = "passwordToEdit" />
+Email <input type = "text" name = "emailToEdit" id = "emailToEdit"/> 
+Send notification :
+<input type="radio" name="notificationToEdit" value="Yes"> Yes
+<input type="radio" name="notificationToEdit" value="No" checked> No
+<button onclick="sendUserInfoToEdit()">Edit</button>
+<hr/>
+
+</body>
+</html>
