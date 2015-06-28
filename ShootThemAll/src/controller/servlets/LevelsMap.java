@@ -15,6 +15,8 @@ import model.dao.UserDao;
 
 import org.json.simple.JSONObject;
 
+import cache.Cache;
+import cache.UserCache;
 import controller.SettingsManager;
 
 /**
@@ -33,6 +35,10 @@ public class LevelsMap extends HttpServlet {
 			HttpServletResponse response) throws ServletException, IOException {
 		response.setHeader("Access-Control-Allow-Origin", "*");
 		String line = request.getParameter("userId");
+		
+		UserDao ud = new DBUserDao();
+		Cache cache = Cache.getCache();
+		UserCache users = (UserCache) cache.getCacheItems().get("users");
 
 		// test
 		line = "1";
@@ -44,11 +50,23 @@ public class LevelsMap extends HttpServlet {
 		if (line != null && !line.isEmpty()) {
 
 			int userId = Integer.parseInt(line);
-
 			
-			UserDao ud = new DBUserDao();
-			int numberOfActiveLevels = ud.getUserLevel(userId);
-			System.out.println(numberOfActiveLevels);
+			int numberOfActiveLevels = 0;
+			if(users.getAllUsers() != null){
+				//ako imame kesh
+				User u = users.getUser(userId);
+				if(u != null){
+					numberOfActiveLevels = u.getLevel();
+				}
+			}else{				
+				numberOfActiveLevels = ud.getUserLevel(userId);
+				//dobavqme v kesha
+				if(numberOfActiveLevels > 0){
+					users.addUser(ud.getUser(userId));
+				}
+			}
+			
+			System.out.println("number Of Active Levels = " + numberOfActiveLevels);
 					
 			/*
 			 * тук взимаме от потребителя нивото до което е стигнал от базата
@@ -63,7 +81,7 @@ public class LevelsMap extends HttpServlet {
 			
 			
 			
-//			//izpolzvame kesha
+//			//izpolzvame vgradeniqt kesh
 //			if (getServletContext().getAttribute("cacheUsers") == null) {
 //
 //				result.put("error", "No users in cache");

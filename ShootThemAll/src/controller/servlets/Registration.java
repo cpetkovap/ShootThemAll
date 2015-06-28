@@ -60,6 +60,7 @@ public class Registration extends HttpServlet {
 			System.out.println("Invalid input");
 			result.put("error", "Invalid input");
 			response.setStatus(400);
+			return;
 		}		
 
 		String inputText = jb.toString();

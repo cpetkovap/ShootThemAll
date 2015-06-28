@@ -32,73 +32,73 @@ public class WeaponsStore extends HttpServlet {
 
 	}
 	
-//	@Override
-//	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
-//			throws ServletException, IOException {
-//		// TODO Auto-generated method stub
-//		doPost(req, resp);
-//	}
-
-	protected void doGet(HttpServletRequest request,
-			HttpServletResponse response) throws ServletException, IOException {
-		response.setHeader("Access-Control-Allow-Origin", "*");
-		String line = request.getParameter("userId");
-
-		// test
-		line = "1";
-
-		JSONObject result = new JSONObject();
-
-		if (line != null && !line.isEmpty()) {
-
-			int userId = Integer.parseInt(line);
-			UserDao ud = new DBUserDao();
-			WeaponDao wd = new DBWeaponDao();
-
-			/*
-			 * select РІ Р±Р°Р·Р°С‚Р° РґР°РЅРЅРё РїРѕ userId Р·Р° С‚РѕС‡РєРёС‚Рµ РєРѕРёС‚Рѕ РїРѕС‚СЂРµР±РёС‚РµР»СЏ РёРјР°,
-			 * Р·Р° РІСЃРёС‡РєРёС‚Рµ РѕСЂСЉР¶РёСЏ Рё Р·Р° Р°РєС‚РёРІРЅРёС‚Рµ Р·Р° РЅРµРіРѕ РѕСЂСЉР¶РёСЏ
-			 */
-
-			int score = ud.getUserScore(userId);		
-			ArrayList<Weapon> weapons = wd.getWeapons();
-			ArrayList<Integer> unlockedWeapons = ud.getUnlockedWeapons(userId);
-
-
-			result.put("score", score);
-
-			JSONArray weaponsArr = new JSONArray();
-
-			for (int i = 0; i < weapons.size(); i++) {
-				JSONObject weaponsObj = new JSONObject();
-				weaponsObj.put("type", weapons.get(i).getType());
-				weaponsObj.put("damage", weapons.get(i).getDamage());
-				weaponsObj.put("price", weapons.get(i).getPrice());
-				weaponsArr.add(weaponsObj);
-			}
-
-			result.put("weapons", weaponsArr);
-
-			JSONArray unlockedWeaponsArr = new JSONArray();
-
-			for (int i = 0; i < unlockedWeapons.size(); i++) {
-				JSONObject unlockedWeaponsObj = new JSONObject();
-				unlockedWeaponsObj.put("type", unlockedWeapons.get(i));
-				unlockedWeaponsArr.add(unlockedWeaponsObj);
-			}
-
-			response.setStatus(200);
-			result.put("unlockedWeapons", unlockedWeaponsArr);
-
-		} else {
-
-			result.put("error", "Invalid parameter");
-			response.setStatus(400);
-
-		}
-		System.out.println(result.toJSONString());
-		response.getWriter().write(result.toJSONString());
+	@Override
+	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
+			throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		doPost(req, resp);
 	}
+
+//	protected void doGet(HttpServletRequest request,
+//			HttpServletResponse response) throws ServletException, IOException {
+//		response.setHeader("Access-Control-Allow-Origin", "*");
+//		String line = request.getParameter("userId");
+//
+//		// test
+//		line = "1";
+//
+//		JSONObject result = new JSONObject();
+//
+//		if (line != null && !line.isEmpty()) {
+//
+//			int userId = Integer.parseInt(line);
+//			UserDao ud = new DBUserDao();
+//			WeaponDao wd = new DBWeaponDao();
+//
+//			/*
+//			 * select РІ Р±Р°Р·Р°С‚Р° РґР°РЅРЅРё РїРѕ userId Р·Р° С‚РѕС‡РєРёС‚Рµ РєРѕРёС‚Рѕ РїРѕС‚СЂРµР±РёС‚РµР»СЏ РёРјР°,
+//			 * Р·Р° РІСЃРёС‡РєРёС‚Рµ РѕСЂСЉР¶РёСЏ Рё Р·Р° Р°РєС‚РёРІРЅРёС‚Рµ Р·Р° РЅРµРіРѕ РѕСЂСЉР¶РёСЏ
+//			 */
+//
+//			int score = ud.getUserScore(userId);		
+//			ArrayList<Weapon> weapons = wd.getWeapons();
+//			ArrayList<Integer> unlockedWeapons = ud.getUnlockedWeapons(userId);
+//
+//
+//			result.put("score", score);
+//
+//			JSONArray weaponsArr = new JSONArray();
+//
+//			for (int i = 0; i < weapons.size(); i++) {
+//				JSONObject weaponsObj = new JSONObject();
+//				weaponsObj.put("type", weapons.get(i).getType());
+//				weaponsObj.put("damage", weapons.get(i).getDamage());
+//				weaponsObj.put("price", weapons.get(i).getPrice());
+//				weaponsArr.add(weaponsObj);
+//			}
+//
+//			result.put("weapons", weaponsArr);
+//
+//			JSONArray unlockedWeaponsArr = new JSONArray();
+//
+//			for (int i = 0; i < unlockedWeapons.size(); i++) {
+//				JSONObject unlockedWeaponsObj = new JSONObject();
+//				unlockedWeaponsObj.put("type", unlockedWeapons.get(i));
+//				unlockedWeaponsArr.add(unlockedWeaponsObj);
+//			}
+//
+//			response.setStatus(200);
+//			result.put("unlockedWeapons", unlockedWeaponsArr);
+//
+//		} else {
+//
+//			result.put("error", "Invalid parameter");
+//			response.setStatus(400);
+//
+//		}
+//		System.out.println(result.toJSONString());
+//		response.getWriter().write(result.toJSONString());
+//	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		response.setHeader("Access-Control-Allow-Origin", "*");
@@ -116,6 +116,7 @@ public class WeaponsStore extends HttpServlet {
 			System.out.println("Invalid input");
 			result.put("error", "Invalid input");
 			response.setStatus(400);
+			return;
 		}		
 
 		String inputText = jb.toString();
@@ -123,7 +124,7 @@ public class WeaponsStore extends HttpServlet {
 		// test
 		JSONObject test = new JSONObject();
 		test.put("userId", 1);
-		test.put("weaponType", 2);
+		test.put("weaponType", 1);
 		inputText = test.toJSONString();
 		
 		JSONParser parser = new JSONParser();

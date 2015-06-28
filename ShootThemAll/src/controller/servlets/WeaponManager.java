@@ -17,6 +17,9 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
+import cache.Cache;
+import cache.UserCache;
+
 /**
  * Servlet implementation class UnlockWeapon
  */
@@ -38,6 +41,10 @@ public class WeaponManager extends HttpServlet {
 			HttpServletResponse response) throws ServletException, IOException {
 		response.setHeader("Access-Control-Allow-Origin", "*");
 		
+		UserDao ud = new DBUserDao();
+		Cache cache = Cache.getCache();
+		UserCache users = (UserCache) cache.getCacheItems().get("users");
+		
 		JSONObject result = new JSONObject();
 		String message = null;
 		
@@ -58,7 +65,7 @@ public class WeaponManager extends HttpServlet {
 		// test
 		JSONObject test = new JSONObject();
 		test.put("userId", 1);
-		test.put("weaponType", 2);
+		test.put("weaponType", 1);
 		inputText = test.toJSONString();
 
 		JSONParser parser = new JSONParser();
@@ -79,7 +86,6 @@ public class WeaponManager extends HttpServlet {
 			 * 
 			 */
 			
-			UserDao ud = new DBUserDao();
 			ArrayList<Integer> unlockedWeapons = ud.getUnlockedWeapons(userId);
 			
 			boolean isUnlocked = false;
@@ -91,6 +97,9 @@ public class WeaponManager extends HttpServlet {
 			
 			if(isUnlocked){
 				ud.updateUserWeapon(weaponType, userId);
+				if(users.existUser(userId)){
+					users.updateUserWeapon(weaponType, userId);					
+				}
 			}
 
 			message = "success";

@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Properties;
+import java.util.Vector;
 
 import javax.mail.Message;
 import javax.mail.MessagingException;
@@ -29,6 +30,8 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
+import cache.Cache;
+import cache.UserCache;
 import controller.LevelBuilder;
 import controller.SettingsManager;
 
@@ -38,17 +41,18 @@ import controller.SettingsManager;
 @WebServlet("/levelManager")
 public class LevelManager extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	
 
 	public LevelManager() {
 
 	}
 
-	// @Override
-	// protected void doGet(HttpServletRequest req, HttpServletResponse resp)
-	// throws ServletException, IOException {
-	// // TODO Auto-generated method stub
-	// doPost(req, resp);
-	// }
+//	 @Override
+//	 protected void doGet(HttpServletRequest req, HttpServletResponse resp)
+//	 throws ServletException, IOException {
+//	 // TODO Auto-generated method stub
+//	 doPost(req, resp);
+//	 }
 
 	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
@@ -69,7 +73,13 @@ public class LevelManager extends HttpServlet {
 			int level = Integer.parseInt(userLevel);
 
 			LevelBuilder levelBuilder = new LevelBuilder();
-			result = levelBuilder.buildLevel(userId, level);
+
+			try {
+				result = levelBuilder.buildLevel(userId, level);
+			} catch (IllegalArgumentException e) {
+				response.setStatus(400);
+				result.put("error", "Invalid level");
+			}
 
 			response.setStatus(200);
 
@@ -86,21 +96,25 @@ public class LevelManager extends HttpServlet {
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 		response.setHeader("Access-Control-Allow-Origin", "*");
+		
+		Cache cache = Cache.getCache();
+		UserCache users = (UserCache) cache.getCacheItems().get("users");
 
 		String message = null;
 		JSONObject result = new JSONObject();
-		
+
 		StringBuffer jb = new StringBuffer();
 		String line = null;
 		try {
 			BufferedReader reader = request.getReader();
 			while ((line = reader.readLine()) != null)
 				jb.append(line);
-		} catch (Exception e) { 			
+		} catch (Exception e) {
 			System.out.println("Invalid input");
 			result.put("error", "Invalid input");
 			response.setStatus(400);
-		}		
+			return;
+		}
 
 		String inputText = jb.toString();
 
@@ -110,8 +124,6 @@ public class LevelManager extends HttpServlet {
 		test.put("level", 1);
 		test.put("score", 800);
 		inputText = test.toJSONString();
-
-		
 
 		JSONParser parser = new JSONParser();
 		try {
@@ -131,16 +143,31 @@ public class LevelManager extends HttpServlet {
 				 * Тук обновяваме освен записа в базата данни, но и кеша с
 				 * потребители
 				 */
-				int userLevel = ud.getUserLevel(userId);
+
+				int userLevel = 0;
+				if (users.getAllUsers() != null) {
+					User u = users.getUser(userId);
+					if(u != null){
+						userLevel = u.getLevel();
+					}
+				} else {
+					userLevel = ud.getUserLevel(userId);
+					if(userLevel > 0){
+						users.addUser(ud.getUser(userId));
+					}
+				}
+				
 				if (userLevel < SettingsManager.getMaxLevel()) {
 					if (userLevel == level) {
 						ud.updateLevelUp(userId);
+						users.updateLevelUp(userId);
 					}
 				}
 
 				User topUserBeforeUpdate = ud.getUserWithMaxScore();
 				// System.out.println(topUserBeforeUpdate.getUsername());
-				ud.updateScore(score, userId);
+				ud.updateScore(score , userId);
+				users.updateScore(score , userId);
 
 				addAchievment(userId, ud.getUserScore(userId));
 
@@ -148,16 +175,17 @@ public class LevelManager extends HttpServlet {
 				User topUserAfterUpdate = ud.getUserWithMaxScore();
 				// System.out.println(topUserAfterUpdate.getUsername());
 
-				System.out.println(topUserBeforeUpdate.getEmail());
-				System.out.println(topUserBeforeUpdate.isAllowNotification());
 				if (!topUserBeforeUpdate.getUsername().equals(
 						topUserAfterUpdate.getUsername())
 						&& topUserBeforeUpdate.isAllowNotification()) {
-					System.out.println("fggg");
 					String mailTo = topUserBeforeUpdate.getEmail();
 					// мейл тест
+					
+					String mailMessage = "Hi " + topUserAfterUpdate.getUsername() + ",\n" 
+							+ "You are no longer with the best score !!! \n " 
+							+ "Be the first! Play again !";
 					sendEmail("shootthemallgame@gmail.com", mailTo,
-							"Game massage", "You are looser !");
+							"Game massage", mailMessage);
 				}
 
 			}

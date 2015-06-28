@@ -9,6 +9,7 @@ import model.EnemyBooster;
 import model.FreezNextOneEnemyBooster;
 import model.HealthBooster;
 import model.PointsBooster;
+import model.User;
 import model.Weapon;
 import model.dao.DBUserDao;
 import model.dao.UserDao;
@@ -16,10 +17,18 @@ import model.dao.UserDao;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
+import cache.Cache;
+import cache.UserCache;
+
 public class LevelBuilder {
 	final int maxLevel = SettingsManager.getMaxLevel();
 
 	public JSONObject buildLevel(int userID, int level) {
+		
+		UserDao ud = new DBUserDao();
+		Cache cache = Cache.getCache();
+		UserCache users = (UserCache) cache.getCacheItems().get("users");
+		
 		Random rand = new Random();
 		JSONObject objLevel = new JSONObject();
 		objLevel.put("userHealth", 3);
@@ -29,8 +38,27 @@ public class LevelBuilder {
 		 * което е стигнал потребителя, но не е минал
 		 */
 
+		int userLevel = 0;
+		
+		if(users.getAllUsers() != null){
+			User u = users.getUser(userID);
+			if(u != null){
+				userLevel = u.getLevel();
+			}
+		}else{
+			userLevel = ud.getUserLevel(userID);
+			if(userLevel > 0){
+				users.addUser(ud.getUser(userID));
+			}
+		}
+
+		
 		if (level > maxLevel) {
 			level = maxLevel;
+		}
+		
+		if(level > userLevel){
+			throw new IllegalArgumentException();
 		}
 
 		int numEnemies = 10 + ((level - 1) * 7);
@@ -51,7 +79,7 @@ public class LevelBuilder {
 		/*
 		 * тук оръжието ще си го вземем от базата данни като използваме userId
 		 */
-		UserDao ud = new DBUserDao();
+	
 		Weapon weapon = ud.getUserWeapon(userID);
 		if (weapon == null) {
 			weapon = new Weapon(1, 1, 0);
