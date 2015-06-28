@@ -206,7 +206,7 @@ public class LevelManager extends HttpServlet {
 					// мейл тест
 
 					String mailMessage = "Hi "
-							+ topUserBeforeUpdate.getUsername() + ",\n"
+							+ topUserAfterUpdate.getUsername() + ",\n"
 							+ "You are no longer with the best score !!! \n "
 							+ "Be the first! Play again !";
 					sendEmail("shootthemallgame@gmail.com", mailTo,
