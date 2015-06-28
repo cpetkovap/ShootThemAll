@@ -144,7 +144,6 @@ public class Login extends HttpServlet {
 			UserDao ud = new DBUserDao();
 			
 			//	if (getServletContext().getAttribute("cacheUsers") == null) {
-			//if (users.isEmpty()) {
 			if(!ud.hasQuery()){		
 				result.put("error", "Invalid username or password");
 				response.setStatus(400);
@@ -182,9 +181,14 @@ public class Login extends HttpServlet {
 //					}
 					
 					
-					//Използваме нашият си кеш
-					existUser = users.existUser(username, password);				
-					userId = users.getUserId(username);
+					//Използваме нашият си нашият кеш
+		
+					
+					
+					if (users != null) {
+						existUser = users.existUser(username, password);				
+						userId = users.getUserId(username);
+					}
 					
 					if (existUser) {
 						//update last activity
