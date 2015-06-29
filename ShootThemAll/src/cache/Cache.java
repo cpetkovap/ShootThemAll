@@ -14,7 +14,7 @@ public class Cache {
 		map = new ConcurrentHashMap();
 	}
 	
-	public static Cache getCache() {
+	public synchronized static Cache getCache() {
 		if (cache == null) {
 			cache = new Cache();
 		}

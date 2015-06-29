@@ -21,7 +21,7 @@ public class UserCache implements ICache, IUserCache {
 		users = new Vector<User>();
 	}
 
-	public static UserCache getUserCache() {
+	public synchronized static UserCache getUserCache() {
 		if (userCache == null) {
 			userCache = new UserCache();
 		}
