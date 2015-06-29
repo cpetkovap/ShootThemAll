@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -22,6 +23,7 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
+import charts.BarChart;
 import controller.SettingsManager;
 import cache.Cache;
 import cache.UserCache;
@@ -50,15 +52,14 @@ public class Login extends HttpServlet {
 		super.init();
 		
 		System.out.println("cache init");
-		
 //		if (cacheUsers == null) {
 //			cacheUsers = new ArrayList();
 //		}
 		/*
-		 * вземане на потребителите от базата данни и пълнене на cacheUsers
+		 * РІР·РµРјР°РЅРµ РЅР° РїРѕС‚СЂРµР±РёС‚РµР»РёС‚Рµ РѕС‚ Р±Р°Р·Р°С‚Р° РґР°РЅРЅРё Рё РїСЉР»РЅРµРЅРµ РЅР° cacheUsers
 		 */
 
-		// тест
+		// С‚РµСЃС‚
 //		User u1 = new User(1, "Ivan", "Ivan", "Ivan", 20, 1,
 //				new Weapon(1, 1, 0), false);
 //		User u2 = new User(2, "Petko", "Petko", "Petko", 10, 0, new Weapon(1,
@@ -79,7 +80,7 @@ public class Login extends HttpServlet {
 		if (sc.getAttribute("cacheUsers") == null) {
 			//sc.setAttribute("cacheUsers", cacheUsers);
 			
-			//това за да не счупя написането до тук :)
+			//С‚РѕРІР° Р·Р° РґР° РЅРµ СЃС‡СѓРїСЏ РЅР°РїРёСЃР°РЅРµС‚Рѕ РґРѕ С‚СѓРє :)
 			
 			
 			ArrayList<User> list = new ArrayList<User>();
@@ -158,11 +159,15 @@ public class Login extends HttpServlet {
 					response.setStatus(400);
 
 				} else {
+					if(username.equals("admin")){
+						response.getWriter().write("redirect");
+						return;
+					}
 					int userId = -1;
 					
 					boolean existUser = false;
 					
-//					//използваме вграденият кеша -> друг вариант е от базата данни или нашият кеш
+//					//РёР·РїРѕР»Р·РІР°РјРµ РІРіСЂР°РґРµРЅРёСЏС‚ РєРµС€Р° -> РґСЂСѓРі РІР°СЂРёР°РЅС‚ Рµ РѕС‚ Р±Р°Р·Р°С‚Р° РґР°РЅРЅРё РёР»Рё РЅР°С€РёСЏС‚ РєРµС€
 //					ArrayList<User> list = (ArrayList<User>) getServletConfig()
 //							.getServletContext().getAttribute("cacheUsers");
 //
@@ -183,7 +188,7 @@ public class Login extends HttpServlet {
 //					}
 					
 					
-					//Използваме нашият си нашият кеш
+					//Р�Р·РїРѕР»Р·РІР°РјРµ РЅР°С€РёСЏС‚ СЃРё РЅР°С€РёСЏС‚ РєРµС€
 		
 									
 					if (users != null) {
@@ -202,7 +207,7 @@ public class Login extends HttpServlet {
 						//System.out.println(Cache.getCache().getUser(userId).getDate());
 					} else {
 						
-						// Тук проверяваме в базата данни дали съществува този потребител
+						// РўСѓРє РїСЂРѕРІРµСЂСЏРІР°РјРµ РІ Р±Р°Р·Р°С‚Р° РґР°РЅРЅРё РґР°Р»Рё СЃСЉС‰РµСЃС‚РІСѓРІР° С‚РѕР·Рё РїРѕС‚СЂРµР±РёС‚РµР»
 						
 						int existInDB = ud.existUser(username, password);
 						

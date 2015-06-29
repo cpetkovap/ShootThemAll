@@ -31,6 +31,9 @@
 			password : password
 		}), function(data) {
 			alert(data);
+			if(data == "redirect"){
+				window.location = "http://localhost:8080/ShootThemAll/Chart.jsp";
+			}
 		});
 
 	}
