@@ -68,18 +68,8 @@ public class LevelManager extends HttpServlet {
 		if (user != null && !user.isEmpty() && userLevel != null
 				&& !userLevel.isEmpty()) {
 
-			
-			int userId = -1;
-			int level = -1;
-			try{
-				userId = Integer.parseInt(user);
-				level = Integer.parseInt(userLevel);
-			}catch(NumberFormatException e){
-				response.setStatus(400);
-				result.put("error", "Invalid parameter");
-				response.getWriter().write(result.toJSONString());
-				return;
-			}
+			int userId = Integer.parseInt(user);
+			int level = Integer.parseInt(userLevel);
 
 			UserDao ud = new DBUserDao();
 			if (ud.getUser(userId) != null) {

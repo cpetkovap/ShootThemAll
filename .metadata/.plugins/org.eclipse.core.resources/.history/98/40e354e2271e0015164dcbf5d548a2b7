@@ -51,15 +51,7 @@ public class WeaponsStore extends HttpServlet {
 
 		if (line != null && !line.isEmpty()) {
 
-			int userId = -1;
-			try{
-				userId = Integer.parseInt(line);
-			}catch(NumberFormatException e){
-				response.setStatus(400);
-				result.put("error", "Invalid parameter");
-				response.getWriter().write(result.toJSONString());
-				return;
-			}
+			int userId = Integer.parseInt(line);
 			UserDao ud = new DBUserDao();
 			WeaponDao wd = new DBWeaponDao();
 

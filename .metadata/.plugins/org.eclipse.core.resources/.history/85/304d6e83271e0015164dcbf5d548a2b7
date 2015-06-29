@@ -59,8 +59,8 @@ public class LevelsMap extends HttpServlet {
 				userId = Integer.parseInt(line);
 			}catch(NumberFormatException e){
 				response.setStatus(400);
-				result.put("error", "Invalid parameter");
-				response.getWriter().write(result.toJSONString());
+				error.put("error", "Invalid parameter");
+				response.getWriter().write(error.toJSONString());
 				return;
 			}
 			

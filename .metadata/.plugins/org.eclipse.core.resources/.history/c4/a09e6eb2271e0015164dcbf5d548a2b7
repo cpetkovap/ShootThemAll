@@ -75,15 +75,7 @@ public class UserInfoManager extends HttpServlet {
 
 			} else {
 
-				int userId = -1;
-				try{
-					userId = Integer.parseInt(line);
-				}catch(NumberFormatException e){
-					response.setStatus(400);
-					result.put("error", "Invalid parameter");
-					response.getWriter().write(result.toJSONString());
-					return;
-				}
+				int userId = Integer.parseInt(line);
 
 				// // използваме вграденият кеш -> друг вариант е от базата
 				// данни или нашият си кеш
