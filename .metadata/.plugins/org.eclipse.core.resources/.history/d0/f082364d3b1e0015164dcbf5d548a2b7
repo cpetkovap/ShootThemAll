@@ -137,7 +137,7 @@ public class LeaderBoard extends HttpServlet {
 		UserDao ud = new DBUserDao();
 		
 		int userPosition = ud.getUserPosition(userId);
-		//System.out.println(userPosition);
+		System.out.println(userPosition);
 		
 		User u = ud.getUser(userId);
 		ArrayList<User> topUsers = ud.getTopUsers();

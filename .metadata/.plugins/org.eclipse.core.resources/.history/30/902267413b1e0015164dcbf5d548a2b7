@@ -7,7 +7,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import model.User;
 
 public class Cache {
-	private static ConcurrentHashMap<String, ICache> map;
+	private static ConcurrentHashMap map;
 	private static Cache cache;
 
 	private Cache() {
