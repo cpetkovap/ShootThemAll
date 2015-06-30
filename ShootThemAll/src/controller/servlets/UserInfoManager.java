@@ -41,7 +41,7 @@ public class UserInfoManager extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
-		// репрезентация на информацията за потребителя
+		//show user info
 		response.setHeader("Access-Control-Allow-Origin", "*");
 
 		UserDao ud = new DBUserDao();
@@ -110,7 +110,7 @@ public class UserInfoManager extends HttpServlet {
 
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
-		// промяна на информацията за потребителя
+		//update user info
 		response.setHeader("Access-Control-Allow-Origin", "*");
 
 		UserDao ud = new DBUserDao();
@@ -161,11 +161,8 @@ public class UserInfoManager extends HttpServlet {
 				}
 
 				/*
-				 * Промяна на информацията за потребителя в базата данни и в
-				 * кеша
+				 * Update user info in DB and in cache
 				 */
-
-				
 
 				User u = null;
 				if (users != null) {
@@ -194,7 +191,7 @@ public class UserInfoManager extends HttpServlet {
 
 					// update password:
 
-					// - update in database --> to do
+					// - update in database 
 
 					ud.updatePassword(password, userId);
 
@@ -221,7 +218,7 @@ public class UserInfoManager extends HttpServlet {
 
 						// update email:
 
-						// - update in database --> to do
+						// - update in database 
 
 						ud.updateEmail(email, userId);
 
@@ -241,7 +238,7 @@ public class UserInfoManager extends HttpServlet {
 							.get("allowNotification").toString());
 					// update notification:
 
-					// - update in database --> to do
+					// - update in database
 					ud.updateNotification(allowNotification, userId);
 
 					// - update in cache

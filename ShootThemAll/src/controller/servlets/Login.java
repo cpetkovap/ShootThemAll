@@ -47,9 +47,7 @@ public class Login extends HttpServlet {
 
 	@Override
 	public void init() throws ServletException {
-		// TODO Auto-generated method stub
-		super.init();
-		
+
 		System.out.println("cache init");
 
 		cache = Cache.getCache();
@@ -57,7 +55,6 @@ public class Login extends HttpServlet {
 		users.init();
 		cache.getCacheItems().put("users", users);
 		
-
 	}
 	
 	@Override
@@ -120,6 +117,7 @@ public class Login extends HttpServlet {
 					response.setStatus(400);
 
 				} else {
+					//check if username is admin and redirect
 					if(username.equals(SettingsManager.ADMIN.getUsername()) &&
 							password.equals(SettingsManager.cryptMD5(SettingsManager.ADMIN.getPassword()))){
 						response.getWriter().write("redirect");
@@ -127,11 +125,9 @@ public class Login extends HttpServlet {
 					}
 					int userId = -1;
 					
-					boolean existUser = false;
+					boolean existUser = false;					
 					
-
-					
-					//Р�Р·РїРѕР»Р·РІР°РјРµ РЅР°С€РёСЏС‚ СЃРё РЅР°С€РёСЏС‚ РєРµС€
+					//chech if user exist in our cache
 		
 									
 					if (users != null) {
@@ -150,20 +146,21 @@ public class Login extends HttpServlet {
 						//System.out.println(Cache.getCache().getUser(userId).getDate());
 					} else {
 						
-						// РўСѓРє РїСЂРѕРІРµСЂСЏРІР°РјРµ РІ Р±Р°Р·Р°С‚Р° РґР°РЅРЅРё РґР°Р»Рё СЃСЉС‰РµСЃС‚РІСѓРІР° С‚РѕР·Рё РїРѕС‚СЂРµР±РёС‚РµР»
+						//user doestn't exist in cache 
+						//check if exist in DB
 						
 						int existInDB = ud.existUser(username, password);
 						
 						if(existInDB > 0){
-							
-							//potrebitel ot selekta v bazata danni -> testov
+							//user exist in DB
+													
 							User user = ud.getUser(existInDB);
-							//update na datata v bazata danni za tozi potrebitel
 							
-							//update last activity
+							//update user last activity in DB
 							ud.updateCurrentDate(existInDB);
 						    user.setDate(ud.getUser(existInDB).getDate());
 							
+						    //add user in cache
 							users.addUser(user);
 							
 							//users.printNames();

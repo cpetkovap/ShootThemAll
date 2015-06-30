@@ -163,12 +163,10 @@ public class LevelManager extends HttpServlet {
 
 			if (score > 0 ) {
 				/*
-				 * Тук записваме точките на потребителя с userId в базата данни
-				 * Правим проверка дали потребителя е минал нечии точки и
-				 * уведомяваме през мейл
+				 * write user score to user with userId in dataDase
+				 * Checking if the user is improved another score and send email
 				 * 
-				 * Тук обновяваме освен записа в базата данни, но и кеша с
-				 * потребители
+				 * Update DB and cache 
 				 */
 				
 				

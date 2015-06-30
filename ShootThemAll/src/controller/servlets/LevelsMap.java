@@ -82,14 +82,10 @@ public class LevelsMap extends HttpServlet {
 			System.out.println("number Of Active Levels = " + numberOfActiveLevels);
 					
 			/*
-			 * тук взимаме от потребителя нивото до което е стигнал от базата
-			 * данни
-			 * 
-			 * или използваме кеша
+			 * get user level from db or from cache
 			 */
 			
-			
-	
+		
 			
 			if(numberOfActiveLevels <= 0 || numberOfActiveLevels > numberOfAllLevels){
 				result.put("error", "Invalid parameter");

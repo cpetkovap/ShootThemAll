@@ -83,14 +83,9 @@ public class WeaponManager extends HttpServlet {
 			}
 
 			/*
-			 * Р�Р—Р‘Р�Р РђРњР• РЎ РљРћР• РћР РЄР–Р�Р• Р©Р• Р�Р“Р РђР• РџРћРўР Р•Р‘Р�РўР•Р›РЇ
-			 * 
-			 * РїСЂРѕРІРµСЂРєР° РІ Р±Р°Р·Р°С‚Р° РґР°РЅРЅРё РґР°Р»Рё РѕСЂСЉР¶РёРµС‚Рѕ РѕС‚ С‚РѕР·Рё С‚РёРї Рµ РѕС‚РєР»СЋС‡РµРЅРѕ Р·Р°
-			 * РїРѕС‚СЂРµР±РёС‚РµР»СЏ СЃ С‚РѕРІР° userId Р°РєРѕ Рµ РѕС‚РєР»СЋС‡РµРЅРѕ РіРѕ Р·Р°РїРёСЃРІР°РјРµ Р·Р°
-			 * РїРѕС‚СЂРµР±РёС‚РµР»СЏ РєР°С‚Рѕ РёР·Р±СЂР°РЅРѕ РѕСЂСЉР¶РёРµ
-			 * 
-			 * РѕСЃРІРµРЅ Р·Р°РїРёСЃР° РІ Р±Р°Р·Р°С‚Р° РґР°РЅРЅРё РїСЂРѕРјРµРЅСЏРјРµ  РѕСЂСЉР¶РёРµС‚Рѕ Рё РІ РєРµС€Р°
-			 * 
+			 *update user weapon
+			 *get all unlocked weapons for user 
+			 *check if weapon is unlocked for the user then update user weapon
 			 */
 			
 			ArrayList<Integer> unlockedWeapons = ud.getUnlockedWeapons(userId);

@@ -15,7 +15,6 @@ public class SettingsManager {
 	}
 
 
-
 	// MD5
 	public static String cryptMD5(String message) {
 		MessageDigest md;

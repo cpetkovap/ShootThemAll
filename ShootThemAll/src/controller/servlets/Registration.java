@@ -90,23 +90,25 @@ public class Registration extends HttpServlet {
 					&& validEmail) {
 
 				/*
-				 * Проверка дали този username e зает Проверкa в базата данни
-				 * или в хеша
+				 * Chech if user exist in DB ot cache
 				 */
 
 				User user = new User(username, password, email);
 				UserDao ud = new DBUserDao();
 
-				// проверка в хеша
+				// check in cache
 				// if (Cache.getCache().isEmpty()) {
 
-				// prowerqvame dali ima zapisi v bazata danni
+				// check if DB is not empty
 				if (!ud.hasQuery()) {
 
-					// намя записи => няма такъв потребител = > insert в базата
-					// данни и
-					// добавяне в хеша
-
+					
+					/*
+					 * If there are no queries => there are no users
+					 * inserd in DB 
+					 * and add in cache
+					 */
+					
 					int userId = ud.addUser(user);
 
 					if (userId > 0) {
@@ -119,7 +121,8 @@ public class Registration extends HttpServlet {
 					}
 
 				} else {
-					// проверка дали съществува такъв запис
+
+					//chech is there are user in DB
 					User existUser = ud.getUser(user.getUsername());
 
 					if (existUser != null) {

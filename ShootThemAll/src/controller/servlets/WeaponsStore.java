@@ -59,10 +59,7 @@ public class WeaponsStore extends HttpServlet {
 			WeaponDao wd = new DBWeaponDao();
 
 			/*
-			 * select РІ Р±Р°Р·Р°С‚Р° РґР°РЅРЅРё РїРѕ userId Р·Р° С‚РѕС‡РєРёС‚Рµ
-			 * РєРѕРёС‚Рѕ РїРѕС‚СЂРµР±РёС‚РµР»СЏ РёРјР°, Р·Р° РІСЃРёС‡РєРёС‚Рµ
-			 * РѕСЂСЉР¶РёСЏ Рё Р·Р° Р°РєС‚РёРІРЅРёС‚Рµ Р·Р° РЅРµРіРѕ
-			 * РѕСЂСЉР¶РёСЏ
+			 * return user score , all weapons and unloched weapons for user
 			 */
 
 			if (ud.getUser(userId) == null) {
@@ -152,13 +149,9 @@ public class WeaponsStore extends HttpServlet {
 			}
 			
 			/*
-			 *  РћРўРљР›Р®Р§Р’РђРњР• РћР РЄР–Р�Р•
-			 * 
-			 *  РџСЂРѕРІРµСЂРєР° РІ Р±Р°Р·Р°С‚Р° РґР°РЅРЅРё РґР°Р»Рё РѕСЂСЉР¶РёРµС‚Рѕ РѕС‚ С‚РѕР·Рё С‚РёРї Рµ Р·Р°РєР»СЋС‡РµРЅРѕ Р·Р° РїРѕС‚СЂРµР±РёС‚РµР»СЏ СЃ С‚РѕРІР° userId
-			 *  Рё РґР°Р»Рё РїРѕС‚СЂРµР±РёС‚РµР»СЏ СЂР°Р·РїРѕР»Р°РіР° СЃ РґРѕСЃС‚Р°С‚Р°С‡РЅРѕ С‚РѕС‡РєРё, Р·Р° РґР° РіРѕ РѕС‚РєР»СЋС‡Рё
-			 *  РђРєРѕ Рµ Р·Р°РєР»СЋС‡РµРЅРѕ Рё РїРѕС‚СЂРµР±РёС‚РµР»СЏ РёРјР° РґРѕСЃС‚Р°С‚Р°С‡РЅРѕ С‚РѕС‡РєРё
-			 *  РіРѕ Р·Р°РїРёСЃРІР°РјРµ Р·Р° РїРѕС‚СЂРµР±РёС‚РµР»СЏ РєР°С‚Рѕ РѕС‚РєР»СЋС‡РµРЅРѕ РѕСЂСЉР¶РёРµ
-			 * 
+			 * "buy"(unlock) weapon for user.
+			 * if weapon is not already unlocked and user has enough points for unlock it ->
+			 * insert weapon id and user id in unloched_weapons table in db
 			 */
 			
 			if(weaponType <= 0 || weaponType > 3){

@@ -34,8 +34,7 @@ public class LevelBuilder {
 		objLevel.put("userHealth", 3);
 
 		/*
-		 * проверка за валидно ниво от базата данни : userLevel = нивото до
-		 * което е стигнал потребителя, но не е минал
+		 * check for an existing user and level achieved in DB
 		 */
 
 		int userLevel = 0;
@@ -77,7 +76,7 @@ public class LevelBuilder {
 
 		// Weapon weapon = new Weapon(1, 1, 100);
 		/*
-		 * тук оръжието ще си го вземем от базата данни като използваме userId
+		 * get weapon from DB
 		 */
 	
 		Weapon weapon = ud.getUserWeapon(userID);
@@ -126,18 +125,18 @@ public class LevelBuilder {
 
 		
 		//Enemy
-		// вариант 1
+		// approach 1
 		for (int i = 0; i < enemies.length; i++) {
 			enemies[i] = new Enemy(i + 1, i + 1, (maxLevel * 2000) + 1000
 					- (i + 1) * 2000, i + 1);
 		}
 
-		// //вариант 2 -> за фиксирано максимум 3 нива
+		// //approach 2 -> for a fixed number of levels = 3
 		// for(int i = 0 ; i < enemies.length; i++){
 		// enemies[i] = EnemyFactory.getEnemy(i+1);
 		// }
 
-		// за сега нямаме добри :)
+		// for now there are no good :)
 		// damage = 0
 		int goodEnemyCount = rand.nextInt(level * 4) + 1;
 		Enemy goodEnemy = EnemyFactory.getEnemy(100);
@@ -160,7 +159,7 @@ public class LevelBuilder {
 
 		}
 		
-		//patroni za enemyBooster
+		//bullets enemyBooster
 		bullets += enemyBoosterCount * Math.ceil((double) enemyBooster.getDamage() / (double) weapon.getDamage());
 
 		//level test
@@ -186,15 +185,15 @@ public class LevelBuilder {
 			enemiesArr.add(enemyObj);
 		}
 
-		// за сега нямаме добри :)
+		// for now there are no good :)
 		enemiesArr.add(goodEnemyObj);
 		
-		// за сега нямаме enemy с booster :)
+		// for now there are no  enemy with booster :)
 	     enemiesArr.add(enemyBoosterObj);
 
 		objLevel.put("enemies", enemiesArr);
 
-		// за сега нямаме boosters
+		// for now there are no boosters
 		 objLevel.put("boosters", boostersArr);
 
 		return objLevel;

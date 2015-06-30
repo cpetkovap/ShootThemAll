@@ -42,7 +42,7 @@ public class LeaderBoard extends HttpServlet {
 			HttpServletResponse response) throws ServletException, IOException {
 		
 		response.setHeader("Access-Control-Allow-Origin", "*");
-		// репрезентация на класация
+		// show leader board
 		String line = null;
 		try{
 			line = request.getParameter("userId");
