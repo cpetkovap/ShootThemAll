@@ -36,13 +36,6 @@ public class Registration extends HttpServlet {
 
 	}
 
-	@Override
-	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
-			throws ServletException, IOException {
-		// test
-		resp.setHeader("Access-Control-Allow-Origin", "*");
-		doPost(req, resp);
-	}
 
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {

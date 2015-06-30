@@ -66,14 +66,14 @@ public class LevelsMap extends HttpServlet {
 			
 			int numberOfActiveLevels = 0;
 			if(users.getAllUsers() != null){
-				//ako imame kesh
+				//if we have cache
 				User u = users.getUser(userId);
 				if(u != null){
 					numberOfActiveLevels = u.getLevel();
 				}
 			}else{				
 				numberOfActiveLevels = ud.getUserLevel(userId);
-				//dobavqme v kesha
+				//add in cache
 				if(numberOfActiveLevels > 0){
 					users.addUser(ud.getUser(userId));
 				}

@@ -59,7 +59,7 @@ public class WeaponsStore extends HttpServlet {
 			WeaponDao wd = new DBWeaponDao();
 
 			/*
-			 * return user score , all weapons and unloched weapons for user
+			 * return user score , all weapons and unlocked weapons for user
 			 */
 
 			if (ud.getUser(userId) == null) {

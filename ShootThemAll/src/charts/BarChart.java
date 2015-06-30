@@ -23,9 +23,9 @@
 		
 		public BarChart() {
 			 JFreeChart barChart = ChartFactory.createBarChart3D(
-					 chartTitle, // chart title            
-			         OX,      // type of contest in charts
-			         OY,      //    
+					 chartTitle,           
+			         OX,     
+			         OY,      
 			         createBarChart(),          
 			         PlotOrientation.VERTICAL,           
 			         true, true, false);
@@ -48,14 +48,7 @@
 			      dataset.addValue(users.get(i).getScore(), users.get(i).getUsername(), score);
 			    }
 			      return dataset; 
-		}
-//		
-//		public static void main(String[] args) {
-//			System.out.println("display that");
-//			BarChart bc = new BarChart();
-//			System.out.println("end");
-//		}
-//		
+		}		
 	}
 
 
