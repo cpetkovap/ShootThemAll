@@ -8,19 +8,13 @@ import model.User;
 public class SettingsManager {
 	private static SettingsManager ls;
 	public static final User ADMIN = new User("admin", "admin");
-	private final int maxLevel;
+	public static final int MAX_LEVEL = 3;
 
 	private SettingsManager() {
-		maxLevel = 3;
+		
 	}
 
-	public static int getMaxLevel() {
-		if (ls == null) {
-			return new SettingsManager().maxLevel;
-		}
-		return ls.maxLevel;
 
-	}
 
 	// MD5
 	public static String cryptMD5(String message) {

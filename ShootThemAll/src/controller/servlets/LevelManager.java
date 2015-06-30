@@ -191,7 +191,7 @@ public class LevelManager extends HttpServlet {
 					}
 				}
 
-				if (userLevel < SettingsManager.getMaxLevel()) {
+				if (userLevel < SettingsManager.MAX_LEVEL) {
 					if (userLevel == level) {
 						ud.updateLevelUp(userId);
 						users.updateLevelUp(userId);

@@ -50,7 +50,7 @@ public class LevelsMap extends HttpServlet {
 
 		JSONObject result = new JSONObject();
 
-		int numberOfAllLevels = SettingsManager.getMaxLevel();
+		int numberOfAllLevels = SettingsManager.MAX_LEVEL;
 
 		if (line != null && !line.isEmpty()) {
 

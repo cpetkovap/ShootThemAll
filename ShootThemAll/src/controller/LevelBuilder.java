@@ -21,7 +21,7 @@ import cache.Cache;
 import cache.UserCache;
 
 public class LevelBuilder {
-	final int maxLevel = SettingsManager.getMaxLevel();
+	final int maxLevel = SettingsManager.MAX_LEVEL;
 
 	public JSONObject buildLevel(int userID, int level) {
 		
