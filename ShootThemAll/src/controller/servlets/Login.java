@@ -159,7 +159,8 @@ public class Login extends HttpServlet {
 					response.setStatus(400);
 
 				} else {
-					if(username.equals("admin")){
+					if(username.equals(SettingsManager.ADMIN.getUsername()) &&
+							password.equals(SettingsManager.cryptMD5(SettingsManager.ADMIN.getPassword()))){
 						response.getWriter().write("redirect");
 						return;
 					}

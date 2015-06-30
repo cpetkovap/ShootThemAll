@@ -3,8 +3,11 @@ package controller;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
+import model.User;
+
 public class SettingsManager {
 	private static SettingsManager ls;
+	public static final User ADMIN = new User("admin", "admin");
 	private final int maxLevel;
 
 	private SettingsManager() {
