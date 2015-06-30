@@ -89,34 +89,7 @@ public class LevelsMap extends HttpServlet {
 			 */
 			
 			
-			
-			
-			
-//			//izpolzvame vgradeniqt kesh
-//			if (getServletContext().getAttribute("cacheUsers") == null) {
-//
-//				result.put("error", "No users in cache");
-//				response.setStatus(400);
-//
-//			} else {
-//				// кеш
-//				ArrayList<User> list = (ArrayList<User>) getServletConfig()
-//						.getServletContext().getAttribute("cacheUsers");
-//
-//				for (int i = 0; i < list.size(); i++) {
-//					if (list.get(i).getId() == userId) {
-//						numberOfActiveLevels = list.get(i).getLevel();
-//					}
-//				}
-//
-//				if (numberOfActiveLevels > numberOfAllLevels) {
-//					numberOfActiveLevels = numberOfAllLevels;
-//				}
-//
-//				response.setStatus(200);
-//				result.put("numberOfAllLevels", numberOfAllLevels);
-//				result.put("numberOfActiveLevels", numberOfActiveLevels);
-//			}
+	
 			
 			if(numberOfActiveLevels <= 0 || numberOfActiveLevels > numberOfAllLevels){
 				result.put("error", "Invalid parameter");

@@ -47,21 +47,21 @@ public class Registration extends HttpServlet {
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 		response.setHeader("Access-Control-Allow-Origin", "*");
-		
+
 		JSONObject result = new JSONObject();
-		
+
 		StringBuffer jb = new StringBuffer();
 		String line = null;
 		try {
 			BufferedReader reader = request.getReader();
 			while ((line = reader.readLine()) != null)
 				jb.append(line);
-		} catch (Exception e) { 			
+		} catch (Exception e) {
 			System.out.println("Invalid input");
 			result.put("error", "Invalid input");
 			response.setStatus(400);
 			return;
-		}		
+		}
 
 		String inputText = jb.toString();
 
@@ -70,9 +70,7 @@ public class Registration extends HttpServlet {
 		test.put("username", "Shoshi");
 		test.put("password", "123");
 		test.put("email", "abv@abv.bg");
-		//inputText = test.toJSONString();
-
-		
+		// inputText = test.toJSONString();
 
 		JSONParser parser = new JSONParser();
 		try {
@@ -88,9 +86,9 @@ public class Registration extends HttpServlet {
 			String email = userObj.get("email").toString();
 			String emailreg = "^[_A-Za-z0-9-]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
 			Boolean validEmail = email.matches(emailreg);
-			if (!username.isEmpty() && !password.isEmpty() && !email.isEmpty() && validEmail) {
-	
-				
+			if (!username.isEmpty() && !password.isEmpty() && !email.isEmpty()
+					&& validEmail) {
+
 				/*
 				 * Проверка дали този username e зает Проверкa в базата данни
 				 * или в хеша
@@ -100,22 +98,16 @@ public class Registration extends HttpServlet {
 				UserDao ud = new DBUserDao();
 
 				// проверка в хеша
-				// if (getServletContext().getAttribute("cacheUsers") == null) {
 				// if (Cache.getCache().isEmpty()) {
 
-				// prowerqvame dali ima zapisi v bazata danni				
+				// prowerqvame dali ima zapisi v bazata danni
 				if (!ud.hasQuery()) {
 
-					// намя записи => няма такъв потребител = > insert в базата данни и
+					// намя записи => няма такъв потребител = > insert в базата
+					// данни и
 					// добавяне в хеша
 
-					
 					int userId = ud.addUser(user);
-
-					// ArrayList<User> cacheUsers = new ArrayList<User>();
-					// cacheUsers.add(user);
-					// getServletConfig().getServletContext().setAttribute(
-					// "cacheUsers", cacheUsers);
 
 					if (userId > 0) {
 						response.setStatus(200);
@@ -126,18 +118,18 @@ public class Registration extends HttpServlet {
 
 					}
 
-				} else{
-					//проверка дали съществува такъв запис
+				} else {
+					// проверка дали съществува такъв запис
 					User existUser = ud.getUser(user.getUsername());
 
-					if(existUser != null){
-						
+					if (existUser != null) {
+
 						result.put("error", "Existing username");
-					    response.setStatus(400);
-					    
-					}else{
+						response.setStatus(400);
+
+					} else {
 						int userId = ud.addUser(user);
-						
+
 						if (userId > 0) {
 							response.setStatus(200);
 							result.put("userId", userId);
@@ -146,46 +138,9 @@ public class Registration extends HttpServlet {
 							response.setStatus(400);
 
 						}
-						
+
 					}
-					
-					
-					
-					
-					// boolean existUser = false;
-					// // използваме кеша -> друг вариант е от базата данни
-					// // ArrayList<User> list = (ArrayList<User>)
-					// getServletConfig()
-					// // .getServletContext().getAttribute("cacheUsers");
-					//
-					// Vector<User> list = Cache.getCache().getAllUsers();
-					// for (int i = 0; i < list.size(); i++) {
-					// if (list.get(i).getUsername().equals(username)) {
-					// existUser = true;
-					// }
-					// }
-					//
-					// if (existUser) {
-					// result.put("error", "Existing username");
-					// response.setStatus(400);
-					// } else {
-					//
-					// // няма такъв потребител = > insert в базата данни и
-					// // добавяне в хеша
-					//
-					// // това идва като резултат от INSERT ... SELECT
-					// int userId = 6;
-					// User user = new User(userId, username, password, email,
-					// 0, 0, new Weapon(1, 1, 1), false);
-					//
-					// // добавяме в базата данни за активни оръжия 1вото
-					// // оръжие
-					//
-					// list.add(user);
-					// response.setStatus(200);
-					// result.put("userId", userId);
-					// }
-					//
+
 				}
 
 			} else {

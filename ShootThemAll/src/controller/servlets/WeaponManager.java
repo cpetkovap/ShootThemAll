@@ -32,10 +32,6 @@ public class WeaponManager extends HttpServlet {
     }
 
 	
-//	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-//		response.setHeader("Access-Control-Allow-Origin", "*");
-//		doPost(request, response);
-//	}
 
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {

@@ -38,12 +38,6 @@ public class UserInfoManager extends HttpServlet {
 
 	}
 
-	// @Override
-	// protected void doGet(HttpServletRequest req, HttpServletResponse resp)
-	// throws ServletException, IOException {
-	// // TODO Auto-generated method stub
-	// doPost(req, resp);
-	// }
 
 	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
@@ -67,7 +61,6 @@ public class UserInfoManager extends HttpServlet {
 
 		if (line != null && !line.isEmpty()) {
 
-			// if (getServletContext().getAttribute("cacheUsers") == null) {
 			if (!ud.hasQuery()) {
 
 				result.put("error", "No Users ! Error");
@@ -85,24 +78,7 @@ public class UserInfoManager extends HttpServlet {
 					return;
 				}
 
-				// // използваме вграденият кеш -> друг вариант е от базата
-				// данни или нашият си кеш
-				// ArrayList<User> list = (ArrayList<User>) getServletConfig()
-				// .getServletContext().getAttribute("cacheUsers");
-				//
-				// boolean existUser = false;
-				// for (int i = 0; i < list.size(); i++) {
-				// if (list.get(i).getId() == userId) {
-				// existUser = true;
-				// result = makeUserJSON(list.get(i));
-				// }
-				// }
-				//
-				// if (!existUser) {
-				// result.put("error", "Not existing id");
-				// response.setStatus(400);
-				// }
-				//
+				
 				User u = null;
 				if (users != null) {
 					u = users.getUser(userId);
@@ -166,7 +142,7 @@ public class UserInfoManager extends HttpServlet {
 		// test.put("allowNotification", true);
 		// inputText = test.toJSONString();
 
-		// if (getServletContext().getAttribute("cacheUsers") == null) {
+
 		if (!ud.hasQuery()) {
 			result.put("error", "No users");
 			response.setStatus(400);
@@ -189,16 +165,7 @@ public class UserInfoManager extends HttpServlet {
 				 * кеша
 				 */
 
-				// //използваме вграденият кеш -> друг вариант е от базата данни
-				// или нашият кеп
-				// ArrayList<User> list = (ArrayList<User>) getServletConfig()
-				// .getServletContext().getAttribute("cacheUsers");
-				// int user = -1;
-				// for (int i = 0; i < list.size(); i++) {
-				// if (list.get(i).getId() == userId){
-				// user = list.get(i).getId();
-				// }
-				// }
+				
 
 				User u = null;
 				if (users != null) {
@@ -233,9 +200,7 @@ public class UserInfoManager extends HttpServlet {
 
 					// - update in cache
 					users.update("password", password, userId);
-					// list.get(user).setPassword(password);
-					// getServletConfig().getServletContext().setAttribute("cacheUsers",
-					// list);
+					
 				} catch (NullPointerException e) {
 					// e.printStackTrace();
 					System.out.println("no change pass");
@@ -262,9 +227,7 @@ public class UserInfoManager extends HttpServlet {
 
 						// - update in cache
 						users.update("email", email, userId);
-						// list.get(user).setEmail(email);
-						// getServletConfig().getServletContext().setAttribute("cacheUsers",
-						// list);
+					
 					}else{
 						throw new NullPointerException();
 					}
@@ -284,9 +247,7 @@ public class UserInfoManager extends HttpServlet {
 					// - update in cache
 					users.update("allowNotification",
 							String.valueOf(allowNotification), userId);
-					// list.get(user).setAllowNotification(allowNotification);
-					// getServletConfig().getServletContext().setAttribute("cacheUsers",
-					// list);
+					
 				} catch (NullPointerException e) {
 					System.out.println("no change allowNotification");
 				}
@@ -302,14 +263,7 @@ public class UserInfoManager extends HttpServlet {
 			}
 		}
 
-		// ArrayList<User> list = (ArrayList<User>) getServletConfig()
-		// .getServletContext().getAttribute("cacheUsers");
-		//
-		// for (int i = 0; i < list.size(); i++) {
-		// System.out.println(list.get(i).getUsername() + " " +
-		// list.get(i).getPassword());
-		// }
-
+		
 		System.out.println(result.toJSONString());
 		response.getWriter().write(result.toJSONString());
 	}

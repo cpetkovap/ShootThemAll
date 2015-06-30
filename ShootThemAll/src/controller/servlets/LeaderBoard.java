@@ -75,40 +75,7 @@ public class LeaderBoard extends HttpServlet {
 				return;
 			}
 			
-			// int userPosition = -1;
-			//
-			// int count = 10;
-			//
-			// // използваме кеша -> друг вариант е от базата данни
-			// ArrayList<User> list = (ArrayList<User>) getServletConfig()
-			// .getServletContext().getAttribute("cacheUsers");
-			// list.sort(new UsersComparator());
-			// for (Iterator<User> i = list.iterator(); i.hasNext();) {
-			// User u = i.next();
-			// if (u.getId() == userId) {
-			// userPosition = list.indexOf(u);
-			//
-			// }
-			//
-			// if (count > 0) {
-			// JSONObject userObj = new JSONObject();
-			// userObj.put("position", list.indexOf(u) + 1);
-			// userObj.put("username", u.getUsername());
-			// userObj.put("score", u.getScore());
-			// result.add(userObj);
-			// }
-			// count--;
-			//
-			// }
-			//
-			// if (userPosition > 9) {
-			// JSONObject userObj = new JSONObject();
-			// userObj.put("position", (userPosition + 1));
-			// userObj.put("username", list.get(userPosition).getUsername());
-			// userObj.put("score", list.get(userPosition).getUsername());
-			// result.add(userObj);
-			// }
-
+			
 			result = topUsers(userId);
 
 			if (result != null) {

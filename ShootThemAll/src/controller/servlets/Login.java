@@ -35,7 +35,6 @@ import db.DBManager;
 @WebServlet("/login")
 public class Login extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	//private ArrayList<User> cacheUsers;
 	private UserCache users;
 	
 	private Cache cache;
@@ -52,50 +51,13 @@ public class Login extends HttpServlet {
 		super.init();
 		
 		System.out.println("cache init");
-//		if (cacheUsers == null) {
-//			cacheUsers = new ArrayList();
-//		}
-		/*
-		 * РІР·РµРјР°РЅРµ РЅР° РїРѕС‚СЂРµР±РёС‚РµР»РёС‚Рµ РѕС‚ Р±Р°Р·Р°С‚Р° РґР°РЅРЅРё Рё РїСЉР»РЅРµРЅРµ РЅР° cacheUsers
-		 */
-
-		// С‚РµСЃС‚
-//		User u1 = new User(1, "Ivan", "Ivan", "Ivan", 20, 1,
-//				new Weapon(1, 1, 0), false);
-//		User u2 = new User(2, "Petko", "Petko", "Petko", 10, 0, new Weapon(1,
-//				1, 0), false);
-//		User u3 = new User(3, "Tanq", "Tanq", "Tanq", 14, 0,
-//				new Weapon(1, 1, 0), false);
 
 		cache = Cache.getCache();
 		users = UserCache.getUserCache();
 		users.init();
 		cache.getCacheItems().put("users", users);
-		config = getServletConfig();
-
-		sc = config.getServletContext();
-		
 		
 
-		if (sc.getAttribute("cacheUsers") == null) {
-			//sc.setAttribute("cacheUsers", cacheUsers);
-			
-			//С‚РѕРІР° Р·Р° РґР° РЅРµ СЃС‡СѓРїСЏ РЅР°РїРёСЃР°РЅРµС‚Рѕ РґРѕ С‚СѓРє :)
-			
-			
-			ArrayList<User> list = new ArrayList<User>();
-			for(int i = 0 ; i < users.getAllUsers().size(); i++){
-				list.add(users.getAllUsers().get(i));
-			}
-			sc.setAttribute("cacheUsers", list);
-		}
-
-//		cacheUsers = (ArrayList<User>) sc.getAttribute("cacheUsers");
-//		cacheUsers.add(u1);
-//		cacheUsers.add(u2);
-//		cacheUsers.add(u3);
-//		cacheUsers.sort(new UsersComparator());
-		// sc.setAttribute("cacheUsers", cacheUsers);
 	}
 	
 	@Override
@@ -146,7 +108,6 @@ public class Login extends HttpServlet {
 
 			UserDao ud = new DBUserDao();
 			
-			//	if (getServletContext().getAttribute("cacheUsers") == null) {
 			if(!ud.hasQuery()){		
 				result.put("error", "Invalid username or password");
 				response.setStatus(400);
@@ -168,26 +129,7 @@ public class Login extends HttpServlet {
 					
 					boolean existUser = false;
 					
-//					//РёР·РїРѕР»Р·РІР°РјРµ РІРіСЂР°РґРµРЅРёСЏС‚ РєРµС€Р° -> РґСЂСѓРі РІР°СЂРёР°РЅС‚ Рµ РѕС‚ Р±Р°Р·Р°С‚Р° РґР°РЅРЅРё РёР»Рё РЅР°С€РёСЏС‚ РєРµС€
-//					ArrayList<User> list = (ArrayList<User>) getServletConfig()
-//							.getServletContext().getAttribute("cacheUsers");
-//
-//					for (int i = 0; i < list.size(); i++) {
-//						if (list.get(i).getUsername().equals(username)
-//								&& list.get(i).getPassword().equals(password)) {
-//							userId = list.get(i).getId();
-//							existUser = true;
-//						}
-//					}
-//
-//					if (existUser) {
-//						result.put("userId", userId);
-//						response.setStatus(200);
-//					} else {
-//						result.put("error", "Invalid username or password");
-//						response.setStatus(400);
-//					}
-					
+
 					
 					//Р�Р·РїРѕР»Р·РІР°РјРµ РЅР°С€РёСЏС‚ СЃРё РЅР°С€РёСЏС‚ РєРµС€
 		
